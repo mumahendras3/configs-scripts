@@ -1,3 +1,0 @@
-export ftp_proxy="http://mumahendras3:86222980@cache.itb.ac.id:8080"
-export http_proxy="http://mumahendras3:86222980@cache.itb.ac.id:8080"
-export https_proxy="http://mumahendras3:86222980@cache.itb.ac.id:8080"

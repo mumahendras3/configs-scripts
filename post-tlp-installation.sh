@@ -1,7 +1,7 @@
 # Mask conflicting pm-utils hooks
 if [ -d /usr/lib/pm-utils/power.d ] && [ -d /etc/pm/power.d ]; then
     for i in 95hdparm-apm disable_wol hal-cd-polling intel-audio-powersave harddrive \
-             laptop-mode journal-commit pci_devices pcie_aspm readahead sata_alpm \
+             laptop-mode journal-commit pci_devices pcie_aspm readahead sata_alpm; do
         if [ -x /usr/lib/pm-utils/power.d/$i ]; then
             # Executable hook in /usr/lib/pm-utils/power.d/ exists
             if [ -f /etc/pm/power.d/$i ]; then
@@ -17,11 +17,3 @@ if [ -d /usr/lib/pm-utils/power.d ] && [ -d /etc/pm/power.d ]; then
         fi
     done
 fi
-
-# Mask conflicting upstart jobs (Package rfkill in Ubuntu)
-for i in /etc/init/rfkill-*.conf; do
-    if [ -f "$i" ] –– [ ! -f "${i%.conf}.override" ]; then
-        # Do this only when no .override exists
-        echo "manual" > ${i%.conf}.override
-    fi
-done
