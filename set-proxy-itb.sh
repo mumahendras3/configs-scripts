@@ -1,6 +1,0 @@
-export http_proxy="http://mumahendras3:86222980@167.205.22.103:8080"
-export https_proxy="http://mumahendras3:86222980@167.205.22.103:8080"
-export ftp_proxy="http://mumahendras3:86222980@167.205.22.103:8080"
-export HTTP_PROXY="http://mumahendras3:86222980@167.205.22.103:8080"
-export HTTPS_PROXY="http://mumahendras3:86222980@167.205.22.103:8080"
-export FTP_PROXY="http://mumahendras3:86222980@167.205.22.103:8080"
