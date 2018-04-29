@@ -1,47 +1,50 @@
 #!/bin/sh
 
 # Variable initialization
-BBSBPATH=${BBSBPATH:-}
-COMPAT32=${COMPAT32:-}
-NVDVER=${NVDVER:-}
+BBSBPATH=${BBSBPATH:-/root/Downloads/Bumblebee-SlackBuilds}
+COMPAT32=${COMPAT32:-yes}
+NVDVER=${NVDVER:-390.12}
+KERNEL=${KERNEL:-$(uname -r)}
 
-# Asking for Bumblebee-Slackbuilds directory if it's not defined yet
-if [ "$BBSBPATH" == "" ]; then
-	printf 'Bumblebee-Slackbuilds directory is not defined, please specify it: '
-	read -r BBSBPATH
-	if [ "$BBSBPATH" == "" ]; then
-		echo "Blank input is not allowed, exiting"
-		exit 1
-	else
-		echo "Using $BBSBPATH as the directory"
-	fi
+# Telling the Bumblebee-Slackbuilds directory that's going to be used
+if [ "$BBSBPATH" == "/root/Downloads/Bumblebee-SlackBuilds" ]; then
+	echo "Using $BBSBPATH as the Bumblebee-SlackBuilds directory (default directory)"
 else
-	echo "Using $BBSBPATH as the directory"
+	echo "Using $BBSBPATH as the Bumblebee-SlackBuilds directory"
 fi
 
 # Asking for multilib support
 while true
 do
 	case $COMPAT32 in
-		"yes") echo "Enabling multilib support..." && export COMPAT32 && break ;;
-		"no") echo "Disabling multilib support..." && break ;;
-		"") printf 'Enable multilib support? [yes|no]' ;;
-		"*") printf "Wrong input, please answer with \"yes\" or \"no\"" ;;
+		"yes")
+			echo "Enabling multilib support..."
+			break ;;
+		"no")
+			echo "Disabling multilib support..."
+			break ;;
+		"*")
+			printf "Wrong value has been set to the COMPAT32, please specify the correct value (\"yes\" or \"no\"): "
+			read -r COMPAT32
 	esac
-	read -r COMPAT32
 done
 
-# Asking for NVIDIA driver version
-if [ "$NVDVER" == "" ]; then
-	printf "Input the version number for the driver (blank means using the default driver that come with the Slackbuilds git repo): "
-	read -r $NVDVER
-	if [ "$NVDVER" == "" ]; then
-		echo "Using the default driver..."
-	else
-		echo "Using version $NVDVER..."
-	fi
+# Telling which NVIDIA driver version is used
+if [ "$NVDVER" == "390.12" ]; then
+	echo "Using the default driver (390.12)"
 else
-	echo "Using version $NVDVER..."
+	echo "Using driver version "$NVDVER""
+fi
+
+# Telling which kernel the modules will be built for
+if [ "$KERNEL" == "$(uname -r)" ]; then
+	echo "Building the modules for $KERNEL (the currently used kernel)..."
+	KERNELVER=$(uname -r | cut -d '-' -f 1) # This is stored for later use (when installing the nvidia-kernel)
+	TAG=$(uname -r | cut -d '-' -f 2) # This is stored for later use (when installing the nvidia-kernel)
+else
+	echo "Building the modules for $KERNEL..."
+	KERNELVER=$(printf $KERNEL | cut -d '-' -f 1) # This is stored for later use (when installing the nvidia-kernel)
+	TAG=$(printf $KERNEL | cut -d '-' -f 2) # This is stored for later use (when installing the nvidia-kernel)
 fi
 
 # Changing to the Bumblebee-Slackbuilds directory
@@ -66,28 +69,23 @@ echo 'Installing the kernel modules needed after every kernel upgrade'
 
 echo "Building and installing bbswitch"
 cd bbswitch
-./bbswitch.SlackBuild
-installpkg /tmp/bbswitch-*$(uname -r)*_bbsb.t?z
+KERNEL=$KERNEL ./bbswitch.SlackBuild
+installpkg /tmp/bbswitch-*$KERNEL*_bbsb.t?z
 
 # Installing nvidia-bumblebee if using other than the default nvidia driver
-if [ "$NVDVER" != "" ]; then
-	echo "Installing nvidia-bumblebee"
+if [ "$NVDVER" != "$(ls /var/log/packages | grep "nvidia-bumblebee-*" | cut -d '-' -f 3)" ]; then
+	echo "Upgrading nvidia-bumblebee to work with the different version than the last installed one"
 	cd ../nvidia-bumblebee
-	VERSION=$NVDVER ./nvidia-bumblebee.SlackBuild
-	upgradepkg "/tmp/nvidia-bumblebee-"$NVDVER"-$(uname -m)-1_bbsb.txz"
+	VERSION=$NVDVER COMPAT32=$COMPAT32 ./nvidia-bumblebee.SlackBuild
+	upgradepkg /tmp/nvidia-bumblebee-"$NVDVER"-"$(uname -m)"-?_bbsb.t?z
 fi
 
 # Installing nvidia-kernel
 echo "Building and installing nvidia-kernel"
 cd ../nvidia-kernel
-if [ "$NVDVER" == "" ]; then
-	./nvidia-kernel.Slackbuild
-	installpkg "/tmp/nvidia-kernel-"390.12"_$(uname -r | cut -d '-' -f 1)_$(uname -r | cut -d '-' -f 2)-$(uname -m)-1_bbsb.txz"
-else	
-	VERSION=$NVDVER ./nvidia-kernel.SlackBuild
-	installpkg "/tmp/nvidia-kernel-"$NVDVER"_$(uname -r | cut -d '-' -f 1)_$(uname -r | cut -d '-' -f 2)-$(uname -m)-1_bbsb.txz"
-fi
+KERNEL=$KERNEL VERSION=$NVDVER ./nvidia-kernel.SlackBuild
+installpkg /tmp/nvidia-kernel-"$NVDVER"_"$KERNELVER"_"$TAG"-$(uname -m)-?_bbsb.t?z
 
 # Finished
-echo "Installation is complete please reboot"
+echo "Installation is complete, please reboot the computer"
 exit 0
