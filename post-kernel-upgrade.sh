@@ -74,7 +74,7 @@ installpkg /tmp/bbswitch-*$KERNEL*_bbsb.t?z
 
 # Installing nvidia-bumblebee if using other than the default nvidia driver
 if [ "$NVDVER" != "$(ls /var/log/packages | grep "nvidia-bumblebee-*" | cut -d '-' -f 3)" ]; then
-	echo "Upgrading nvidia-bumblebee to work with the different version than the last installed one"
+	echo "Upgrading/downgrading nvidia-bumblebee using Nvidia driver version $NVDVER"
 	cd ../nvidia-bumblebee
 	VERSION=$NVDVER COMPAT32=$COMPAT32 ./nvidia-bumblebee.SlackBuild
 	upgradepkg /tmp/nvidia-bumblebee-"$NVDVER"-"$(uname -m)"-?_bbsb.t?z
