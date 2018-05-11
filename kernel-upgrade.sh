@@ -16,7 +16,7 @@ else
 fi
 
 if [ "$KERNEL" == "" ]; then
-	printf "input the kernel version (inputting blank space here will cause the script to abort):"
+	printf "input the kernel version (inputting blank space here will cause the script to abort): "
 	read -r KERNEL;
 	if [ $KERNEL == "" ]; then
 		echo "Aborting the process ..."
@@ -43,7 +43,7 @@ read -r ASK
 if [ "$ASK" == "y" ]; then
 	cp /boot/config-$(uname -r) ./.config
 else
-	printf "Which version of kernel that you want to use its .config file?"
+	printf "Which version of kernel that you want to use its .config file? "
 	read -r ALTKERNEL
 	cp $KERNELPATH/linux-$ALTKERNEL/.config ./.config
 fi

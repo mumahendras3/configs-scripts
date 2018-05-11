@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Variable initialization
-BBSBPATH=${BBSBPATH:-/root/Downloads/Bumblebee-SlackBuilds}
+BBSBPATH=${BBSBPATH:-/root/SlackBuilds-extra/Bumblebee-SlackBuilds}
 COMPAT32=${COMPAT32:-yes}
 NVDVER=${NVDVER:-390.12}
 KERNEL=${KERNEL:-$(uname -r)}
@@ -51,7 +51,7 @@ fi
 cd "$BBSBPATH"
 
 # Asking if you want to update the Bumblebee-Slackbuilds files first
-echo "Do you want to update the Bumblebee-Slackbuilds files first? [y|n]: "
+printf "Do you want to update the Bumblebee-Slackbuilds files first? [y|n] "
 read choice
 
 if [ "$choice" == "y" ]; then
