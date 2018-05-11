@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Checking for given arguments
+echo setting up proxy variable...
+if [ $1 = "-a" ]; then
+	export http_proxy=$2 HTTP_PROXY=$2 https_proxy=$2 HTTPS_PROXY=$2 ftp_proxy=$2 FTP_PROXY=$2
+else
+	printf "http proxy: "
+	read http_proxy
+	printf "https proxy: "
+	read https_proxy
+	printf "ftp proxy: "
+	read ftp_proxy
+	export http_proxy https_proxy ftp_proxy HTTP_PROXY=$http_proxy HTTPS_PROXY=$https_proxy FTP_PROXY=$ftp_proxy
+fi
