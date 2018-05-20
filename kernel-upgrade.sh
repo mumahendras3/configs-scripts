@@ -80,6 +80,8 @@ ln -s vmlinuz-"$KERNEL""$TAG" vmlinuz
 
 # Creating new entry in elilo.conf
 cp vmlinuz-"$KERNEL""$TAG" efi/EFI/Slackware
+printf "You can add additional boot parameters/kernel parameters here (leave it empty to skip it): "
+read PARAMETER
 echo "\
 
 image = vmlinuz-"$KERNEL""$TAG"
@@ -87,7 +89,7 @@ image = vmlinuz-"$KERNEL""$TAG"
   root = /dev/sda4
   label = "$KERNEL""$TAG"
   read-only
-  append = \"init 3 vt.default_utf8=1\"
+  append = \"init 3 vt.default_utf8=1 "$PARAMETER"\"
   description = \"Slackware64 custom "$KERNEL""$TAG"\"
 
 # Linux bootable partition config ends" >> efi/EFI/Slackware/elilo.conf
