@@ -38,11 +38,11 @@ fi
 
 # Telling which kernel the modules will be built for
 if [ "$KERNEL" == "$(uname -r)" ]; then
-	echo "Building the modules for $KERNEL (the currently used kernel)..."
+	echo "Building modules for $KERNEL (the currently used kernel)"
 	KERNELVER=$(uname -r | cut -d '-' -f 1) # This is stored for later use (when installing the nvidia-kernel)
 	TAG=$(uname -r | cut -d '-' -f 2) # This is stored for later use (when installing the nvidia-kernel)
 else
-	echo "Building the modules for $KERNEL..."
+	echo "Building modules for $KERNEL"
 	KERNELVER=$(printf $KERNEL | cut -d '-' -f 1) # This is stored for later use (when installing the nvidia-kernel)
 	TAG=$(printf $KERNEL | cut -d '-' -f 2) # This is stored for later use (when installing the nvidia-kernel)
 fi
