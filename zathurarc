@@ -1,0 +1,12 @@
+# Remapping hjkl to jkl;
+map j scroll left
+map k scroll down
+map l scroll up
+map ; scroll right
+
+# Remapping go to next/previous page
+map L navigate previous
+map K navigate next
+
+# Enable copy to clipboard
+set selection-clipboard clipboard

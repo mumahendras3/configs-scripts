@@ -1,3 +1,2 @@
-# scripts-and-dotrcs
-My shell scripts and .\*rc files for various tasks in my Slackware computers  
-This list will grow as I stumble upon more processes that need to be automated
+# My configs, dotrcs, and scripts that I use when using Gentoo
+All configs and scripts that I used when running Gentoo on my Laptop (with Nvidia Optimus setup) and some .rc files
