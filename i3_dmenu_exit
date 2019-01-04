@@ -1,0 +1,11 @@
+#!/bin/sh
+# dmenu prompt with some options to exit i3 then go to tty, shutdown, or reboot
+
+EXIT="$(dmenu -i -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577' 'Yes' 'Yes, and shutdown' 'Yes, and reboot')"
+
+# Exiting i3 based on the selection above
+case $EXIT in
+    Yes) i3-msg exit ;;
+    'Yes, and shutdown') i3-msg exit && shutdown -h -P -t 5 now ;;
+    'Yes, and reboot') i3-msg exit && shutdown -r -t 5 now ;;
+esac
