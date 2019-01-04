@@ -2,11 +2,11 @@
 # dmenu prompt with some options to exit i3 then go to tty, shutdown, or reboot
 
 # Saving the selection to a variable
-EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -i -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577')"
+EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577')"
 
 # Exiting i3 based on the selection above
 case "$EXIT" in
     Yes) i3-msg exit ;;
-    'Yes, and shutdown') sudo shutdown -h -P -t 5 now & i3-msg exit ;;
-    'Yes, and reboot') sudo shutdown -r -t 5 now & i3-msg exit ;;
+    'Yes, and shutdown') i3-msg exit ; sudo shutdown -h -P -t 5 now ;;
+    'Yes, and reboot') i3-msg exit ; sudo shutdown -r -t 5 now ;;
 esac
