@@ -1,0 +1,11 @@
+#!/bin/sh
+# Wrapper around scrot (screenshot taking terminal program)
+
+# Asking for type of screenshot
+TYPE="$(printf "Whole screen\nA window / Specified region" | dmenu -i -p 'Take screenshot of?' -nb '#323334' -sb '#285577')"
+
+# Running scrot based on the selection above
+case "$TYPE" in
+    'Whole screen') scrot "$HOME/Images/Screenshots/%d-%m-%y-%H%M%S_\$wx\$h.png" ;;
+    'A window / Specified region') scrot -s "$HOME/Images/Screenshots/%d-%m-%y-%H%M%S_\$wx\$h.png" ;;
+esac

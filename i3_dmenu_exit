@@ -2,7 +2,7 @@
 # dmenu prompt with some options to exit i3 then go to tty, shutdown, or reboot
 
 # Saving the selection to a variable
-EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577')"
+EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -i -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577')"
 
 # Exiting i3 based on the selection above
 case "$EXIT" in
