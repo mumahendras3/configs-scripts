@@ -1,0 +1,24 @@
+#!/bin/sh
+# Script for unmounting unmountable storages
+
+# Prompting for selection then saving some important variables
+selected="$(lsblk -lo PATH,VENDOR,MODEL,SIZE,LABEL,MOUNTPOINT | sed '\_/dev/sda.*_d; /  *$/d' | dmenu -i -l 5 -nb '#323334' -sb '#285577' | sed 's/   */ /g' | rev)" &>/dev/null
+mountpoint=$(echo $selected | cut -d ' ' -f 1 | rev)
+set $(echo $selected | sed 's/^.[A-Za-z0-9/-_]* //' | rev | sed 's/ /_/5g') &>/dev/null # $1 = device path, $2 = vendor, $3 = model, $4 = storage size, $5 = label
+
+# Making sure the user has selected a device before continuing
+[ -z $mountpoint ] && exit 1
+[ "$mountpoint" = "MOUNTPOINT" ] && exit 1
+
+# Unmounting the selected device
+sudo umount $mountpoint
+if [ "$1" = "/dev/sr0" ]; then
+    notify-send -i /usr/share/icons/Moka/64x64/devices/removable-media.png "Disc Unmounted" "Disc drive unmounted"
+elif [ -z $5 ]; then
+    notify-send -i /usr/share/icons/Moka/64x64/devices/removable-media.png "Storage Unmounted" "$2 $3 ($4) unmounted"
+else
+    notify-send -i /usr/share/icons/Moka/64x64/devices/removable-media.png "Storage Unmounted" "${5//_/ } unmounted"
+fi
+
+# Removing leftover files
+rm -rf $mountpoint

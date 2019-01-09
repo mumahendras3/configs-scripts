@@ -1,0 +1,4 @@
+#!/bin/sh
+# Script for scanning mountable storage drives
+
+mount-media $(lsblk -Pno path,vendor,model,size,label,mountpoint | sed '\_PATH="/dev/sda.*"_d; /MOUNTPOINT="..*"/d; s/ MOUNTPOINT=""//' | dmenu -i -l 5 -nb '#323334' -sb '#285577')

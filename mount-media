@@ -1,0 +1,36 @@
+#!/bin/sh
+# Script for mounting mountable storages
+
+# Storing selected device metadata ($1 = device path, $2 = vendor, $3 = model, $4 = storage size, $5 = label
+set $(lsblk -lo PATH,VENDOR,MODEL,SIZE,LABEL,MOUNTPOINT | sed '\_/dev/sda.*_d; s/MOUNTPOINT//; / $/!d; s/  *$//' | dmenu -i -l 5 -nb '#323334' -sb '#285577' | sed 's/   */ /g; s/ /_/5g') &>/dev/null
+
+# Making sure the user has selected a device before continuing
+[ -z $1 ] && exit 1
+[ "$1" = "PATH" ] && exit 1
+
+# Make sure there are no unused mountpoint
+for olddir in /media/mumahendras3/*
+do
+    findmnt -no SOURCE $olddir &>/dev/null || rm -rf $olddir
+done
+
+# Creating mountpoint
+if [ "$1" = "/dev/sr0" ]; then
+    mountdir=/media/dvdrom
+elif [ -z $5 ]; then
+    mountdir=/media/mumahendras3/${2}_${3}-$(date +%M%S)
+else
+    mountdir=/media/mumahendras3/$5
+fi
+
+mkdir $mountdir
+
+# Mounting the storage
+sudo mount -t auto $1 $mountdir
+if [ "$1" = "/dev/sr0" ]; then
+    notify-send -i /usr/share/icons/Moka/64x64/devices/drive-optical.png "Disc Mounted" "Disc drive mounted on $mountdir"
+elif [ -z $5 ]; then
+    notify-send -i /usr/share/icons/Moka/64x64/devices/removable-media.png "Storage Mounted" "$2 $3 ($4) mounted on $mountdir"
+else
+    notify-send -i /usr/share/icons/Moka/64x64/devices/removable-media.png "Storage Mounted" "${5//_/ } mounted on $mountdir"
+fi
