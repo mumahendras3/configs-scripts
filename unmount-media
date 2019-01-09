@@ -4,7 +4,7 @@
 # Prompting for selection then saving some important variables
 selected="$(lsblk -lo PATH,VENDOR,MODEL,SIZE,LABEL,MOUNTPOINT | sed '\_/dev/sda.*_d; /  *$/d' | dmenu -i -l 5 -nb '#323334' -sb '#285577' | sed 's/   */ /g' | rev)" &>/dev/null
 mountpoint=$(echo $selected | cut -d ' ' -f 1 | rev)
-set $(echo $selected | sed 's/^.[A-Za-z0-9/-_]* //' | rev | sed 's/ /_/5g') &>/dev/null # $1 = device path, $2 = vendor, $3 = model, $4 = storage size, $5 = label
+set $(echo $selected | sed 's/^[^[:blank:]]* //' | rev | sed 's/ /_/5g') &>/dev/null # $1 = device path, $2 = vendor, $3 = model, $4 = storage size, $5 = label
 
 # Making sure the user has selected a device before continuing
 [ -z $mountpoint ] && exit 1
