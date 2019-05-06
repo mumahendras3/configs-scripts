@@ -34,3 +34,6 @@ elif [ -z $5 ]; then
 else
     notify-send -i /usr/share/icons/Moka/64x64/devices/removable-media.png "Storage Mounted" "${5//_/ } mounted on $mountdir"
 fi
+
+# Make sure the permission is right
+sudo chown -R $mountdir

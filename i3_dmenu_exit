@@ -7,6 +7,6 @@ EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -i -p 'Do you w
 # Exiting i3 based on the selection above
 case "$EXIT" in
     Yes) i3-msg exit ;;
-    'Yes, and shutdown') i3-msg exit ; sudo shutdown -h -P -t 5 now ;;
-    'Yes, and reboot') i3-msg exit ; sudo shutdown -r -t 5 now ;;
+    'Yes, and shutdown') i3-msg exit ; sudo shutdown -h -P now ;;
+    'Yes, and reboot') i3-msg exit ; sudo shutdown -r now ;;
 esac

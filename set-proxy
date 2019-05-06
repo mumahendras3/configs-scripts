@@ -2,7 +2,7 @@
 
 # Checking for given arguments
 echo setting up proxy variable...
-if [ $1 = "-a" ]; then
+if [ "$1" = "-a" ]; then
 	export http_proxy=$2 HTTP_PROXY=$2 https_proxy=$2 HTTPS_PROXY=$2 ftp_proxy=$2 FTP_PROXY=$2
 else
 	printf "http proxy: "
