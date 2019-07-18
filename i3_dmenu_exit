@@ -7,6 +7,8 @@ EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -i -p 'Do you w
 # Exiting i3 based on the selection above
 case "$EXIT" in
     Yes) i3-msg exit ;;
-    'Yes, and shutdown') i3-msg exit ; sudo shutdown -h -P now ;;
-    'Yes, and reboot') i3-msg exit ; sudo shutdown -r now ;;
+    #'Yes, and shutdown') i3-msg exit ; sudo shutdown -h -P now ;; # this is for slackware
+    #'Yes, and reboot') i3-msg exit ; sudo shutdown -r now ;; # this is for slackware
+    'Yes, and shutdown') i3-msg exit ; sudo shutdown -p now ;; # this is for Arch (systemd) / Obarun (s6)
+    'Yes, and reboot') i3-msg exit ; sudo shutdown -r now ;; # this is for Arch (systemd) / Obarun (s6)
 esac

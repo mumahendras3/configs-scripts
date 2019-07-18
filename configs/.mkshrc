@@ -1,0 +1,14 @@
+# Set the shell prompt
+PS1="[${USER:=$(id -un)}@${HOSTNAME:=$(hostname | cut -d. -f1)} "'$(test $HOME = $PWD && print \~ || basename $PWD)'"]$(if (( USER_ID )); then print \$; else print \#; fi) "
+
+# Local shell configurations
+export EDITOR=vim
+export VISUAL=vim
+export FCEDIT=vim
+export HISTFILE=~/.mksh-history
+
+# For LFS purposes
+export LFS=/mnt/lfs
+
+# Enable vim mode
+set -o vi

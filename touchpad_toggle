@@ -1,8 +1,8 @@
 #!/bin/bash
 if [ $(xinput list-props "Elan Touchpad" | grep "Device Enabled" | cut -f 3) = 0 ]; then
     xinput set-prop "Elan Touchpad" "Device Enabled" 1
-    notify-send -t 5000 "Touchpad" "On" -i /usr/share/icons/misc/noun_touchpad_enabled.png
+    notify-send -t 5000 "Touchpad" "On" -i notification-input-touchpad-symbolic
 else
     xinput set-prop "Elan Touchpad" "Device Enabled" 0
-    notify-send -t 5000 "Touchpad" "Off" -i /usr/share/icons/misc/noun_touchpad_disabled.png
+    notify-send -t 5000 "Touchpad" "Off" -i notification-touchpad-disabled-symbolic
 fi
