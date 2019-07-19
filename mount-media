@@ -9,18 +9,18 @@ set $(lsblk -lo PATH,VENDOR,MODEL,SIZE,LABEL,MOUNTPOINT | sed '\_/dev/sda.*_d; s
 [ "$1" = "PATH" ] && exit 1
 
 # Make sure there are no unused mountpoint
-for olddir in /media/mumahendras3/*
+for olddir in /mnt/mumahendras3/*
 do
     findmnt -no SOURCE $olddir &>/dev/null || rm -rf $olddir
 done
 
 # Creating mountpoint
 if [ "$1" = "/dev/sr0" ]; then
-    mountdir=/media/dvdrom
+    mountdir=/mnt/dvdrom
 elif [ -z $5 ]; then
-    mountdir=/media/mumahendras3/${2}_${3}-$(date +%M%S)
+    mountdir=/mnt/mumahendras3/${2}_${3}-$(date +%M%S)
 else
-    mountdir=/media/mumahendras3/$5
+    mountdir=/mnt/mumahendras3/$5
 fi
 
 mkdir $mountdir

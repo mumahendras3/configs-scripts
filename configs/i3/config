@@ -269,4 +269,5 @@ bindsym $mod+q exec mailspring
 bindsym $mod+g exec steam
 bindsym $mod+o exec urxvtc -e vifm
 bindsym $mod+p exec urxvtc -e htop
+bindsym $mod+i exec pavucontrol
 bindsym Print exec --no-startup-id take-screenshot

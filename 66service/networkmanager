@@ -1,0 +1,15 @@
+[main]
+@type = longrun
+@name = networkmanager
+@description = "networkmanager daemon"
+@user = ( root )
+@options = ( log env )
+@depends = ( dbus )
+
+[start]
+@build = auto
+@execute = ( execl-cmdline -s { NetworkManager ${CMD_ARGS} } )
+
+[environment]
+!CMD_ARGS=-d
+

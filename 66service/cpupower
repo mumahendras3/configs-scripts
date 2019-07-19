@@ -1,0 +1,17 @@
+[main]
+@type = oneshot
+@name = cpupower
+@description = "Applying cpupower configurations"
+@user = (root)
+@options = (log env)
+
+[start]
+@build = auto
+@execute = (
+if { s6-echo -- Applying CPU configurations found in ${CONFIG_FILE} }
+envfile ${CONFIG_FILE} ${SCRIPT}
+)
+
+[environment]
+!CONFIG_FILE=/etc/default/cpupower
+!SCRIPT=/usr/lib/systemd/scripts/cpupower
