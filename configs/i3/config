@@ -243,7 +243,7 @@ exec --no-startup-id redshift-gtk # Start redshift-gtk
 exec --no-startup-id mailspring -b # Start mailspring email client in background
 
 # Set the wallpaper
-exec_always --no-startup-id feh --bg-scale /usr/share/backgrounds/archlinux/archlinux-underground.jpg
+exec_always --no-startup-id feh --bg-scale ~/Images/Wallpapers/current
 
 # Lock screen with i3lock
 bindsym $mod+Shift+x exec --no-startup-id i3lock -t --ignore-empty-password --image=/usr/share/wallpapers/ascii-1920x1080.png
@@ -270,4 +270,5 @@ bindsym $mod+g exec steam
 bindsym $mod+o exec urxvtc -e vifm
 bindsym $mod+p exec urxvtc -e htop
 bindsym $mod+i exec pavucontrol
+bindsym $mod+u exec virt-manager
 bindsym Print exec --no-startup-id take-screenshot
