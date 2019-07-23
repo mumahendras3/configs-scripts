@@ -1,0 +1,17 @@
+[main]
+@type = longrun
+@name = virtlogd
+@description = "libvirt log management daemon"
+@user = ( root )
+@options = ( log env )
+
+[start]
+@build = auto
+@execute =
+(
+if { s6-echo -- Starting virtlogd daemon }
+execl-cmdline { virtlogd -p ${VIRTLOGD_PIDFILE} }
+)
+
+[environment]
+!VIRTLOGD_PIDFILE=/var/run/libvirt/virtlogd.pid

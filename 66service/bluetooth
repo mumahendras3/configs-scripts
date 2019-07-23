@@ -8,7 +8,8 @@
 
 [start]
 @build = auto
-@execute = (
+@execute =
+(
 if { s6-echo -- Starting BlueZ daemon }
-/usr/lib/bluetooth/bluetoothd -n
+execl-cmdline -s { /usr/lib/bluetooth/bluetoothd -n }
 )

@@ -1,0 +1,18 @@
+[main]
+@type = longrun
+@name = libvirtd
+@description = "libvirtd management daemon"
+@user = ( root )
+@depends = ( virtlockd virtlogd )
+@options = ( log env )
+
+[start]
+@build = auto
+@execute =
+(
+if { s6-echo -- Starting libvirtd daemon }
+execl-cmdline { libvirtd -p ${LIBVIRTD_PIDFILE} }
+)
+
+[environment]
+!LIBVIRTD_PIDFILE=/var/run/libvirt/libvirtd.pid

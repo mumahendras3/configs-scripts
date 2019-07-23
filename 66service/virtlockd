@@ -1,0 +1,17 @@
+[main]
+@type = longrun
+@name = virtlockd
+@description = "libvirt lock management daemon"
+@user = ( root )
+@options = ( log env )
+
+[start]
+@build = auto
+@execute =
+(
+if { s6-echo -- Starting virtlockd daemon }
+execl-cmdline { virtlockd -p ${VIRTLOCKD_PIDFILE} }
+)
+
+[environment]
+!VIRTLOCKD_PIDFILE=/var/run/libvirt/virtlockd.pid

@@ -14,5 +14,5 @@ envfile ${CONFIG_FILE} ${SCRIPT}
 )
 
 [environment]
-!CONFIG_FILE=/etc/default/cpupower
-!SCRIPT=/usr/lib/systemd/scripts/cpupower
+CONFIG_FILE=!/etc/default/cpupower
+SCRIPT=!/usr/lib/systemd/scripts/cpupower
