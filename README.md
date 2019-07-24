@@ -1,2 +1,2 @@
-# My configs, dotrcs, and scripts
-All configs, scripts and .rc files that I use
+# My config files and scripts
+All configuration files and scripts that I use
