@@ -12,4 +12,4 @@ export LFS=/mnt/lfs
 set -o vi
 
 # Aliases
-alias configs-scripts-git-update='cd ~/Documents/git-repos/configs-scripts && git add --all && git commit --all && git push'
+alias configs-scripts-git-update='cd ~/Documents/git-repos/configs-scripts && git add --all && git commit --all && git push && cd "$OLDPWD"'

@@ -115,4 +115,4 @@ prompt_context(){}
 export VISUAL=vim
 export EDITOR=vim
 export QSYS_ROOTDIR="/home/mumahendras3/intelFPGA_lite/17.1/quartus/sopc_builder/bin"
-alias configs-scripts-git-update='cd ~/Documents/git-repos/configs-scripts && git add --all && git commit --all && git push'
+alias configs-scripts-git-update='cd ~/Documents/git-repos/configs-scripts && git add --all && git commit --all && git push && cd "$OLDPWD"'
