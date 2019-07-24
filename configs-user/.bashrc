@@ -10,3 +10,6 @@ export LFS=/mnt/lfs
 
 # Enable vim mode
 set -o vi
+
+# Aliases
+alias configs-scripts-git-update='cd ~/Documents/git-repos/configs-scripts && git add --all && git commit --all && git push'
