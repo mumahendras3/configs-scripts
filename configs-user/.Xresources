@@ -49,6 +49,9 @@ URxvt*scrollTtyKeypress: true
 URxvt.secondaryScreen: 1
 URxvt.secondaryScroll: 0
 
+! Allow to scroll back secondary screen (when using better wheel scrolling patch)
+URxvt.secondaryWheel: 1
+
 ! Do not show scrollbar
 URxvt.scrollBar: false
 
@@ -61,3 +64,11 @@ URxvt*shading: 21
 
 ! Spaces between window border and texts
 URxvt.internalBorder: 10
+
+! Enable some extensions
+URxvt.perl-ext: default,selection-to-clipboard,url-select,keyboard-select
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
