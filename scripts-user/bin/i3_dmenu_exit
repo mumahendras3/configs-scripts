@@ -1,14 +1,14 @@
 #!/bin/sh
-# dmenu prompt with some options to exit i3 then go to tty, shutdown, or reboot
+# dmenu prompt with some options to exit i3 then go to tty, poweroff, or reboot
 
 # Saving the selection to a variable
-EXIT="$(printf 'Yes\nYes, and shutdown\nYes, and reboot' | dmenu -i -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577')"
+EXIT="$(printf 'Yes\nYes, and poweroff\nYes, and reboot' | dmenu -i -p 'Do you want to exit i3?' -nb '#323334' -sb '#285577')"
 
 # Exiting i3 based on the selection above
 case "$EXIT" in
     Yes) i3-msg exit ;;
-    #'Yes, and shutdown') i3-msg exit ; sudo shutdown -h -P now ;; # this is for slackware
+    #'Yes, and poweroff') i3-msg exit ; sudo shutdown -h -P now ;; # this is for slackware
     #'Yes, and reboot') i3-msg exit ; sudo shutdown -r now ;; # this is for slackware
-    'Yes, and shutdown') i3-msg exit ; sudo shutdown -p now ;; # this is for Arch (systemd) / Obarun (s6)
+    'Yes, and poweroff') i3-msg exit ; sudo shutdown -p now ;; # this is for Arch (systemd) / Obarun (s6)
     'Yes, and reboot') i3-msg exit ; sudo shutdown -r now ;; # this is for Arch (systemd) / Obarun (s6)
 esac

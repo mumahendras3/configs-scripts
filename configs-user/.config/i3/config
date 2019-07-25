@@ -86,10 +86,10 @@ bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Menu floating toggle
+bindsym $mod+Shift+Menu floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Menu focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -241,6 +241,7 @@ exec --no-startup-id hp-systray # Start HP printer applet
 exec --no-startup-id redshift-gtk # Start redshift-gtk
 #exec --no-startup-id systemctl --user start redshift-gtk.service # Start redshift-gtk
 exec --no-startup-id mailspring -b # Start mailspring email client in background
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # Set the wallpaper
 exec_always --no-startup-id feh --bg-scale ~/Images/Wallpapers/current
