@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SINK=$(pactl list sinks | (grep 'Sink #[^0]' || grep 'Sink #0') | cut -d\# -f2)
+case "$1" in
+    up) pactl set-sink-volume $SINK +1% ;;
+    down) pactl set-sink-volume $SINK -1% ;;
+    mute) pactl set-sink-mute $SINK toggle ;;
+esac

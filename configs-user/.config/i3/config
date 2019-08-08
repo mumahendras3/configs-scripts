@@ -254,9 +254,9 @@ exec --no-startup-id xinput set-prop "Elan Touchpad" "Device Enabled" 0
 
 # Function keys binding
 bindsym XF86TouchpadToggle exec --no-startup-id touchpad_toggle
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +2% # increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -2% # decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+bindsym XF86AudioRaiseVolume exec --no-startup-id volume-control up # increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id volume-control down # decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl volume-control mute # toggle sound mute
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 # decrease screen brightness
 
