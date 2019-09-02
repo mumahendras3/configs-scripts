@@ -14,4 +14,4 @@ execl-cmdline { virtlogd -p ${VIRTLOGD_PIDFILE} }
 )
 
 [environment]
-!VIRTLOGD_PIDFILE=/var/run/libvirt/virtlogd.pid
+VIRTLOGD_PIDFILE=!/var/run/libvirt/virtlogd.pid

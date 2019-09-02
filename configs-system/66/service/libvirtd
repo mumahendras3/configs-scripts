@@ -15,4 +15,4 @@ execl-cmdline { libvirtd -p ${LIBVIRTD_PIDFILE} }
 )
 
 [environment]
-!LIBVIRTD_PIDFILE=/var/run/libvirt/libvirtd.pid
+LIBVIRTD_PIDFILE=!/var/run/libvirt/libvirtd.pid

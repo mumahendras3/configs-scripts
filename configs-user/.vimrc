@@ -1,7 +1,7 @@
 " Enable spell checking for Bahasa Indonesia and English
 " set spelllang=en,id
-set spelllang=en
-set spell
+"set spelllang=en
+"set spell
 
 " Changing some default variables
 set nocompatible

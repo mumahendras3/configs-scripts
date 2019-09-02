@@ -14,4 +14,4 @@ execl-cmdline { virtlockd -p ${VIRTLOCKD_PIDFILE} }
 )
 
 [environment]
-!VIRTLOCKD_PIDFILE=/var/run/libvirt/virtlockd.pid
+VIRTLOCKD_PIDFILE=!/var/run/libvirt/virtlockd.pid
