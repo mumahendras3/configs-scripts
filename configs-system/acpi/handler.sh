@@ -32,10 +32,12 @@ case "$1" in
             AC|ACAD|ADP0)
                 case "$4" in
                     00000000)
-                        s6-echo 'AC unpluged'
+                        s6-echo 'AC unplugged, turning on powersaving mode...'
+			pm-powersave true
                         ;;
                     00000001)
-                        s6-echo 'AC pluged'
+                        s6-echo 'AC plugged in, turning off powersaving mode...'
+			pm-powersave false
                         ;;
                 esac
                 ;;
