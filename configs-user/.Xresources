@@ -1,15 +1,15 @@
 !! Global settings
 
 ! Setting DPI for all application (that use it)
-Xft.dpi: 192
+Xft.dpi: 240
 
 ! Font settings
-Xft.antialias: true
-Xft.hinting: true
-Xft.hintstyle: hintslight
+!Xft.antialias: true
+!Xft.hinting: true
+!Xft.hintstyle: hintslight
 
 ! Cursor settings
-Xcursor.theme: Adwaita
+!Xcursor.theme: Adwaita
 
 !! urxvt settings
 
