@@ -44,3 +44,6 @@ set relativenumber
 
 " disable mode status indicator because lightline already has it
 set noshowmode
+
+" interactive mode for find and replace
+set inccommand=nosplit
