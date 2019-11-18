@@ -55,3 +55,23 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " interactive mode for find and replace
 set inccommand=nosplit
+
+" some keyboard mappings
+" terminal buffer remap for entering normal mode
+tnoremap <Esc> <C-\><C-n>
+" remap changing between windows
+noremap <C-h> <C-w><C-h>
+noremap <C-j> <C-w><C-j>
+noremap <C-k> <C-w><C-k>
+noremap <C-l> <C-w><C-l>
+noremap! <C-h> <C-w><C-h>
+noremap! <C-j> <C-w><C-j>
+noremap! <C-k> <C-w><C-k>
+noremap! <C-l> <C-w><C-l>
+tnoremap <C-h> <C-\><C-n><C-w><C-h>
+tnoremap <C-j> <C-\><C-n><C-w><C-j>
+tnoremap <C-k> <C-\><C-n><C-w><C-k>
+tnoremap <C-l> <C-\><C-n><C-w><C-l>
+" open terminal
+noremap <silent> <C-\> :botright vsplit term://bash<CR>
+noremap! <silent> <C-\> :botright vsplit term://bash<CR>
