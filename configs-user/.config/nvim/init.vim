@@ -28,7 +28,7 @@ call plug#end()
 let g:plug_window = 'vertical botright new'
 
 " deoplete specific
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 
 " breezy theme specific
 set background=light
@@ -43,7 +43,6 @@ set relativenumber
 " disable mode status indicator because lightline already has it
 set noshowmode
 
-<<<<<<< HEAD
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -53,7 +52,6 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-=======
+
 " interactive mode for find and replace
 set inccommand=nosplit
->>>>>>> d229156b7f6b2d205772f6f8d8214d0c499d805a
