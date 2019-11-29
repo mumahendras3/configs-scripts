@@ -25,7 +25,7 @@ call plug#end()
 
 " some global variables settings
 " vim-plug specific
-let g:plug_window = 'vertical botright new'
+let g:plug_window = 'botright 50vnew'
 
 " deoplete specific
 "let g:deoplete#enable_at_startup = 1
@@ -64,14 +64,13 @@ noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
 noremap <C-k> <C-w><C-k>
 noremap <C-l> <C-w><C-l>
-noremap! <C-h> <C-w><C-h>
-noremap! <C-j> <C-w><C-j>
-noremap! <C-k> <C-w><C-k>
-noremap! <C-l> <C-w><C-l>
-tnoremap <C-h> <C-\><C-n><C-w><C-h>
-tnoremap <C-j> <C-\><C-n><C-w><C-j>
-tnoremap <C-k> <C-\><C-n><C-w><C-k>
-tnoremap <C-l> <C-\><C-n><C-w><C-l>
-" open terminal
-noremap <silent> <C-\> :botright vsplit term://bash<CR>
-noremap! <silent> <C-\> :botright vsplit term://bash<CR>
+
+" open file browser
+noremap <C-\> :30Lexplore! 
+noremap! <C-\> :30Lexplore! 
+" using tree view as default listing style
+let g:netrw_liststyle=3
+" hide netrw_menu
+let g:netrw_banner=0
+" set netrw size when new window opened
+let g:netrw_winsize=70
