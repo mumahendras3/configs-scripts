@@ -64,6 +64,7 @@ noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
 noremap <C-k> <C-w><C-k>
 noremap <C-l> <C-w><C-l>
+<<<<<<< HEAD
 
 " open file browser
 noremap <C-\> :30Lexplore! 
@@ -74,3 +75,15 @@ let g:netrw_liststyle=3
 let g:netrw_banner=0
 " set netrw size when new window opened
 let g:netrw_winsize=70
+=======
+noremap! <C-h> <C-w><C-h>
+noremap! <C-j> <C-w><C-j>
+noremap! <C-k> <C-w><C-k>
+noremap! <C-l> <C-w><C-l>
+tnoremap <C-h> <C-\><C-n><C-w><C-h>
+tnoremap <C-j> <C-\><C-n><C-w><C-j>
+tnoremap <C-k> <C-\><C-n><C-w><C-k>
+" open terminal
+noremap <silent> <C-\> :botright vsplit term://bash<CR>
+noremap! <silent> <C-\> :botright vsplit term://bash<CR>
+>>>>>>> 563dead5b39d9c30f6c4e4da55dec1b17e4ef4ee
