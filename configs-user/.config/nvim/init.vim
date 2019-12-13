@@ -30,10 +30,15 @@ let g:plug_window = 'botright 50vnew'
 " deoplete specific
 "let g:deoplete#enable_at_startup = 1
 
+" theming controls
+" don't use special themes when on virtual console
+if $TERM != "linux"
 " breezy theme specific
 set background=light
-set termguicolors " if you want to run vim in a terminal
+"set termguicolors "if you want to run vim in a terminal with full color support
 colorscheme breezy
+endif
+" setting lightline color scheme
 let g:lightline = { 'colorscheme': 'breezy' }
 
 " set numbering with realitve numbering
