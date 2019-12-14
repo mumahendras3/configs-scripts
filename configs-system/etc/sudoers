@@ -55,6 +55,7 @@
 ## Uncomment to enable special input methods.  Care should be taken as
 ## this may allow users to subvert the command being run via sudo.
 # Defaults env_keep += "XMODIFIERS GTK_IM_MODULE QT_IM_MODULE QT_IM_SWITCHER"
+ Defaults env_keep += "QT_SCALE_FACTOR"
 ##
 ## Uncomment to use a hard-coded PATH instead of the user's to find commands
 # Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
