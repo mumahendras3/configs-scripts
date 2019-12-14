@@ -75,7 +75,6 @@ fi
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-	colorize
 	vi-mode
 )
 
@@ -123,3 +122,4 @@ export EDITOR=/usr/bin/nvim
 alias k='cd /mnt/d/Google\ Drive/Akademik/Fisika\ Teknik/Semester\ 7'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.zshrc'
+alias n='nvim-qt'
