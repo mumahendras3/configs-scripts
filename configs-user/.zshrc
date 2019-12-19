@@ -122,4 +122,11 @@ export EDITOR=/usr/bin/nvim
 alias k='cd /mnt/d/Google\ Drive/Akademik/Fisika\ Teknik/Semester\ 7'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.zshrc'
-alias n='nvim-qt'
+alias n='nvim'
+alias nq='nvim-qt'
+alias sudo='sudo ' # alias sudo so that alias after sudo is also expanded
+# some special aliases for slackware
+if [ -e /etc/slackware-version ]; then
+	alias ud='slackpkg update'
+	alias ug='slackpkg upgrade-all'
+fi

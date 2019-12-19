@@ -27,6 +27,10 @@ call plug#end()
 " vim-plug specific
 let g:plug_window = 'botright 50vnew'
 
+" setting lightline color scheme
+" using breezy seems good enough although in linux console
+let g:lightline = { 'colorscheme': 'breezy' }
+
 " deoplete specific
 "let g:deoplete#enable_at_startup = 1
 
@@ -38,10 +42,6 @@ if $COLORTERM == "truecolor"
 	set termguicolors "if you want to run vim in a terminal with full color support
 	colorscheme breezy
 endif
-
-" setting lightline color scheme
-" using breezy seems good enough although in linux console
-let g:lightline = { 'colorscheme': 'breezy' }
 
 " set numbering with realitve numbering
 set number
@@ -63,6 +63,9 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " interactive mode for find and replace
 set inccommand=nosplit
 
+" automatically change directory to the same directory of the edited file
+set autochdir
+
 " some keyboard mappings
 " terminal buffer remap for entering normal mode
 "tnoremap <Esc> <C-\><C-n>
@@ -74,11 +77,14 @@ noremap <C-k> <C-w><C-k>
 noremap <C-l> <C-w><C-l>
 
 " open file browser
-noremap <C-\> :30Lexplore! 
-noremap! <C-\> :30Lexplore! 
+noremap <C-\> :30Vexplore! 
+noremap! <C-\> :30Vexplore! 
 " using tree view as default listing style
 let g:netrw_liststyle=3
 " hide netrw_menu
 let g:netrw_banner=0
 " set netrw size when new window opened
 let g:netrw_winsize=70
+" set the default editing window for netrw
+" to first window
+let g:netrw_chgwin=1

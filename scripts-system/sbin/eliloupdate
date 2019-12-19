@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# exit on errors
+set -e
+
+# get the currently installed kernel-modules' version
+VERSION=$(ls /var/lib/pkgtools/packages/kernel-modules* | cut -d '-' -f 3)
+
+# generate the new initrd
+mkinitrd -F -k $VERSION
+
+# copy the new kernels and initrd to /boot/efi/EFI/Slackware
+cp /boot/{initrd.gz,vmlinuz-*-${VERSION}} /boot/efi/EFI/Slackware
+
+# rename the newly copied kernels to not include the version number
+mv /boot/efi/EFI/Slackware/{vmlinuz-generic-${VERSION},vmlinuz-generic}
+mv /boot/efi/EFI/Slackware/{vmlinuz-huge-${VERSION},vmlinuz-huge}
