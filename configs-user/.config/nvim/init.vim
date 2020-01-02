@@ -77,8 +77,8 @@ noremap <C-k> <C-w><C-k>
 noremap <C-l> <C-w><C-l>
 
 " open file browser
-noremap <C-\> :30Vexplore! 
-noremap! <C-\> :30Vexplore! 
+nnoremap <C-\> :30Vexplore! 
+inoremap <C-\> <Esc>:30Vexplore! 
 " using tree view as default listing style
 let g:netrw_liststyle=3
 " hide netrw_menu

@@ -75,7 +75,7 @@ fi
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-	vi-mode
+	zsh-vim-mode
 )
 
 # Disable permissions checking for root

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Script to trim SSDs that support it
+
+/sbin/fstrim --all --quiet
