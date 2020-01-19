@@ -25,7 +25,7 @@ call plug#end()
 
 " some global variables settings
 " vim-plug specific
-let g:plug_window = 'botright 50vnew'
+let g:plug_window = 'botright 10new'
 
 " setting lightline color scheme
 " using breezy seems good enough although in linux console

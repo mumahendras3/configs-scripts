@@ -9,8 +9,15 @@ VERSION=$(ls /var/lib/pkgtools/packages/kernel-modules* | cut -d '-' -f 3)
 # generate the new initrd
 mkinitrd -F -k $VERSION
 
+# backup previous kernels
+for kernel in /boot/efi/EFI/Slackware/vmlinuz-*; do
+	if [ -x $kernel ]; then
+		mv $kernel ${kernel}-previous
+	fi
+done
+
 # copy the new kernels and initrd to /boot/efi/EFI/Slackware
-cp /boot/{initrd.gz,vmlinuz-*-${VERSION}} /boot/efi/EFI/Slackware
+cp /boot/{intel-ucode.cpio,initrd.gz,vmlinuz-*-${VERSION}} /boot/efi/EFI/Slackware
 
 # rename the newly copied kernels to not include the version number
 mv /boot/efi/EFI/Slackware/{vmlinuz-generic-${VERSION},vmlinuz-generic}

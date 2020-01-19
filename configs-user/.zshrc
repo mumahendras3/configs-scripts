@@ -78,7 +78,7 @@ plugins=(
 	zsh-vim-mode
 )
 
-# Disable permissions checking for root
+# Disable permissions checking for root and some root specific configurations
 if [ $UID = 0 ]; then
 	ZSH_DISABLE_COMPFIX=true
 fi
@@ -119,14 +119,19 @@ export EDITOR=/usr/bin/nvim
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias k='cd /mnt/d/Google\ Drive/Akademik/Fisika\ Teknik/Semester\ 7'
+alias k='cd /mnt/d/Google\ Drive/Akademik/Fisika\ Teknik/Semester\ 8'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.zshrc'
 alias n='nvim'
 alias nq='nvim-qt'
-alias sudo='sudo ' # alias sudo so that alias after sudo is also expanded
+alias sudo='sudo ' # alias 'sudo ' so that alias after sudo is also expanded
 # some special aliases for slackware
 if [ -e /etc/slackware-version ]; then
 	alias ud='slackpkg update'
 	alias ug='slackpkg upgrade-all'
+	alias 14.2-build-chroot='build-chroot /usr/local/build-chroots/Slackware64-14.2 /home/mumahendras3/Downloads/slackware64-14.2'
+	alias repo-update-14.2='rsync -avz --progress --partial-dir=rsync-partial rsync://slackware.uk/slackware/slackware64-14.2 /home/mumahendras3/Downloads'
+	alias repo-update-current='rsync -avz --progress --partial-dir=rsync-partial --exclude=source/ rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
+	alias repo-update-current-all='rsync -avz --progress --partial-dir=rsync-partial rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
+	alias repo-update-all='repo-update-14.2; repo-update-current;'
 fi
