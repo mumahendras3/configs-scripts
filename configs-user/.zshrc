@@ -130,8 +130,8 @@ if [ -e /etc/slackware-version ]; then
 	alias ud='slackpkg update'
 	alias ug='slackpkg upgrade-all'
 	alias 14.2-build-chroot='build-chroot /usr/local/build-chroots/Slackware64-14.2 /home/mumahendras3/Downloads/slackware64-14.2'
-	alias repo-update-14.2='rsync -avz --progress --partial-dir=rsync-partial rsync://slackware.uk/slackware/slackware64-14.2 /home/mumahendras3/Downloads'
-	alias repo-update-current='rsync -avz --progress --partial-dir=rsync-partial --exclude=source/ rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
-	alias repo-update-current-all='rsync -avz --progress --partial-dir=rsync-partial rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
+	alias repo-update-14.2='rsync -avzh --progress --partial-dir=rsync-partial rsync://slackware.uk/slackware/slackware64-14.2 /home/mumahendras3/Downloads'
+	alias repo-update-current='rsync -avzh --progress --partial-dir=rsync-partial --exclude=source/ rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
+	alias repo-update-current-all='rsync -avzh --progress --partial-dir=rsync-partial rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
 	alias repo-update-all='repo-update-14.2; repo-update-current;'
 fi

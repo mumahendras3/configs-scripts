@@ -1,24 +1,47 @@
-#!/bin/sh
+#!/bin/bash
 
-# exit on errors
+# Exit on errors
 set -e
 
-# get the currently installed kernel-modules' version
-VERSION=$(ls /var/lib/pkgtools/packages/kernel-modules* | cut -d '-' -f 3)
+# Look for installed kernel's version number
+VERSION=$(readlink /boot/vmlinuz | cut -f3 -d\-)
 
-# generate the new initrd
-mkinitrd -F -k $VERSION
+# Set CLEAN=yes to clean the previous initrd tree first
+CLEAN=${CLEAN:-no}
+if [ "$CLEAN" = "no" ]; then
+	unset CLEAN
+else
+	CLEAN="-c"
+fi
 
-# backup previous kernels
-for kernel in /boot/efi/EFI/Slackware/vmlinuz-*; do
-	if [ -x $kernel ]; then
-		mv $kernel ${kernel}-previous
+# Generate the new initrd
+if [ -r /etc/mkinitrd.conf ]; then
+ 	# Use the already available /etc/mkinitrd.conf
+	echo "Generating new initrd using /etc/mkinitrd.conf...
+Make sure KERNEL_VERSION points to the right kernel!"
+	mkinitrd -F $CLEAN
+else
+	echo "Using mkinitrd_command_generator.sh to generate a suitable initrd..."
+	if [ -e /boot/intel-ucode.cpio ]; then
+		# Prepend microcode
+		echo "Microcode found, prepending it to initrd"
+		$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -r -k "$VERSION" -a "-P /boot/intel-ucode.cpio" | sed "s/-c/${CLEAN}/g")
+	else
+		$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -r -k "$VERSION" | sed "s/-c/${CLEAN}/g")
 	fi
-done
+fi
 
-# copy the new kernels and initrd to /boot/efi/EFI/Slackware
-cp /boot/{intel-ucode.cpio,initrd.gz,vmlinuz-*-${VERSION}} /boot/efi/EFI/Slackware
+# Backup previous kernels
+find /boot/efi/EFI/Slackware -name 'vmlinuz*' ! -name '*-previous' -exec mv '{}' '{}'-previous \;
 
-# rename the newly copied kernels to not include the version number
-mv /boot/efi/EFI/Slackware/{vmlinuz-generic-${VERSION},vmlinuz-generic}
-mv /boot/efi/EFI/Slackware/{vmlinuz-huge-${VERSION},vmlinuz-huge}
+# Copy the new kernels and initrd to /boot/efi/EFI/Slackware
+cp /boot/{intel-ucode.cpio,initrd.gz,vmlinuz-*-"${VERSION}"} /boot/efi/EFI/Slackware
+
+# Rename the newly copied kernels to not include the version number
+[ -x /boot/efi/EFI/Slackware/vmlinuz-generic-"${VERSION}" ] && \
+	mv /boot/efi/EFI/Slackware/{vmlinuz-generic-"${VERSION}",vmlinuz-generic}
+[ -x /boot/efi/EFI/Slackware/vmlinuz-huge-"${VERSION}" ] && \
+	mv /boot/efi/EFI/Slackware/{vmlinuz-huge-"${VERSION}",vmlinuz-huge}
+
+# Done!
+echo "Done!"
