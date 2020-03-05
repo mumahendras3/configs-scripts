@@ -61,6 +61,12 @@ if [ -n $2 ]; then
 	fi
 fi
 
+# mount local SBo repo
+mount --bind /home/mumahendras3/git-repos/slackbuilds ${NEWROOT}/SBo
+
+# mount local distfiles
+mount --bind /usr/sbo/distfiles ${NEWROOT}/distfiles
+
 # copy host's resolv.conf to chroot environment for network connectivity
 cp /etc/resolv.conf ${NEWROOT}/etc
 
