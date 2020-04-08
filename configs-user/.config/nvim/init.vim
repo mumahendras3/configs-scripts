@@ -70,6 +70,9 @@ set autochdir
 " terminal buffer remap for entering normal mode
 "tnoremap <Esc> <C-\><C-n>
 
+" Set default identation
+set shiftwidth=2
+
 " remap changing between windows
 noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
@@ -77,8 +80,8 @@ noremap <C-k> <C-w><C-k>
 noremap <C-l> <C-w><C-l>
 
 " open file browser
-nnoremap <C-\> :30Vexplore! 
-inoremap <C-\> <Esc>:30Vexplore! 
+nnoremap <C-\> :20Vexplore! 
+inoremap <C-\> <Esc>:20Vexplore! 
 " using tree view as default listing style
 let g:netrw_liststyle=3
 " hide netrw_menu
