@@ -21,6 +21,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --clangd-completer --ts-completer' }
 " handle all insert mode completion with <tab>
 Plug 'ervandew/supertab'
+" Dracula theme
+Plug 'dracula/vim', { 'as': 'dracula' }
 call plug#end()
 
 " some global variables settings
@@ -29,7 +31,8 @@ let g:plug_window = 'botright 10new'
 
 " setting lightline color scheme
 " using breezy seems good enough although in linux console
-let g:lightline = { 'colorscheme': 'breezy' }
+"let g:lightline = { 'colorscheme': 'breezy' }
+let g:lightline = { 'colorscheme': 'dracula' }
 
 " deoplete specific
 "let g:deoplete#enable_at_startup = 1
@@ -37,10 +40,12 @@ let g:lightline = { 'colorscheme': 'breezy' }
 " theming controls
 " enable true color based color scheme for terminals that support it
 if $COLORTERM == "truecolor"
-	" breezy theme specific
-	set background=light
 	set termguicolors "if you want to run vim in a terminal with full color support
-	colorscheme breezy
+	" breezy theme specific
+	"set background=light
+	"colorscheme breezy
+	" Dracula theme specific
+	colorscheme dracula
 endif
 
 " set numbering with realitve numbering
