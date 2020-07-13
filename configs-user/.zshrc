@@ -52,3 +52,6 @@ export KEYTIMEOUT=1 # For faster mode-switching
 if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
   source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 
 fi
+
+# Start GUI if login from tty1
+[ "$TTY" = "/dev/tty1" -a $UID != 0 ] && startx
