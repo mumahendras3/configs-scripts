@@ -40,7 +40,7 @@ if [ -e /etc/slackware-version ]; then
 	alias repo-update-14.2='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://mirror.digitalpacific.com.au/slackware/slackware64-14.2 /home/mumahendras3/Downloads'
 	alias repo-update-current='rsync -avzh --progress --partial-dir=.rsync-partial --exclude=source/ --delete-after rsync://mirror.digitalpacific.com.au/slackware/slackware64-current /home/mumahendras3/Downloads'
 	alias repo-update-current-all='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://mirror.digitalpacific.com.au/slackware/slackware64-current /home/mumahendras3/Downloads'
-	alias repo-update-all='repo-update-14.2; repo-update-current;'
+	alias repo-update-all='repo-update-14.2; repo-update-current-all;'
 	[ "$(whoami)" = "mumahendras3" ] && PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
 fi
 
@@ -54,4 +54,4 @@ if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.z
 fi
 
 # Start GUI if login from tty1
-[ "$TTY" = "/dev/tty1" -a $UID != 0 ] && startx
+[ "$TTY" = "/dev/tty1" -a $UID != 0 ] && exec startx || return 0

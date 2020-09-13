@@ -32,7 +32,7 @@ else
 fi
 
 # Backup previous kernels
-find /boot/efi/EFI/Slackware -name 'vmlinuz*' ! -name '*-previous' -exec mv '{}' '{}'-previous \;
+#find /boot/efi/EFI/Slackware -name 'vmlinuz*' ! -name '*-previous' -exec mv '{}' '{}'-previous \;
 
 # Copy the new kernels and initrd to /boot/efi/EFI/Slackware
 cp /boot/{intel-ucode.cpio,initrd.gz,vmlinuz-*-"${VERSION}"} /boot/efi/EFI/Slackware
