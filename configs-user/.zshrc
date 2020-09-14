@@ -54,4 +54,4 @@ if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.z
 fi
 
 # Start GUI if login from tty1
-[ "$TTY" = "/dev/tty1" -a $UID != 0 ] && exec startx || return 0
+[ "$TTY" = "/dev/tty1" -a $UID != 0 ] && startx || return 0
