@@ -76,7 +76,11 @@ set autochdir
 "tnoremap <Esc> <C-\><C-n>
 
 " Set default identation
-set shiftwidth=2
+set shiftwidth=4
+" Convert tab to spaces
+" Negative value means follow shiftwidth value
+set softtabstop=-1
+set expandtab
 
 " remap changing between windows
 noremap <C-h> <C-w><C-h>
