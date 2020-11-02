@@ -4,4 +4,4 @@ PATH="/usr/local/bin:/usr/bin:/bin"
 export ZDOTDIR=~/.config/zsh
 [ -d ~/.local/share/zsh ] || mkdir -p ~/.local/share/zsh
 export HISTFILE=~/.local/share/zsh/history
-export SAVEHIST=30
+export SAVEHIST=50
