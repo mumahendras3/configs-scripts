@@ -1,8 +1,8 @@
 " set breezy theme for GUI clients
-"set background=light
-"colorscheme breezy
+set background=light
+colorscheme breezy
 " set dracula theme for GUI clients
-colorscheme dracula
+"colorscheme dracula
 
 " use the TUI tabs interface
 GuiTabline 0

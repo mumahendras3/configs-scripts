@@ -14,6 +14,7 @@ compinit -d ~/.cache/zsh/zcompdump-${ZSH_VERSION}
 # End of lines added by compinstall
 
 # Load themes
+DRACULA_DISPLAY_CONTEXT=1
 [ -f ~/.local/share/zsh-themes/dracula/dracula.zsh-theme ] && \
   source ~/.local/share/zsh-themes/dracula/dracula.zsh-theme
 [ -f ~/.local/share/zsh-themes/dracula/lib/async.zsh ] && \
@@ -25,11 +26,15 @@ alias ls='ls --color=auto'
 alias ll='ls --color=auto -lh'
 alias la='ls --color=auto -A'
 alias grep='grep --color=auto'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gd='git diff'
+alias gl='git log'
 alias k='cd /mnt/d/Google\ Drive/Akademik/Fisika\ Teknik/Semester\ 8'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.config/zsh/.zshrc'
 alias n='nvim'
-alias nq='nvim-qt'
 alias sudo='sudo ' # alias 'sudo ' so that alias after sudo is also expanded
 
 # some special aliases for slackware
@@ -49,10 +54,12 @@ fi
 
 # Enable vi-mode
 bindkey -v
+bindkey '^?' backward-delete-char # Allow backspacing when in insert mode
+bindkey "\e[3~" delete-char # Prevent uppercasing character by pressing delete key
 export KEYTIMEOUT=1 # For faster mode-switching
 
 # For root prompt
-[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
+#[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
 
 # zsh-syntax-highlighting
 if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then

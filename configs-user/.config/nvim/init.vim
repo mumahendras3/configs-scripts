@@ -31,8 +31,8 @@ let g:plug_window = 'botright 10new'
 
 " setting lightline color scheme
 " using breezy seems good enough although in linux console
-"let g:lightline = { 'colorscheme': 'breezy' }
-let g:lightline = { 'colorscheme': 'dracula' }
+let g:lightline = { 'colorscheme': 'breezy' }
+"let g:lightline = { 'colorscheme': 'dracula' }
 
 " deoplete specific
 "let g:deoplete#enable_at_startup = 1
@@ -42,10 +42,10 @@ let g:lightline = { 'colorscheme': 'dracula' }
 if $COLORTERM == "truecolor"
 	set termguicolors "if you want to run vim in a terminal with full color support
 	" breezy theme specific
-	"set background=light
-	"colorscheme breezy
+	set background=light
+	colorscheme breezy
 	" Dracula theme specific
-	colorscheme dracula
+  "colorscheme dracula
 endif
 
 " set numbering with realitve numbering
@@ -69,7 +69,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 set inccommand=nosplit
 
 " automatically change directory to the same directory of the edited file
-set autochdir
+"set autochdir
 
 " some keyboard mappings
 " terminal buffer remap for entering normal mode
