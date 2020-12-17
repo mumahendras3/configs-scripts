@@ -1,0 +1,10 @@
+#!/bin/execlineb -P
+
+fdmove -c 2 1
+importas -u XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+if {
+  redirfd -w 1 env/SSH_AUTH_SOCK
+  echo ${XDG_RUNTIME_DIR}/ssh-agent.sock
+}
+s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/ssh-agent.sock ]"
+exec -c ssh-agent -Da ${XDG_RUNTIME_DIR}/ssh-agent.sock

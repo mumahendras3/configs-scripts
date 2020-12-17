@@ -1,0 +1,6 @@
+#!/bin/execlineb -P
+
+fdmove -c 2 1
+if { s6-svwait -U ../dbus-session-bus }
+s6-envdir ../dbus-session-bus/env
+emptyenv -c pipewire-media-session

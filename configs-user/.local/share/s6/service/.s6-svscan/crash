@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+
+echo An error occured when bringing down user's supervision subtree!
