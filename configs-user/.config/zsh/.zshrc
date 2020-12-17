@@ -43,13 +43,13 @@ if [ -e /etc/slackware-version ]; then
 	alias ud='slackpkg update'
 	alias ug='slackpkg upgrade-all'
 	alias in='slackpkg install-new'
-	alias 14.2-build-chroot='build-chroot /usr/local/build-chroots/Slackware64-14.2 /home/mumahendras3/Downloads/slackware64-14.2'
-	alias repo-update-14.2='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://mirror.digitalpacific.com.au/slackware/slackware64-14.2 /home/mumahendras3/Downloads'
-	alias repo-update-xfcelatest='rsync -avzh --progress --partial-dir=.rsync-partial --exclude=arm/ --exclude=i586/ --exclude=source/ --delete-after rsync://slackware.uk/people/rlworkman/current/ /home/mumahendras3/Downloads/xfcelatest'
-	alias repo-update-xfcelatest-source='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://slackware.uk/people/rlworkman/sources/current/ /home/mumahendras3/Downloads/xfcelatest/source'
-	alias repo-update-current='rsync -avzh --progress --partial-dir=.rsync-partial --exclude=source/ --delete-after rsync://mirror.digitalpacific.com.au/slackware/slackware64-current /home/mumahendras3/Downloads'
-	alias repo-update-current-all='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://mirror.digitalpacific.com.au/slackware/slackware64-current /home/mumahendras3/Downloads'
-	alias repo-update-all='repo-update-14.2; repo-update-current-all; repo-update-xfcelatest; repo-update-xfcelatest-source;'
+	#alias 14.2-build-chroot='build-chroot /usr/local/build-chroots/Slackware64-14.2 /home/mumahendras3/Downloads/slackware64-14.2'
+	alias repo-update-14.2='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://slackware.uk/slackware/slackware64-14.2 /home/mumahendras3/Downloads'
+	#alias repo-update-xfcelatest='rsync -avzh --progress --partial-dir=.rsync-partial --exclude=arm/ --exclude=i586/ --exclude=source/ --delete-after rsync://slackware.uk/people/rlworkman/current/ /home/mumahendras3/Downloads/xfcelatest'
+	#alias repo-update-xfcelatest-source='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://slackware.uk/people/rlworkman/sources/current/ /home/mumahendras3/Downloads/xfcelatest/source'
+	alias repo-update-current='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
+	alias repo-update-all='repo-update-14.2; repo-update-current;'
+	#alias repo-update-all='repo-update-14.2; repo-update-current; repo-update-xfcelatest; repo-update-xfcelatest-source;'
 	[ "$(whoami)" = "mumahendras3" ] && PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
 fi
 
