@@ -1,0 +1,2 @@
+#!/bin/dash
+env PATH=/usr/libexec/icecc/bin:$PATH "$@"
