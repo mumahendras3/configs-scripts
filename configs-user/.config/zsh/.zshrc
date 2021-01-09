@@ -50,7 +50,6 @@ if [ -e /etc/slackware-version ]; then
 	alias repo-update-current='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://slackware.uk/slackware/slackware64-current /home/mumahendras3/Downloads'
 	alias repo-update-all='repo-update-14.2; repo-update-current;'
 	#alias repo-update-all='repo-update-14.2; repo-update-current; repo-update-xfcelatest; repo-update-xfcelatest-source;'
-	[ "$(whoami)" = "mumahendras3" ] && PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
 fi
 
 # Enable vi-mode
