@@ -1,3 +1,0 @@
-# Setting up Pulse Audio sound server as the default sound input/output
-pcm.default pulse
-ctl.default pulse

@@ -1,9 +1,0 @@
-#!/bin/sh
-test $# -gt 0 && test $# -eq 1 && echo "usage: new-service NAME TYPE" && exit 1
-mkdir "$1"
-echo "$2" > "$1"/type
-case "$2" in
-    oneshot) touch "$1"/{up,down,dependencies} && vim "$1"/up ;;
-    longrun) touch "$1"/{run,finish,dependencies} && vim "$1"/run ;;
-    bundle) touch "$1"/contents && vim "$1"/contents ;;
-esac
