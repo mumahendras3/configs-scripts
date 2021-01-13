@@ -2,4 +2,4 @@
 
 fdmove -c 2 1
 redirfd -w 4 env/DBUS_SESSION_BUS_ADDRESS
-exec -c dbus-daemon --session --nosyslog --print-pid=3 --print-address=4
+exec -c dbus-daemon --session --nofork --nopidfile --nosyslog --print-pid=3 --print-address=4

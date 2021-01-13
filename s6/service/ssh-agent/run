@@ -2,6 +2,7 @@
 
 fdmove -c 2 1
 importas -u XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+emptyenv -p
 if {
   redirfd -w 1 env/SSH_AUTH_SOCK
   echo ${XDG_RUNTIME_DIR}/ssh-agent.sock

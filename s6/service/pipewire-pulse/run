@@ -3,4 +3,4 @@
 fdmove -c 2 1
 if { s6-svwait -U ../dbus-session-bus }
 s6-envdir ../dbus-session-bus/env
-emptyenv -c pipewire-pulse
+emptyenv -c s6-softlimit -l= pipewire-pulse

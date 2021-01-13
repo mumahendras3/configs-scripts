@@ -1,3 +1,1 @@
-#!/bin/execlineb -P
-
-echo User's supervision subtree has been successfully brought down!
+/bin/true

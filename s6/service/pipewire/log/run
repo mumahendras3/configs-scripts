@@ -1,4 +1,4 @@
 #!/bin/execlineb -P
 
 importas -u XDG_DATA_HOME XDG_DATA_HOME
-exec -c s6-log -d3 -- n4 s500000 T ${XDG_DATA_HOME}/s6/log/pipewire
+exec -c s6-log -d3 -- n4 s500000 T ${XDG_DATA_HOME}/s6/pipewire
