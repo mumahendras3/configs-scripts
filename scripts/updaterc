@@ -13,7 +13,9 @@ shift
 s6-rc-compile "$DEST"-"$TIME" "$@"
 
 # Create/update the symlink
-# Somehow 'ln -sf' doesn't replace the existing symlink with a new one so we will
-# remove it first
 rm -f "$DEST"
 ln -s "$NAME" "$DEST"
+
+# Use the newly created service database
+cd "$(dirname "$DEST")" || exit
+s6-rc-update "${PWD}/${NAME}"
