@@ -1,7 +1,7 @@
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 zstyle ':completion:*' menu select=1
@@ -10,15 +10,16 @@ zstyle :compinstall filename '/home/mumahendras3/.zshrc'
 
 autoload -Uz compinit
 [ -d ~/.cache/zsh ] || mkdir -p ~/.cache/zsh
-compinit -d ~/.cache/zsh/zcompdump-${ZSH_VERSION}
+compinit -d ~/.cache/zsh/zcompdump-"${ZSH_VERSION}"
 # End of lines added by compinstall
 
 # Load themes
-DRACULA_DISPLAY_CONTEXT=1
 [ -f ~/.local/share/zsh-themes/dracula/dracula.zsh-theme ] && \
   source ~/.local/share/zsh-themes/dracula/dracula.zsh-theme
 [ -f ~/.local/share/zsh-themes/dracula/lib/async.zsh ] && \
   source ~/.local/share/zsh-themes/dracula/lib/async.zsh
+# Additional theme configurations
+DRACULA_DISPLAY_CONTEXT=1
 
 # some default environment variables and aliases
 export EDITOR=/usr/bin/nvim
@@ -36,35 +37,41 @@ alias k='cd /mnt/d/Google\ Drive/Akademik/Fisika\ Teknik/Semester\ 8'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.config/zsh/.zshrc'
 alias n='nvim'
-alias sudo='sudo ' # alias 'sudo ' so that alias after sudo is also expanded
+alias sudo='sudo ' # For expanding aliases after sudo
 
-# some special aliases for slackware
+# Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
+	id -nG | grep -wq wheel && \
+      export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
 	alias ud='slackpkg update'
 	alias ug='slackpkg upgrade-all'
 	alias in='slackpkg install-new'
-	#alias 14.2-build-chroot='build-chroot /usr/local/build-chroots/Slackware64-14.2 /home/mumahendras3/Downloads/slackware64-14.2'
-	alias repo-update-14.2='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://mirror-hk.koddos.net/slackware/slackware64-14.2 ~/Downloads'
-	#alias repo-update-xfcelatest='rsync -avzh --progress --partial-dir=.rsync-partial --exclude=arm/ --exclude=i586/ --exclude=source/ --delete-after rsync://slackware.uk/people/rlworkman/current/ /home/mumahendras3/Downloads/xfcelatest'
-	#alias repo-update-xfcelatest-source='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://slackware.uk/people/rlworkman/sources/current/ /home/mumahendras3/Downloads/xfcelatest/source'
-	alias repo-update-current='rsync -avzh --progress --partial-dir=.rsync-partial --delete-after rsync://mirror-hk.koddos.net/slackware/slackware64-current ~/Downloads'
+  RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware/slackware64-14.2"
+	alias repo-update-14.2="rsync -avzh --progress \
+      --partial-dir=.rsync-partial --delete-after $RSYNC_REPO \
+      ~/Downloads"
+	alias repo-update-current="rsync -avzh --progress \
+      --partial-dir=.rsync-partial --delete-after $RSYNC_REPO \
+      ~/Downloads"
 	alias repo-update-all='repo-update-14.2; repo-update-current;'
-	#alias repo-update-all='repo-update-14.2; repo-update-current; repo-update-xfcelatest; repo-update-xfcelatest-source;'
 fi
 
 # Enable vi-mode
 bindkey -v
-bindkey '^?' backward-delete-char # Allow backspacing when in insert mode
-bindkey "\e[3~" delete-char # Prevent uppercasing character by pressing delete key
-export KEYTIMEOUT=1 # For faster mode-switching
+# Allow backspacing when in insert mode
+bindkey '^?' backward-delete-char
+# Prevent uppercasing character by pressing delete key when in vi-mode
+bindkey "\e[3~" delete-char
+# For faster mode-switching when in vi-mode
+export KEYTIMEOUT=1
 
 # For root prompt
 #[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
 
 # zsh-syntax-highlighting
-if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 
-fi
+[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Start GUI if login from tty1
-[ $(pgrep -c X) -lt 1 -a "$TTY" = "/dev/tty1" -a $UID != 0 ] && startx || return 0
+[ "$UID" != 0 ] && [ "$(pgrep -c X)" -lt 1 ] && \
+    [ "$TTY" = /dev/tty1 ] && startx || return 0
