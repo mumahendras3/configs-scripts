@@ -46,12 +46,12 @@ if [ -e /etc/slackware-version ]; then
 	alias ud='slackpkg update'
 	alias ug='slackpkg upgrade-all'
 	alias in='slackpkg install-new'
-  RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware/slackware64-14.2"
+  RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
 	alias repo-update-14.2="rsync -avzh --progress \
-      --partial-dir=.rsync-partial --delete-after $RSYNC_REPO \
+      --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-14.2 \
       ~/Downloads"
 	alias repo-update-current="rsync -avzh --progress \
-      --partial-dir=.rsync-partial --delete-after $RSYNC_REPO \
+      --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-current \
       ~/Downloads"
 	alias repo-update-all='repo-update-14.2; repo-update-current;'
 fi
