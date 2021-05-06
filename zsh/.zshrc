@@ -37,7 +37,11 @@ alias gu='git pull'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.config/zsh/.zshrc'
 alias n='nvim'
+alias e='sudoedit' # For expanding aliases after sudo
 alias sudo='sudo ' # For expanding aliases after sudo
+alias bootcamp='cd ~/Documents/backend-bootcamp-braga'
+alias cfwu='sudo wg-quick up cf-warp'
+alias cfwd='sudo wg-quick down cf-warp'
 
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
@@ -54,6 +58,7 @@ if [ -e /etc/slackware-version ]; then
       --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-current \
       ~/Downloads"
 	alias repo-update-all='repo-update-14.2; repo-update-current;'
+  unset RSYNC_REPO
 fi
 
 # Enable vi-mode
