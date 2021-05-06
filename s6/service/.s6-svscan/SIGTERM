@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+
+foreground { s6-rc -l ../rc -bDav2 change }
+exec -c s6-svscanctl -t .

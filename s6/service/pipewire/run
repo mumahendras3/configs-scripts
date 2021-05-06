@@ -1,8 +1,0 @@
-#!/bin/execlineb -P
-
-fdmove -c 2 1
-if { s6-svwait -U ../dbus-session-bus }
-importas XDG_RUNTIME_DIR XDG_RUNTIME_DIR
-emptyenv -c
-s6-envdir ../dbus-session-bus/env
-s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/pipewire-0 ]" pipewire

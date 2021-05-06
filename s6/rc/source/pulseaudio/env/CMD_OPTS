@@ -1,0 +1,1 @@
+--daemonize=no --high-priority=yes --realtime=yes --log-target=stderr --use-pid-file=no

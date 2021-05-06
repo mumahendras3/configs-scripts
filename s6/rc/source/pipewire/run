@@ -1,0 +1,17 @@
+#!/bin/execlineb -P
+
+#############################
+# Start the pipewire daemon #
+#############################
+
+fdmove -c 2 1
+if { ln -s ../../dbus-session-bus/env/DBUS_SESSION_BUS_ADDRESS env }
+s6-envdir env
+multisubstitute {
+  importas XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+emptyenv -c
+s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/pipewire-0 ]"
+$CMD $CMD_OPTS

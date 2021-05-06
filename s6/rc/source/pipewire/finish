@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+
+##########################################
+# Remove leftover symbolic link in ./env #
+##########################################
+
+fdmove -c 2 1
+rm env/DBUS_SESSION_BUS_ADDRESS

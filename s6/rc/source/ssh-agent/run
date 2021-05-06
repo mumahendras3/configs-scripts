@@ -1,0 +1,19 @@
+#!/bin/execlineb -P
+
+##############################
+# Start the ssh-agent daemon #
+##############################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+importas -u XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+if {
+  redirfd -w 1 env/SSH_AUTH_SOCK
+  echo ${XDG_RUNTIME_DIR}/ssh-agent.sock
+}
+s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/ssh-agent.sock ]"
+exec -c $CMD $CMD_OPTS

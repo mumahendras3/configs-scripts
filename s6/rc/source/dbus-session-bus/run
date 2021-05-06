@@ -1,0 +1,14 @@
+#!/bin/execlineb -P
+
+###################################
+# Start a per-session DBUS daemon #
+###################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+redirfd -w 4 env/DBUS_SESSION_BUS_ADDRESS
+exec -c $CMD $CMD_OPTS
