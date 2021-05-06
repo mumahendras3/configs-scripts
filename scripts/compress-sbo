@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Exit on error
+set -e
+
+# Check for arguments
+[ $# -le 0 ] && echo Pass directories as arguments! && exit 1
+
+# Start main loop
+for dir in "$@"; do
+    tar -cvaf "${dir}.tar.gz" "$dir"
+done

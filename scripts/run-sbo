@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Check for arguments
+[ $# -le 0 ] && echo Pass directories as arguments! && exit 1
+
+# Exit on error
+set -e
+
+# Export MAKEFLAGS
+export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
+
+# Give the user some time to cancel
+echo Packages to build: "$(basename -a "$@" | tr '\n' ' ')"
+echo MAKEFLAGS is set to: "$MAKEFLAGS"
+printf "Continuing in: "
+for i in $(seq -s " " 5 -1 1); do
+    printf "%s " "$i"
+    sleep 1
+done
+echo
+
+# Start main loop
+for dir in "$@"; do
+    (
+        cd "$dir" || exit 1
+        . ./*.info
+        sudo sh "${PRGNAM}.SlackBuild"
+        sudo upgradepkg --reinstall --install-new /tmp/"$PRGNAM"-"$VERSION"-*.t?z
+    )
+done

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Exit on error
+set -e
+
+# Check for arguments
+[ $# -le 0 ] && echo Pass directories as arguments! && exit 1
+
+# Start main loop
+for dir in "$@"; do
+    (
+        cd "$dir" || exit 1
+        . ./*.info
+        wget "$DOWNLOAD"
+        NEWSUM="$(md5sum "$(basename "$DOWNLOAD")" | cut -d" " -f1)"
+        sed -i "s/${MD5SUM}/${NEWSUM}/" "${PRGNAM}.info"
+    )
+done
