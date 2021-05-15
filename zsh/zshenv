@@ -1,7 +1,5 @@
-# Set temporary PATH locations
-PATH="/usr/local/bin:/usr/bin:/bin"
-[ -d ~/.config/zsh ] || mkdir -p ~/.config/zsh
+[ -d ~/.config/zsh ] || /bin/mkdir -p ~/.config/zsh
 export ZDOTDIR=~/.config/zsh
-[ -d ~/.local/share/zsh ] || mkdir -p ~/.local/share/zsh
+[ -d ~/.local/share/zsh ] || /bin/mkdir -p ~/.local/share/zsh
 export HISTFILE=~/.local/share/zsh/history
 export SAVEHIST=100000
