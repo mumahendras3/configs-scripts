@@ -1,3 +1,8 @@
+export EDITOR=/usr/bin/nvim
+if [ -e /etc/slackware-version ]; then
+	id -nG | grep -wq wheel && \
+      export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
+fi
 if [ ! -e /run/service/user-subtree-manager/down ]; then
     # Use the DBus session bus that is maintained by the user's supervision
     # subtree (if any)

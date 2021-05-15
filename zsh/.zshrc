@@ -21,8 +21,7 @@ compinit -d ~/.cache/zsh/zcompdump-"${ZSH_VERSION}"
 # Additional theme configurations
 DRACULA_DISPLAY_CONTEXT=1
 
-# some default environment variables and aliases
-export EDITOR=/usr/bin/nvim
+# some aliases
 alias ls='ls --color=auto'
 alias ll='ls --color=auto -lh'
 alias la='ls --color=auto -A'
@@ -45,8 +44,6 @@ alias cfwd='sudo wg-quick down cf-warp'
 
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
-	id -nG | grep -wq wheel && \
-      export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
 	alias ud='slackpkg update'
 	alias ug='slackpkg upgrade-all'
 	alias in='slackpkg install-new'
