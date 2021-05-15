@@ -24,6 +24,8 @@ Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --clangd-completer --
 Plug 'ervandew/supertab'
 " Dracula theme
 Plug 'dracula/vim', { 'as': 'dracula' }
+" Automatically clear Vim's search highlighting whenever the cursor moves or insert mode is entered
+Plug 'pgdouyon/vim-evanesco'
 call plug#end()
 
 "" Global variables settings
