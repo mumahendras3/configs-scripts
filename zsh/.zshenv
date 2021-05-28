@@ -1,4 +1,5 @@
 export EDITOR=/usr/bin/nvim
+[ -x /usr/bin/docker ] && export DOCKER_CONFIG="${HOME}/.config/docker"
 if [ -e /etc/slackware-version ]; then
 	id -nG | grep -wq wheel && \
       export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
@@ -8,7 +9,7 @@ if [ ! -e /run/service/user-subtree-manager/down ]; then
     # subtree (if any)
     if [ -d "${HOME}/.config/s6/service/dbus-session-bus" ] || \
         [ -d "${HOME}/.config/s6/rc/compiled/servicedirs/dbus-session-bus" ]; then
-        while ! s6-svwait -U /run/service/${USER}-subtree; do
+        while ! s6-svwait -U "/run/service/${USER}-subtree"; do
             sleep 1
         done
         SVCDIR="/run/${USER}-subtree/service/dbus-session-bus"
@@ -24,7 +25,7 @@ if [ ! -e /run/service/user-subtree-manager/down ]; then
     # subtree (if any)
     if [ -d "${HOME}/.config/s6/service/ssh-agent" ] || \
         [ -d "${HOME}/.config/s6/rc/compiled/servicedirs/ssh-agent" ]; then
-        while ! s6-svwait -U /run/service/${USER}-subtree; do
+        while ! s6-svwait -U "/run/service/${USER}-subtree"; do
             sleep 1
         done
         SVCDIR="/run/${USER}-subtree/service/ssh-agent"
