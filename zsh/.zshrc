@@ -6,7 +6,7 @@ zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character 
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle :compinstall filename '/home/mumahendras3/.zshrc'
+zstyle :compinstall filename '/home/mumahendras3/.config/zsh/.zshrc'
 
 autoload -Uz compinit
 [ -d ~/.cache/zsh ] || mkdir -p ~/.cache/zsh
@@ -35,6 +35,7 @@ alias gp='git push'
 alias gu='git pull'
 alias nc='nvim ~/.config/nvim/init.vim'
 alias zc='nvim ~/.config/zsh/.zshrc'
+alias ze='nvim ~/.config/zsh/.zshenv'
 alias n='nvim'
 alias e='sudoedit' # For expanding aliases after sudo
 alias bootcamp='cd ~/Documents/backend-bootcamp-braga'
@@ -44,6 +45,8 @@ alias cfwd='sudo wg-quick down cf-warp'
 
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
+	id -nG | grep -wq wheel && \
+      export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
   alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
 	alias ud='sudo slackpkg update'
 	alias ug='sudo slackpkg upgrade-all'
