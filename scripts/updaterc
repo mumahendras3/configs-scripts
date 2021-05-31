@@ -10,7 +10,7 @@ NAME="$(basename "$DEST"-"$TIME")"
 
 # Start compiling the new database
 shift
-s6-rc-compile "$DEST"-"$TIME" "$@"
+s6-rc-compile "$DEST"-"$TIME" "$@" || exit
 
 # Create/update the symlink
 rm -f "$DEST"
