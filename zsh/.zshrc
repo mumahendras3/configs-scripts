@@ -1,3 +1,6 @@
+# Create the zsh cache directory if it doesn't exist
+[ -d ~/.cache/zsh ] || mkdir -p ~/.cache/zsh
+
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
@@ -6,18 +9,17 @@ zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character 
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*' cache-path ~/.cache/zsh/zcompcache
 zstyle :compinstall filename '/home/mumahendras3/.config/zsh/.zshrc'
 
-autoload -Uz compinit
-[ -d ~/.cache/zsh ] || mkdir -p ~/.cache/zsh
-compinit -d ~/.cache/zsh/zcompdump-"${ZSH_VERSION}"
+autoload -Uz compinit && compinit -d ~/.cache/zsh/zcompdump-"$ZSH_VERSION"
 # End of lines added by compinstall
 
 # Load themes
-[ -f ~/.local/share/zsh-themes/dracula/dracula.zsh-theme ] && \
-  . ~/.local/share/zsh-themes/dracula/dracula.zsh-theme
-[ -f ~/.local/share/zsh-themes/dracula/lib/async.zsh ] && \
-  . ~/.local/share/zsh-themes/dracula/lib/async.zsh
+[ -f ~/.local/share/zsh/themes/dracula/dracula.zsh-theme ] && \
+  . ~/.local/share/zsh/themes/dracula/dracula.zsh-theme
+[ -f ~/.local/share/zsh/themes/dracula/lib/async.zsh ] && \
+  . ~/.local/share/zsh/themes/dracula/lib/async.zsh
 # Additional theme configurations
 DRACULA_DISPLAY_CONTEXT=1
 
@@ -75,6 +77,9 @@ export KEYTIMEOUT=1
 # For root prompt
 #[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
 
+# zsh-bash-completions-fallback
+[ -r /usr/share/zsh/plugins/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh ] && \
+    . /usr/share/zsh/plugins/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh
 # zsh-syntax-highlighting
 [ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
