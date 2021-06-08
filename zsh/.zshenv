@@ -5,12 +5,12 @@ if [ ! -e /run/service/user-subtree-manager/down ]; then
     # subtree (if any)
     if [ -d "${HOME}/.config/s6/service/dbus-session-bus" ] || \
         [ -d "${HOME}/.config/s6/rc/compiled/servicedirs/dbus-session-bus" ]; then
-        while ! s6-svwait -U "/run/service/${USER}-subtree"; do
+        while ! s6-svwait -U "/run/service/${USER}-subtree" &>/dev/null; do
             sleep 1
         done
         SVCDIR="/run/${USER}-subtree/service/dbus-session-bus"
         ENVFILE="${SVCDIR}/env/DBUS_SESSION_BUS_ADDRESS"
-        while ! s6-svok "$SVCDIR"; do
+        while ! s6-svok "$SVCDIR" &>/dev/null; do
             sleep 1
         done
         s6-svwait -U "$SVCDIR"
@@ -21,12 +21,12 @@ if [ ! -e /run/service/user-subtree-manager/down ]; then
     # subtree (if any)
     if [ -d "${HOME}/.config/s6/service/ssh-agent" ] || \
         [ -d "${HOME}/.config/s6/rc/compiled/servicedirs/ssh-agent" ]; then
-        while ! s6-svwait -U "/run/service/${USER}-subtree"; do
+        while ! s6-svwait -U "/run/service/${USER}-subtree" &>/dev/null; do
             sleep 1
         done
         SVCDIR="/run/${USER}-subtree/service/ssh-agent"
         ENVFILE="${SVCDIR}/env/SSH_AUTH_SOCK"
-        while ! s6-svok "$SVCDIR"; do
+        while ! s6-svok "$SVCDIR" &>/dev/null; do
             sleep 1
         done
         s6-svwait -U "$SVCDIR"

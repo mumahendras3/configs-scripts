@@ -15,9 +15,9 @@ compinit -d ~/.cache/zsh/zcompdump-"${ZSH_VERSION}"
 
 # Load themes
 [ -f ~/.local/share/zsh-themes/dracula/dracula.zsh-theme ] && \
-  source ~/.local/share/zsh-themes/dracula/dracula.zsh-theme
+  . ~/.local/share/zsh-themes/dracula/dracula.zsh-theme
 [ -f ~/.local/share/zsh-themes/dracula/lib/async.zsh ] && \
-  source ~/.local/share/zsh-themes/dracula/lib/async.zsh
+  . ~/.local/share/zsh-themes/dracula/lib/async.zsh
 # Additional theme configurations
 DRACULA_DISPLAY_CONTEXT=1
 
@@ -27,6 +27,7 @@ alias ll='ls --color=auto -lh'
 alias la='ls --color=auto -A'
 alias grep='grep --color=auto'
 alias gs='git status'
+alias go='git show'
 alias ga='git add'
 alias gc='git commit'
 alias gd='git diff'
@@ -52,10 +53,10 @@ if [ -e /etc/slackware-version ]; then
 	alias ug='sudo slackpkg upgrade-all'
 	alias in='sudo slackpkg install-new'
   RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
-	alias repo-update-14.2="rsync -avzh --progress \
+	alias repo-update-14.2="rsync -avzhHAX --progress \
       --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-14.2 \
       ~/Downloads"
-	alias repo-update-current="rsync -avzh --progress \
+	alias repo-update-current="rsync -avzhHAX --progress \
       --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-current \
       ~/Downloads"
 	alias repo-update-all='repo-update-14.2; repo-update-current;'
@@ -76,7 +77,7 @@ export KEYTIMEOUT=1
 
 # zsh-syntax-highlighting
 [ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Start GUI if login from tty1
 [ $UID != 0 ] && [ "$(pgrep -c X)" -lt 1 ] && \

@@ -2,4 +2,4 @@
 export ZDOTDIR=~/.config/zsh
 [ -d ~/.local/share/zsh ] || /bin/mkdir -p ~/.local/share/zsh
 export HISTFILE=~/.local/share/zsh/history
-export SAVEHIST=100000
+export SAVEHIST=500000
