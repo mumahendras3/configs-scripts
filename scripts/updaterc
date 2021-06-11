@@ -18,4 +18,4 @@ ln -s "$NAME" "$DEST"
 
 # Use the newly created service database
 cd "$(dirname "$DEST")" || exit
-s6-rc-update "${PWD}/${NAME}"
+s6-rc-db check 2>/dev/null && s6-rc-update "${PWD}/${NAME}"
