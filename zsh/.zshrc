@@ -5,8 +5,6 @@ HISTFILE="${XDG_STATE_HOME}/zsh/history"
 HISTSIZE=250000
 # Number of events/commands stored in the zsh history file
 SAVEHIST=500000
-# Immediately append events/commands to the history file
-setopt INC_APPEND_HISTORY
 # Do not save duplicate commands to history
 setopt HIST_IGNORE_ALL_DUPS
 # Do not find duplicate commands when searching
