@@ -1,2 +1,2 @@
-${XDG_DATA_HOME}/s6/pipewire-media-session
+${XDG_STATE_HOME}/s6/pipewire-media-session
 # Logging directory path

@@ -1,2 +1,2 @@
-${XDG_DATA_HOME}/s6/ssh-agent
+${XDG_STATE_HOME}/s6/ssh-agent
 # Logging directory path

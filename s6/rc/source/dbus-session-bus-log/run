@@ -12,6 +12,6 @@ multisubstitute {
   importas -usCd" " LOG_SCRIPT LOG_SCRIPT
 }
 importas -u LOGDIR_PATH LOGDIR_PATH
-importas -u XDG_DATA_HOME XDG_DATA_HOME
+importas -u XDG_STATE_HOME XDG_STATE_HOME
 if { install -dm $LOGDIR_PERMS $LOGDIR_PATH }
 exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT
