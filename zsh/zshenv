@@ -1,5 +1,1 @@
-[ -d ~/.config/zsh ] || /bin/mkdir -p ~/.config/zsh
-export ZDOTDIR=~/.config/zsh
-[ -d ~/.local/share/zsh ] || /bin/mkdir -p ~/.local/share/zsh
-export HISTFILE=~/.local/share/zsh/history
-export SAVEHIST=500000
+ZDOTDIR=~/.config/zsh

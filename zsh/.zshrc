@@ -1,8 +1,24 @@
-# Create the zsh cache directory if it doesn't exist
-[ -d ~/.cache/zsh ] || mkdir -p ~/.cache/zsh
+## ZSH history configuration
+# The file where the history is stored
+HISTFILE="${XDG_STATE_HOME}/zsh/history"
+# Number of events/commands loaded into memory
+HISTSIZE=250000
+# Number of events/commands stored in the zsh history file
+SAVEHIST=500000
+# Immediately append events/commands to the history file
+setopt INC_APPEND_HISTORY
+# Do not save duplicate commands to history
+setopt HIST_IGNORE_ALL_DUPS
+# Do not find duplicate commands when searching
+setopt HIST_FIND_NO_DUPS
+
+## Miscellaneous
+# Default text editor
+export EDITOR=/usr/bin/nvim
+# Docker config directory
+[ -x /usr/bin/docker ] && export DOCKER_CONFIG="${HOME}/.config/docker"
 
 # The following lines were added by compinstall
-
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
@@ -10,7 +26,6 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle :compinstall filename '/home/mumahendras3/.config/zsh/.zshrc'
-
 autoload -Uz compinit && compinit -d ~/.cache/zsh/zcompdump-"$ZSH_VERSION"
 # End of lines added by compinstall
 
@@ -36,8 +51,8 @@ alias gl='git log'
 alias gp='git push'
 alias gu='git pull'
 alias nc='nvim ~/.config/nvim/init.vim'
+alias zp='nvim ~/.config/zsh/.zprofile'
 alias zc='nvim ~/.config/zsh/.zshrc'
-alias ze='nvim ~/.config/zsh/.zshenv'
 alias n='nvim'
 alias e='sudoedit' # For expanding aliases after sudo
 alias bootcamp='cd ~/Documents/backend-bootcamp-braga'
@@ -71,7 +86,7 @@ bindkey '^?' backward-delete-char
 # Prevent uppercasing character by pressing delete key when in vi-mode
 bindkey "\e[3~" delete-char
 # For faster mode-switching when in vi-mode
-export KEYTIMEOUT=1
+KEYTIMEOUT=1
 
 # For root prompt
 #[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"

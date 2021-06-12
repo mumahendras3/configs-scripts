@@ -113,7 +113,8 @@ nnoremap <A-W> :tabmove
 inoremap <A-W> <Esc>:tabmove 
 
 "" General autocommands
-" Open file browser automatically only when opening a file
+" Automatically change directory to the destination file only when starting
+" for the first time
 autocmd VimEnter *
             \ if isdirectory(expand("%")) |
                 \ if expand("%") != "." |
