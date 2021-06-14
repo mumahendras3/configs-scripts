@@ -71,9 +71,12 @@ if [ -e /etc/slackware-version ]; then
       --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-14.2 \
       ~/Downloads"
 	alias repo-update-current="rsync -avzhHAX --progress \
+      --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware-current \
+      ~/Downloads"
+	alias repo-update-current64="rsync -avzhHAX --progress \
       --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-current \
       ~/Downloads"
-	alias repo-update-all='repo-update-14.2; repo-update-current;'
+	alias repo-update-all='repo-update-14.2; repo-update-current; repo-update-current64; sudo sbocheck;'
   unset RSYNC_REPO
 fi
 
