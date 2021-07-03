@@ -13,6 +13,8 @@ setopt HIST_FIND_NO_DUPS
 ## Miscellaneous
 # Default text editor
 export EDITOR=/usr/bin/nvim
+# GnuPG home directory
+[ $UID -ne 0 ] && export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${HOME}/.config/docker"
 
@@ -37,8 +39,8 @@ DRACULA_DISPLAY_CONTEXT=1
 
 # some aliases
 alias ls='ls --color=auto'
-alias ll='ls --color=auto -lh'
-alias la='ls --color=auto -A'
+alias ll='ls -lh'
+alias la='ls -A'
 alias grep='grep --color=auto'
 alias gs='git status'
 alias go='git show'
@@ -100,5 +102,5 @@ KEYTIMEOUT=1
     . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Start GUI if login from tty1
-[ $UID != 0 ] && [ "$(pgrep -c X)" -lt 1 ] && \
+[ $UID -ne 0 ] && [ "$(pgrep -c X)" -lt 1 ] && \
     [ "$TTY" = /dev/tty1 ] && startx || return 0
