@@ -115,6 +115,18 @@ nnoremap <A-W> :tabmove
 inoremap <A-W> <Esc>:tabmove 
 
 "" General autocommands
+" Highlight all characters past 81th column
+augroup auto_highlight
+    au!
+    au BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
+    au BufEnter * match OverLength /\%81v.*/
+augroup END
+" Automatically wrap lines to 72 characters and disable auto_highlight
+augroup auto_wrap
+    au!
+    au BufRead,BufNewFile *.md,*.txt setlocal textwidth=72 |
+                \ au! auto_highlight
+augroup END
 " Automatically change directory to the destination file only when starting
 " for the first time
 autocmd VimEnter *

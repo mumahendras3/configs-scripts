@@ -1,0 +1,20 @@
+#!/bin/sh -e
+#
+# Copy an s6-rc service source and automatically replace every instances of the
+# original service's name with a new one
+#
+
+# Sanity check
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: $(basename "$0") <from> <to>"
+    exit 1
+fi
+
+# Automatically remove any known prefixes/suffixes to make copying service
+# templates easier
+old_name="$(basename "$1" | sed -E 's/-(srv|log)$//;s/^(openvpn|usertree)-//;')"
+new_name="$(basename "$2" | sed -E 's/-(srv|log)$//;s/^(openvpn|usertree)-//;')"
+
+# Begin copying and replacing every instance of $old_name with $new_name
+cp -dr "$1" "$2"
+sed -i "s/${old_name}/${new_name}/g" $(grep -lr "$old_name" "$2")
