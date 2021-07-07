@@ -1,7 +1,9 @@
-#!/bin/sh
-
+#!/bin/sh -e
+#
 # Script to compile a new s6-rc database from a given source directories
-# and create/update the appropriate symlink to point to the new compiled database
+# and create/update the appropriate symlink to point to the new compiled
+# database
+#
 
 # Some variable definitions
 DEST="$1"
@@ -10,12 +12,8 @@ NAME="$(basename "$DEST"-"$TIME")"
 
 # Start compiling the new database
 shift
-s6-rc-compile "$DEST"-"$TIME" "$@" || exit
+s6-rc-compile "$DEST"-"$TIME" "$@"
 
 # Create/update the symlink
 rm -f "$DEST"
 ln -s "$NAME" "$DEST"
-
-# Use the newly created service database
-cd "$(dirname "$DEST")" || exit
-s6-rc-db check 2>/dev/null && s6-rc-update "${PWD}/${NAME}"
