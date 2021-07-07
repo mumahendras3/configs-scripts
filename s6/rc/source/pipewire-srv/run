@@ -5,7 +5,7 @@
 #############################
 
 fdmove -c 2 1
-if { ln -s ../../dbus-session-bus/env/DBUS_SESSION_BUS_ADDRESS env }
+if { ln -s ../../dbus-session-bus-srv/env/DBUS_SESSION_BUS_ADDRESS env }
 s6-envdir env
 multisubstitute {
   importas XDG_RUNTIME_DIR XDG_RUNTIME_DIR
