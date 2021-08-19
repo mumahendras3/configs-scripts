@@ -58,7 +58,7 @@ alias e='sudoedit' # For expanding aliases after sudo
 alias bootcamp='cd ~/Documents/backend-bootcamp-braga'
 alias cfwu='sudo wg-quick up cf-warp'
 alias cfwd='sudo wg-quick down cf-warp'
-[ $UID != 0 ] && alias s6-rc="s6-rc -l /run/${USER}-subtree/rc"
+[ $UID != 0 ] && alias s6-rc="s6-rc -l /run/usertree-${USER}/rc"
 
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
@@ -70,15 +70,17 @@ if [ -e /etc/slackware-version ]; then
 	alias in='sudo slackpkg install-new'
   RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
 	alias repo-update-14.2="rsync -avzhHAX --progress \
-      --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-14.2 \
-      ~/Downloads"
+      --partial-dir=.rsync-partial --delete-after \
+      ${RSYNC_REPO}/slackware64-14.2 ~/Downloads"
 	alias repo-update-current="rsync -avzhHAX --progress \
-      --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware-current \
-      ~/Downloads"
+      --partial-dir=.rsync-partial --delete-after \
+      ${RSYNC_REPO}/slackware-current ~/Downloads"
 	alias repo-update-current64="rsync -avzhHAX --progress \
-      --partial-dir=.rsync-partial --delete-after ${RSYNC_REPO}/slackware64-current \
-      ~/Downloads"
-	alias repo-update-all='repo-update-14.2; repo-update-current; repo-update-current64; sudo sbocheck;'
+      --partial-dir=.rsync-partial --delete-after \
+      ${RSYNC_REPO}/slackware64-current ~/Downloads"
+	alias repo-update-all="repo-update-14.2; repo-update-current; \
+      cp -vau ~/Downloads/slackware{,64}-current/source; repo-update-current64; \
+      sudo sbocheck;"
   unset RSYNC_REPO
 fi
 

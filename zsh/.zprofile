@@ -16,14 +16,14 @@ mkdir -p "$XDG_CACHE_HOME"
 mkdir -p "${XDG_STATE_HOME}/zsh"
 
 # Additional environment variables related to user-level services
-if [ ! -e /run/service/user-subtree-manager/down ]; then
+if [ ! -e /run/service/usertree-manager-srv/down ]; then
     # Use the DBus session bus that is maintained by the user's supervision
     # subtree (if any)
     if [ -d "${HOME}/.config/s6/rc/compiled/servicedirs/dbus-session-bus-srv" ]; then
-        while ! s6-svwait -U "/run/service/${USER}-subtree" &>/dev/null; do
+        while ! s6-svwait -U "/run/service/usertree-${USER}-srv" &>/dev/null; do
             sleep 1
         done
-        SVCDIR="/run/${USER}-subtree/service/dbus-session-bus-srv"
+        SVCDIR="/run/usertree-${USER}/service/dbus-session-bus-srv"
         ENVFILE="${SVCDIR}/env/DBUS_SESSION_BUS_ADDRESS"
         while ! s6-svok "$SVCDIR" &>/dev/null; do
             sleep 1
@@ -35,10 +35,10 @@ if [ ! -e /run/service/user-subtree-manager/down ]; then
     # Use the ssh-agent that is maintained by the user's supervision
     # subtree (if any)
     if [ -d "${HOME}/.config/s6/rc/compiled/servicedirs/ssh-agent-srv" ]; then
-        while ! s6-svwait -U "/run/service/${USER}-subtree" &>/dev/null; do
+        while ! s6-svwait -U "/run/service/usertree-${USER}-srv" &>/dev/null; do
             sleep 1
         done
-        SVCDIR="/run/${USER}-subtree/service/ssh-agent-srv"
+        SVCDIR="/run/usertree-${USER}/service/ssh-agent-srv"
         ENVFILE="${SVCDIR}/env/SSH_AUTH_SOCK"
         while ! s6-svok "$SVCDIR" &>/dev/null; do
             sleep 1
