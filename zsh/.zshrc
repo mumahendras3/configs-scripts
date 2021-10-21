@@ -17,6 +17,9 @@ export EDITOR=/usr/bin/nvim
 [ $UID -ne 0 ] && export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${HOME}/.config/docker"
+# Unset LANGUAGE to avoid translations to other languages when running terminal
+# programs
+unset LANGUAGE
 
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
