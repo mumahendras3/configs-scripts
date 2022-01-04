@@ -83,7 +83,10 @@ if [ -e /etc/slackware-version ]; then
       ${RSYNC_REPO}/slackware64-current ~/Downloads"
 	alias repo-update-all="repo-update-14.2; repo-update-current; \
       cp -vau ~/Downloads/slackware-current/source \
-      ~/Downloads/slackware64-current; repo-update-current64; sudo sbocheck;"
+      ~/Downloads/slackware64-current; \
+      cp -vau ~/Downloads/slackware-current/extra/source \
+      ~/Downloads/slackware64-current/extra; \
+      repo-update-current64; sudo sbocheck;"
   unset RSYNC_REPO
 fi
 

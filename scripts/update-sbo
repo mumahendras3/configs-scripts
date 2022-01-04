@@ -12,20 +12,21 @@ for dir in "$@"; do
         cd "$dir"
         . ./*.info
         # Get source file extension
-        EXT="$(echo ${DOWNLOAD##*/} | sed -E "s/${PRGNAM}.*${VERSION}\.//")"
+        EXT="$(echo "${DOWNLOAD##*/}" | sed -E "s/${PRGNAM}.*${VERSION}\.//")"
         # Get the latest version
-        LATEST="$(wget -qO- $(dirname $DOWNLOAD) | \
+        LATEST="$(wget -qO- "$(dirname "$DOWNLOAD")" | \
             grep -Eo "${PRGNAM}-.*\.${EXT}" | \
             sed "s/${PRGNAM}-//; s/\.${EXT}//")"
         if [ "$VERSION" = "$LATEST" ]; then
             echo "${PRGNAM}: Up to date (${LATEST})"
         else
             echo "${PRGNAM}: ${VERSION} -> ${LATEST}"
-            sed -i "s/${VERSION}/${LATEST}/g" *.info *.SlackBuild
-            . ./*.info
+            sed -i "s/${VERSION}/${LATEST}/g" "${PRGNAM}.info" \
+                "${PRGNAM}.SlackBuild"
+            . "./${PRGNAM}.info"
             wget -q --show-progress "$DOWNLOAD"
             NEWSUM="$(md5sum "$(basename "$DOWNLOAD")" | cut -d" " -f1)"
-            sed -i "s/${MD5SUM}/${NEWSUM}/" *.info
+            sed -i "s/${MD5SUM}/${NEWSUM}/" "${PRGNAM}.info"
         fi
     )
 done
