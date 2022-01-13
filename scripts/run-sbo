@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/sh -e
+
+# Check for root permission
+[ $(id -u) -ne 0 ] && echo "Run $0 as root!" && exit 1
 
 # Check for arguments
-[ $# -le 0 ] && echo Pass directories as arguments! && exit 1
-
-# Exit on error
-set -e
+[ $# -le 0 ] && echo "Pass directories as arguments!" && exit 1
 
 # Export MAKEFLAGS
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
@@ -13,7 +13,7 @@ export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
 echo Packages to build: "$(basename -a "$@" | tr '\n' ' ')"
 echo MAKEFLAGS is set to: "$MAKEFLAGS"
 printf "Continuing in: "
-for i in $(seq -s " " 5 -1 1); do
+for i in $(seq -s " " 10 -1 1); do
     printf "%s " "$i"
     sleep 1
 done
@@ -22,9 +22,9 @@ echo
 # Start main loop
 for dir in "$@"; do
     (
-        cd "$dir" || exit 1
+        cd "$dir"
         . ./*.info
-        sudo sh "${PRGNAM}.SlackBuild"
-        sudo upgradepkg --reinstall --install-new /tmp/"$PRGNAM"-"$VERSION"-*.t?z
+        bash "${PRGNAM}.SlackBuild"
+        upgradepkg --reinstall --install-new /tmp/"$PRGNAM"-"$VERSION"-*.t?z
     )
 done

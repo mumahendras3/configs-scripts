@@ -1,13 +1,11 @@
-#!/bin/sh
-
-# Exit on error
-set -e
+#!/bin/sh -e
 
 # Check for arguments
-[ $# -le 0 ] && echo Pass directories as arguments! && exit 1
+[ $# -le 0 ] && echo "Pass directories as arguments!" && exit 1
 
 # Start main loop
 for dir in "$@"; do
+    [ -d "$dir" ] || continue
     (
         cd "$dir"
         . ./*.info
@@ -24,7 +22,11 @@ for dir in "$@"; do
             sed -i "s/${VERSION}/${LATEST}/g" "${PRGNAM}.info" \
                 "${PRGNAM}.SlackBuild"
             . "./${PRGNAM}.info"
-            wget -q --show-progress "$DOWNLOAD"
+            if [ -f "$(basename "$DOWNLOAD")" ]; then
+                echo "$(basename "$DOWNLOAD") already exists"
+            else
+                wget -q --show-progress "$DOWNLOAD"
+            fi
             NEWSUM="$(md5sum "$(basename "$DOWNLOAD")" | cut -d" " -f1)"
             sed -i "s/${MD5SUM}/${NEWSUM}/" "${PRGNAM}.info"
         fi
