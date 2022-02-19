@@ -71,22 +71,33 @@ if [ -e /etc/slackware-version ]; then
 	alias ud='sudo slackpkg update'
 	alias ug='sudo slackpkg upgrade-all'
 	alias in='sudo slackpkg install-new'
-  RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
-	alias repo-update-14.2="rsync -avzhHAX --progress \
+  #RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
+  RSYNC_REPO="rsync://slackware.uk/slackware"
+	alias repo-update-15.0="rsync -avzhHAX --progress \
       --partial-dir=.rsync-partial --delete-after \
-      ${RSYNC_REPO}/slackware64-14.2 ~/Downloads"
+      ${RSYNC_REPO}/slackware-15.0 ~/Downloads"
+	alias repo-update-15.0-64="rsync -avzhHAX --progress \
+      --partial-dir=.rsync-partial --delete-after \
+      ${RSYNC_REPO}/slackware64-15.0 ~/Downloads"
 	alias repo-update-current="rsync -avzhHAX --progress \
       --partial-dir=.rsync-partial --delete-after \
       ${RSYNC_REPO}/slackware-current ~/Downloads"
-	alias repo-update-current64="rsync -avzhHAX --progress \
+	alias repo-update-current-64="rsync -avzhHAX --progress \
       --partial-dir=.rsync-partial --delete-after \
       ${RSYNC_REPO}/slackware64-current ~/Downloads"
-	alias repo-update-all="repo-update-14.2; repo-update-current; \
+	alias repo-update-all="repo-update-15.0; \
+      cp -vau ~/Downloads/slackware-15.0/source \
+      ~/Downloads/slackware64-15.0; \
+      cp -vau ~/Downloads/slackware-15.0/extra/source \
+      ~/Downloads/slackware64-15.0/extra; \
+      repo-update-15.0-64; \
+      repo-update-current; \
       cp -vau ~/Downloads/slackware-current/source \
       ~/Downloads/slackware64-current; \
       cp -vau ~/Downloads/slackware-current/extra/source \
       ~/Downloads/slackware64-current/extra; \
-      repo-update-current64; sudo sbocheck;"
+      repo-update-current-64; \
+      sudo sbocheck;"
   unset RSYNC_REPO
 fi
 
