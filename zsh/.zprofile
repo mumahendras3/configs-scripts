@@ -8,6 +8,9 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 # For user-specific non-essential (cached) data
 export XDG_CACHE_HOME="${HOME}/.cache"
 
+# GnuPG home directory
+[ $UID -ne 0 ] && export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+
 # Create some necessary directories
 mkdir -p "$XDG_DATA_HOME"
 mkdir -p "$XDG_CONFIG_HOME"

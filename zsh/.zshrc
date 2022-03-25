@@ -13,8 +13,6 @@ setopt HIST_FIND_NO_DUPS
 ## Miscellaneous
 # Default text editor
 export EDITOR=/usr/bin/vim
-# GnuPG home directory
-[ $UID -ne 0 ] && export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 # Unset LANGUAGE to avoid translations to other languages when running terminal
@@ -63,25 +61,27 @@ alias e='sudoedit'
 
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
-	id -nG | grep -wq wheel && \
-      export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
-  alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
-	alias ud='sudo slackpkg update'
-	alias ug='sudo slackpkg upgrade-all'
-	alias in='sudo slackpkg install-new'
-  #RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
-  RSYNC_REPO="rsync://slackware.uk/slackware"
-	alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
-      ${RSYNC_REPO}/slackware-15.0 ~/Downloads"
-	alias repo-update-15.0-64="rsync -avzhHAX --progress --delete-after \
-      ${RSYNC_REPO}/slackware64-15.0 ~/Downloads"
-	alias repo-update-current="rsync -avzhHAX --progress --delete-after \
-      ${RSYNC_REPO}/slackware-current ~/Downloads"
-	alias repo-update-current-64="rsync -avzhHAX --progress --delete-after \
-      ${RSYNC_REPO}/slackware64-current ~/Downloads"
-	alias repo-update-all="rsync -avzhHAX --progress --delete-after \
-      ${RSYNC_REPO}/slackware{,64}-{15.0,current} ~/Downloads"
-  unset RSYNC_REPO
+    if id -nG | grep -wq wheel; then
+        echo $PATH | grep -wq sbin || \
+            export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
+    fi
+    alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
+    alias ud='sudo slackpkg update'
+    alias ug='sudo slackpkg upgrade-all'
+    alias in='sudo slackpkg install-new'
+    #RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
+    RSYNC_REPO="rsync://slackware.uk/slackware"
+    alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
+        ${RSYNC_REPO}/slackware-15.0 ~/Downloads"
+    alias repo-update-15.0-64="rsync -avzhHAX --progress --delete-after \
+        ${RSYNC_REPO}/slackware64-15.0 ~/Downloads"
+    alias repo-update-current="rsync -avzhHAX --progress --delete-after \
+        ${RSYNC_REPO}/slackware-current ~/Downloads"
+    alias repo-update-current-64="rsync -avzhHAX --progress --delete-after \
+        ${RSYNC_REPO}/slackware64-current ~/Downloads"
+    alias repo-update-all="rsync -avzhHAX --progress --delete-after \
+        ${RSYNC_REPO}/slackware{,64}-{15.0,current} ~/Downloads"
+    unset RSYNC_REPO
 fi
 
 # Enable vi-mode
