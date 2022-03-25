@@ -12,11 +12,11 @@ setopt HIST_FIND_NO_DUPS
 
 ## Miscellaneous
 # Default text editor
-export EDITOR=/usr/bin/nvim
+export EDITOR=/usr/bin/vim
 # GnuPG home directory
 [ $UID -ne 0 ] && export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 # Docker config directory
-[ -x /usr/bin/docker ] && export DOCKER_CONFIG="${HOME}/.config/docker"
+[ -x /usr/bin/docker ] && export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 # Unset LANGUAGE to avoid translations to other languages when running terminal
 # programs
 unset LANGUAGE
@@ -33,17 +33,18 @@ autoload -Uz compinit && compinit -d ~/.cache/zsh/zcompdump-"$ZSH_VERSION"
 # End of lines added by compinstall
 
 # Load themes
-[ -f ~/.local/share/zsh/themes/dracula/dracula.zsh-theme ] && \
-  . ~/.local/share/zsh/themes/dracula/dracula.zsh-theme
-[ -f ~/.local/share/zsh/themes/dracula/lib/async.zsh ] && \
-  . ~/.local/share/zsh/themes/dracula/lib/async.zsh
+#[ -f ~/.local/share/zsh/themes/dracula/dracula.zsh-theme ] && \
+#  . ~/.local/share/zsh/themes/dracula/dracula.zsh-theme
+#[ -f ~/.local/share/zsh/themes/dracula/lib/async.zsh ] && \
+#  . ~/.local/share/zsh/themes/dracula/lib/async.zsh
 # Additional theme configurations
-DRACULA_DISPLAY_CONTEXT=1
+#DRACULA_DISPLAY_CONTEXT=1
 
 # some aliases
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias la='ls -A'
+alias lla='ls -Alh'
 alias grep='grep --color=auto'
 alias gs='git status'
 alias go='git show'
@@ -53,14 +54,11 @@ alias gd='git diff'
 alias gl='git log'
 alias gp='git push'
 alias gu='git pull'
-alias nc='nvim ~/.config/nvim/init.vim'
-alias zp='nvim ~/.config/zsh/.zprofile'
-alias zc='nvim ~/.config/zsh/.zshrc'
-alias n='nvim'
-alias e='sudoedit' # For expanding aliases after sudo
-alias bootcamp='cd ~/Documents/backend-bootcamp-braga'
-alias cfwu='sudo wg-quick up cf-warp'
-alias cfwd='sudo wg-quick down cf-warp'
+#alias nc='nvim ~/.config/nvim/init.vim'
+#alias zp='nvim ~/.config/zsh/.zprofile'
+#alias zc='nvim ~/.config/zsh/.zshrc'
+#alias n='nvim'
+alias e='sudoedit'
 [ $UID != 0 ] && alias s6-rc="s6-rc -l /run/usertree-${USER}/rc"
 
 # Some special configurations when in Slackware
