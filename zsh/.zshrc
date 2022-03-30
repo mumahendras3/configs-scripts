@@ -66,9 +66,13 @@ if [ -e /etc/slackware-version ]; then
             export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
     fi
     alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
-    alias ud='sudo slackpkg update'
-    alias ug='sudo slackpkg upgrade-all'
-    alias in='sudo slackpkg install-new'
+    alias ud="sudo slackpkg update && \
+        sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
+        -d ~/Downloads/multilib/current/slackware64-compat32"
+    alias ug="sudo slackpkg upgrade-all && \
+        sudo upgradepkg ~/Downloads/multilib/current/slackware64-compat32/*/*.t?z"
+    alias in="sudo slackpkg install-new && \
+        sudo installpkg ~/Downloads/multilib/current/slackware64-compat32/*/*.t?z"
     #RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
     RSYNC_REPO="rsync://slackware.uk"
     alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
