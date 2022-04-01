@@ -52,10 +52,9 @@ alias gd='git diff'
 alias gl='git log'
 alias gp='git push'
 alias gu='git pull'
-#alias nc='nvim ~/.config/nvim/init.vim'
-#alias zp='nvim ~/.config/zsh/.zprofile'
-#alias zc='nvim ~/.config/zsh/.zshrc'
-#alias n='nvim'
+alias nc='vim ~/.config/nvim/init.vim'
+alias zp='vim ~/.config/zsh/.zprofile'
+alias zc='vim ~/.config/zsh/.zshrc'
 alias e='sudoedit'
 [ $UID != 0 ] && alias s6-rc="s6-rc -l /run/usertree-${USER}/rc"
 
@@ -70,9 +69,9 @@ if [ -e /etc/slackware-version ]; then
         sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
         -d ~/Downloads/multilib/current/slackware64-compat32"
     alias ug="sudo slackpkg upgrade-all && \
-        sudo upgradepkg ~/Downloads/multilib/current/slackware64-compat32/*/*.t?z"
+        sudo upgradepkg ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z"
     alias in="sudo slackpkg install-new && \
-        sudo installpkg ~/Downloads/multilib/current/slackware64-compat32/*/*.t?z"
+        sudo installpkg ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z"
     #RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
     RSYNC_REPO="rsync://slackware.uk"
     alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
@@ -86,7 +85,8 @@ if [ -e /etc/slackware-version ]; then
     alias repo-update-multilib-current="rsync -avzhHAX --progress --delete-after --exclude slackware64-compat32 \
 	${RSYNC_REPO}/people/alien/multilib/current ~/Downloads/multilib"
     alias repo-update-all="rsync -avzhHAX --progress --delete-after \
-        ${RSYNC_REPO}/slackware/slackware{,64}-{15.0,current} ~/Downloads"
+        ${RSYNC_REPO}/slackware/slackware{,64}-{15.0,current} ~/Downloads && \
+        repo-update-multilib-current"
     unset RSYNC_REPO
 fi
 
