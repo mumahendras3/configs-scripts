@@ -1,84 +1,87 @@
 #!/bin/sh
+#
+# Script for chrooting to a clean Slackware installation
+# Useful for building SBo packages, 32-bit packages on 64-bit, etc.
 
-## script for chrooting to clean Slackware64-14.2 build
-## useful for building SBo packages
-
-# check the user running this script
-# this script should be run by root
+# Check the user running this script
+# This script should be run by root
 if [ $UID != 0 ]; then
-	echo "Please run this script as root!"
-	echo "Aborting..."
-	exit 1
+    echo "Please run this script as root!"
+    echo "Aborting..."
+    exit 1
 fi
 
-# define the new root
-NEWROOT=$1
+# Define the new root
+NEWROOT="$1"
 if [ -z $NEWROOT ]; then
-	echo "Please provide the new root directory!"
-	exit 1
+    echo "Please provide the new root directory!"
+    exit 1
 fi
 
-# mounting some necessary filesystem, although it's probably not needed
-# if just wanting to build SBo packages. But just in case it's needed,
-# they are provided here
-if ! mountpoint -q ${NEWROOT}/proc; then
-	mount --types proc /proc ${NEWROOT}/proc
+# Mounting some necessary filesystem, although it's probably not needed if just
+# wanting to build SBo packages. But just in case it's needed, they are
+# provided here.
+if ! mountpoint -q "${NEWROOT}/proc"; then
+    mount --types proc /proc "${NEWROOT}/proc"
 fi
 
-if ! mountpoint -q ${NEWROOT}/sys; then
-	mount --rbind /sys ${NEWROOT}/sys && \
-	mount --make-rslave ${NEWROOT}/sys
+if ! mountpoint -q "${NEWROOT}/sys"; then
+    mount --rbind /sys "${NEWROOT}/sys" && \
+        mount --make-rslave "${NEWROOT}/sys"
 fi
 
-if ! mountpoint -q ${NEWROOT}/dev; then
-	mount --rbind /dev ${NEWROOT}/dev && \
-	mount --make-rslave ${NEWROOT}/dev
+if ! mountpoint -q "${NEWROOT}/dev"; then
+    mount --rbind /dev "${NEWROOT}/dev" && \
+        mount --make-rslave "${NEWROOT}/dev"
 fi
 
-# mount tmpfs at ${NEWROOT}/tmp so it will not waste disk space
-[ -d ${NEWROOT}/tmp ] || mkdir ${NEWROOT}/tmp
-chmod 1777 ${NEWROOT}/tmp
-if ! mountpoint -q ${NEWROOT}/tmp; then
-	mount --types tmpfs -o defaults,noatime,nosuid,nodev,size=12G tmpfs ${NEWROOT}/tmp
+# Mount tmpfs at ${NEWROOT}/tmp so it will not waste disk space
+#[ -d "${NEWROOT}/tmp" ] || mkdir "${NEWROOT}/tmp"
+#chmod 1777 "${NEWROOT}/tmp"
+#if ! mountpoint -q "${NEWROOT}/tmp"; then
+#    mount --types tmpfs -o defaults,noatime,nosuid,nodev,size=12G tmpfs "${NEWROOT}/tmp"
+#fi
+
+# If second argument is given, use it as Slackware repository root directory.
+if [ -n "$2" ]; then
+    if [ -r "${2}/source/a/aaa_base/current-release" ]; then
+        . "${2}/source/a/aaa_base/current-release"
+    else
+        SLACKWARE_VERSION="$(cat "${2}/source/a/aaa_base/slackware-version")"
+    fi
+    NEWROOT_SLACKWARE_VERSION="$(cat "${NEWROOT}/etc/slackware-version")"
+    if [ "$SLACKWARE_VERSION" = "$NEWROOT_SLACKWARE_VERSION" ]; then
+        if [ ! -d "${NEWROOT}/repo" ]; then
+            mkdir "${NEWROOT}/repo"
+        fi
+        mount --rbind "$2" "${NEWROOT}/repo"
+        if ! grep -qv '^#' "${NEWROOT}/etc/slackpkg/mirrors"; then
+            sed -i 's|# file://path/to/some/directory/|file://repo/|' \
+                "${NEWROOT}/etc/slackpkg/mirrors"
+        fi
+    else
+        echo "SLACKWARE_VERSION mismatch found, skipping repo mounting..."
+    fi
 fi
 
-# if second argument given, used it as slackware repository root directory
-if [ -n $2 ]; then
-	if [ -r ${2}/PACKAGES.TXT ]; then
-		if [ -r ${NEWROOT}/etc/slackware-version ]; then
-			source ${2}/source/a/aaa_base/os-release
-			REPO_PRETTY_NAME="$PRETTY_NAME"
-			source ${NEWROOT}/etc/os-release
-			if [ "$PRETTY_NAME" = "$REPO_PRETTY_NAME" ]; then
-				if [ ! -d ${NEWROOT}/repo ]; then
-					mkdir ${NEWROOT}/repo
-				fi
-				mount --rbind $2 ${NEWROOT}/repo
-			else
-				echo "Slackware version mismatch between repo and build-chroot, skipping repo mounting..."
-			fi
-		fi
-	fi
-fi
+# Mount local SBo repo
+#mount --bind /home/mumahendras3/git-repos/slackbuilds "${NEWROOT}/SBo"
 
-# mount local SBo repo
-mount --bind /home/mumahendras3/git-repos/slackbuilds ${NEWROOT}/SBo
+# Mount local distfiles
+#mount --bind /usr/sbo/distfiles "${NEWROOT}/distfiles"
 
-# mount local distfiles
-mount --bind /usr/sbo/distfiles ${NEWROOT}/distfiles
+# Copy host's resolv.conf to chroot environment for network connectivity
+cp /etc/resolv.conf "${NEWROOT}/etc"
 
-# copy host's resolv.conf to chroot environment for network connectivity
-cp /etc/resolv.conf ${NEWROOT}/etc
-
-# chroot to the build environment without pertaining host's environment
+# Chroot to the build environment without pertaining host's environment
 # variables except $TERM
-env -i TERM=${TERM} HOME=${HOME} chroot ${NEWROOT} /bin/bash -l
+env -i TERM="$TERM" HOME="$HOME" chroot "$NEWROOT" /bin/bash -l
 
-# unmount all mount points inside the $NEWROOT after exiting chroot
-umount -R ${NEWROOT}/proc
-umount -R ${NEWROOT}/sys
-umount -R ${NEWROOT}/dev
-umount -R ${NEWROOT}/tmp
-if mountpoint -q ${NEWROOT}/repo; then
-	umount -R ${NEWROOT}/repo
+# Unmount all mount points inside the $NEWROOT after exiting chroot
+umount -R "${NEWROOT}/proc"
+umount -R "${NEWROOT}/sys"
+umount -R "${NEWROOT}/dev"
+#umount -R "${NEWROOT}/tmp"
+if mountpoint -q "${NEWROOT}/repo"; then
+    umount -R "${NEWROOT}/repo"
 fi
