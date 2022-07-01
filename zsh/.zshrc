@@ -56,6 +56,7 @@ alias nc='vim ~/.config/nvim/init.vim'
 alias zp='vim ~/.config/zsh/.zprofile'
 alias zc='vim ~/.config/zsh/.zshrc'
 alias e='sudoedit'
+alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
 [ $UID != 0 ] && alias s6-rc="s6-rc -l /run/usertree-${USER}/rc"
 
 # Some special configurations when in Slackware
@@ -65,15 +66,18 @@ if [ -e /etc/slackware-version ]; then
             export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
     fi
     alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
-    alias ud="sudo slackpkg update && \
-        sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
-        -d ~/Downloads/multilib/current/slackware64-compat32"
-    alias ug="sudo slackpkg upgrade-all && \
-        sudo upgradepkg ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z"
-    alias in="sudo slackpkg install-new && \
-        sudo installpkg ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z"
-    #RSYNC_REPO="rsync://mirror-hk.koddos.net/slackware"
+    alias ud="sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
+        -d ~/Downloads/multilib/current/slackware64-compat32 && \
+        sudo slackpkg update"
+    alias ug="sudo upgradepkg \
+        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
+        sudo slackpkg upgrade-all"
+    alias in="sudo installpkg \
+        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
+        sudo slackpkg install-new"
+    #RSYNC_REPO="rsync://mirror-hk.koddos.net"
     RSYNC_REPO="rsync://slackware.uk"
+    #RSYNC_REPO="rsync://mirrors.kernel.org"
     alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware-15.0 ~/Downloads"
     alias repo-update-15.0-64="rsync -avzhHAX --progress --delete-after \
@@ -83,7 +87,7 @@ if [ -e /etc/slackware-version ]; then
     alias repo-update-current-64="rsync -avzhHAX --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware64-current ~/Downloads"
     alias repo-update-multilib-current="rsync -avzhHAX --progress --delete-after --exclude slackware64-compat32 \
-	${RSYNC_REPO}/people/alien/multilib/current ~/Downloads/multilib"
+	rsync://us.slackware.nl/mirrors/people/alien/multilib/current ~/Downloads/multilib"
     alias repo-update-all="rsync -avzhHAX --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware{,64}-{15.0,current} ~/Downloads && \
         repo-update-multilib-current"
