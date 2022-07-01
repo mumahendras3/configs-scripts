@@ -24,7 +24,8 @@ for dir in "$@"; do
     (
         cd "$dir"
         . ./*.info
+	eval $(grep -E 'BUILD=\${BUILD:-[0-9]+}' "${PRGNAM}.SlackBuild")
         bash "${PRGNAM}.SlackBuild"
-        upgradepkg --reinstall --install-new /tmp/"$PRGNAM"-"$VERSION"-*.t?z
+        upgradepkg --reinstall --install-new /tmp/"$PRGNAM"-"$VERSION"-*-"$BUILD"*.t?z
     )
 done
