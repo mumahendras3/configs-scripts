@@ -1,0 +1,28 @@
+#!/bin/sh -e
+#
+# Start s6-based user services upon first login
+#
+
+# Setting $PATH first since it's probably undefined
+PATH=/usr/bin:/bin
+
+# Aborting execution when not invoked by pam_exec
+if [ -z "$PAM_SERVICE" ]; then
+    echo "We are not invoked by pam_exec, aborting..."
+    exit 1
+fi
+
+# Exiting immediately if this is not the user's first session
+if [ $(users | grep -Fow "$PAM_USER" | wc -l) -gt 1 ]; then
+    echo "This is not the user's first session, exiting..."
+    exit 0
+fi
+
+# Starting the user's supervision tree (if there is one)
+if s6-rc-db -b type "usertree-$PAM_USER" >/dev/null 2>&1; then
+    echo "Starting ${PAM_USER}'s supervision tree..."
+    exec s6-rc -b change "usertree-$PAM_USER"
+else
+    echo "$PAM_USER doesn't have a supervision tree configured, skipping..."
+    exit 0
+fi
