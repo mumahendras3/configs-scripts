@@ -18,6 +18,9 @@ if [ -z "$PAM_SERVICE" ]; then
     exit 1
 fi
 
+# Exiting immediately if PID 1 is not s6-svscan
+grep -Fqz s6-svscan /proc/1/cmdline || exit 0
+
 # Exiting immediately if the user doesn't have a supervision tree configured
 ls "${SYSTEM_SCANDIR}/$USERTREE_SVNAME"* >/dev/null 2>&1 || exit 0
 
