@@ -2,9 +2,9 @@
 # The file where the history is stored
 HISTFILE="${XDG_STATE_HOME}/zsh/history"
 # Number of events/commands loaded into memory
-HISTSIZE=250000
+HISTSIZE=1000000
 # Number of events/commands stored in the zsh history file
-SAVEHIST=500000
+SAVEHIST=1000000
 # Do not save duplicate commands to history
 setopt HIST_IGNORE_ALL_DUPS
 # Do not find duplicate commands when searching
@@ -57,7 +57,7 @@ alias zp='vim ~/.config/zsh/.zprofile'
 alias zc='vim ~/.config/zsh/.zshrc'
 alias e='sudoedit'
 alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
-[ $UID != 0 ] && alias s6-rc="s6-rc -l /run/usertree-${USER}/rc"
+[ -n "$S6RC_LIVE" ] && alias s6-rc="s6-rc -l $S6RC_LIVE"
 
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
