@@ -4,7 +4,16 @@
 #
 
 # Setting $PATH first since it's probably undefined
-PATH=/usr/bin:/bin
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Defining some important constants that will be used later
+SYSTEM_SCANDIR="$(xargs -0a /proc/1/cmdline | grep -o ' /.*$' | cut -c 2-)"
+USERTREE_SVNAME="usertree-$PAM_USER"
+S6RC_TIMEOUT="5000"
+USER_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
+USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
+USER_S6RC_BUNDLE="default"
+USER_S6RC_COMPILED="/home/${PAM_USER}/.config/s6/rc/compiled"
 
 # Aborting execution when not invoked by pam_exec
 if [ -z "$PAM_SERVICE" ]; then
@@ -12,17 +21,24 @@ if [ -z "$PAM_SERVICE" ]; then
     exit 1
 fi
 
-# Exiting immediately if this is not the user's first session
-if [ $(users | grep -Fow "$PAM_USER" | wc -l) -gt 1 ]; then
-    echo "This is not the user's first session, exiting..."
-    exit 0
-fi
+# Exiting immediately if the user doesn't have a supervision tree configured
+ls "${SYSTEM_SCANDIR}/$USERTREE_SVNAME"* >/dev/null 2>&1 || exit 0
 
-# Starting the user's supervision tree (if there is one)
-if s6-rc-db -b type "usertree-$PAM_USER" >/dev/null 2>&1; then
-    echo "Starting ${PAM_USER}'s supervision tree..."
-    exec s6-rc -b change "usertree-$PAM_USER"
-else
-    echo "$PAM_USER doesn't have a supervision tree configured, skipping..."
+# Exiting immediately if this is not the user's first session
+[ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && \
     exit 0
-fi
+
+# Starting the user's supervision tree
+s6-rc -bt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
+
+# No need to continue further if the user doesn't use s6-rc
+[ -d "$USER_S6RC_COMPILED" ] || exit 0
+
+# Initializing s6-rc for the user's supervision tree
+s6-setuidgid "$PAM_USER" \
+    s6-rc-init -dc "$USER_S6RC_COMPILED" -l "$USER_S6RC_LIVE" \
+        -t "$S6RC_TIMEOUT" "$USER_SCANDIR"
+
+# Starting the user's default bundle
+exec s6-setuidgid "$PAM_USER" \
+    s6-rc -l "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change "$USER_S6RC_BUNDLE"

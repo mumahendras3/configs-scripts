@@ -1,10 +1,16 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Stop s6-based user services upon last logout
 #
 
 # Setting $PATH first since it's probably undefined
-PATH=/usr/bin:/bin
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Defining some important constants that will be used later
+SYSTEM_SCANDIR="$(xargs -0a /proc/1/cmdline | grep -o ' /.*$' | cut -c 2-)"
+USERTREE_SVNAME="usertree-$PAM_USER"
+S6RC_TIMEOUT="5000"
+USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
 
 # Aborting execution when not invoked by pam_exec
 if [ -z "$PAM_SERVICE" ]; then
@@ -12,17 +18,16 @@ if [ -z "$PAM_SERVICE" ]; then
     exit 1
 fi
 
-# Exiting immediately if this is not the user's last session
-if [ $(users | grep -Fow "$PAM_USER" | wc -l) -gt 1 ]; then
-    echo "This is not the user's last session, exiting..."
-    exit 0
-fi
+# Exiting immediately if the user doesn't have a supervision tree configured
+ls "${SYSTEM_SCANDIR}/$USERTREE_SVNAME"* >/dev/null 2>&1 || exit 0
 
-# Stopping the user's supervision tree (if there is one)
-if s6-rc-db -b type "usertree-$PAM_USER" >/dev/null 2>&1; then
-    echo "Stopping ${PAM_USER}'s supervision tree..."
-    exec s6-rc -bd change "usertree-$PAM_USER"
-else
-    echo "$PAM_USER doesn't have a supervision tree configured, skipping..."
+# Exiting immediately if this is not the user's last session
+[ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && \
     exit 0
-fi
+
+# Using s6-rc to bring down all the user's services (if applicable)
+[ -d "$USER_S6RC_LIVE" ] && s6-setuidgid "$PAM_USER" \
+    s6-rc -Dal "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change
+
+# Stopping the user's supervision tree
+exec s6-rc -bdt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
