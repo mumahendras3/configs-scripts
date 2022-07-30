@@ -1,4 +1,4 @@
-dbus-session-bus
+messagebus
 pipewire
 pipewire-media-session
 pipewire-pulse

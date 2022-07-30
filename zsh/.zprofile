@@ -18,8 +18,8 @@ if grep -Fqz s6-svscan /proc/1/cmdline; then
     [ -d "${XDG_RUNTIME_DIR}/s6/rc" ] && \
         export S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
     # Use the DBus session bus that is maintained by the user's supervision tree
-    [ -r "${S6_SCANDIR}/dbus-session-bus-srv/env/DBUS_SESSION_BUS_ADDRESS" ] && \
-        export DBUS_SESSION_BUS_ADDRESS="$(cat "${S6_SCANDIR}/dbus-session-bus-srv/env/DBUS_SESSION_BUS_ADDRESS")"
+    [ -r "${S6_SCANDIR}/messagebus-srv/env/DBUS_SESSION_BUS_ADDRESS" ] && \
+        export DBUS_SESSION_BUS_ADDRESS="$(cat "${S6_SCANDIR}/messagebus-srv/env/DBUS_SESSION_BUS_ADDRESS")"
     # Use the ssh-agent that is maintained by the user's supervision tree
     [ -r "${S6_SCANDIR}/ssh-agent-srv/env/SSH_AUTH_SOCK" ] && \
         export SSH_AUTH_SOCK="$(cat "${S6_SCANDIR}/ssh-agent-srv/env/SSH_AUTH_SOCK")"
