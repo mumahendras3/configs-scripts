@@ -1,0 +1,5 @@
+dbus-session-bus
+pipewire
+pipewire-media-session
+pipewire-pulse
+ssh-agent
