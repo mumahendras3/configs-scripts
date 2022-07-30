@@ -12,6 +12,5 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-emptyenv -c
 s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/pipewire-0 ]"
-$CMD $CMD_OPTS
+emptyenv -c $CMD $CMD_OPTS
