@@ -5,15 +5,16 @@
 ##############################
 
 fdmove -c 2 1
+getcwd CWD
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
+  importas -u CWD CWD
 }
-importas -u XDG_RUNTIME_DIR XDG_RUNTIME_DIR
 if {
   redirfd -w 1 env/SSH_AUTH_SOCK
-  echo ${XDG_RUNTIME_DIR}/ssh-agent.sock
+  echo ${CWD}/s
 }
-s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/ssh-agent.sock ]"
+s6-notifyoncheck -dn0 -c "[ -S s ]"
 exec -c $CMD $CMD_OPTS
