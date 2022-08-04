@@ -9,6 +9,7 @@ export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 # Defining some important constants that will be used later
 SYSTEM_SCANDIR="$(xargs -0a /proc/1/cmdline | grep -o ' /.*$' | cut -c 2-)"
 USERTREE_SVNAME="usertree-$PAM_USER"
+USERTREE_SVDIR="${SYSTEM_SCANDIR}/${USERTREE_SVNAME}-srv"
 S6RC_TIMEOUT="5000"
 USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
 
@@ -22,7 +23,7 @@ fi
 grep -Fqz s6-svscan /proc/1/cmdline || exit 0
 
 # Exiting immediately if the user doesn't have a supervision tree configured
-ls "${SYSTEM_SCANDIR}/$USERTREE_SVNAME"* >/dev/null 2>&1 || exit 0
+[ -d "$USERTREE_SVDIR" ] || exit 0
 
 # Exiting immediately if this is not the user's last session
 [ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && \
