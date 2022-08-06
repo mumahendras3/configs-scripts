@@ -13,7 +13,7 @@ USERTREE_SVDIR="${SYSTEM_SCANDIR}/${USERTREE_SVNAME}-srv"
 S6RC_TIMEOUT="5000"
 USER_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
 USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
-USER_S6RC_BUNDLE="default"
+USER_S6RC_BUNDLE="${XDG_SESSION_TYPE}-session" # unspecified/tty/x11/wayland/mir
 USER_S6RC_COMPILED="/home/${PAM_USER}/.config/s6/rc/compiled"
 
 # Aborting execution when not invoked by pam_exec
@@ -43,6 +43,6 @@ s6-setuidgid "$PAM_USER" \
     s6-rc-init -dc "$USER_S6RC_COMPILED" -l "$USER_S6RC_LIVE" \
         -t "$S6RC_TIMEOUT" "$USER_SCANDIR"
 
-# Starting the user's default bundle
+# Starting the appropriate user configured bundle (based on this session's type)
 exec s6-setuidgid "$PAM_USER" \
     s6-rc -l "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change "$USER_S6RC_BUNDLE"
