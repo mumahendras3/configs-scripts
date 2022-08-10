@@ -75,9 +75,9 @@ if [ -e /etc/slackware-version ]; then
     alias in="sudo installpkg \
         ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
         sudo slackpkg install-new"
-    #RSYNC_REPO="rsync://mirror-hk.koddos.net"
+    RSYNC_REPO="rsync://mirror-hk.koddos.net"
     #RSYNC_REPO="rsync://slackware.uk"
-    RSYNC_REPO="rsync://mirrors.kernel.org"
+    #RSYNC_REPO="rsync://mirrors.kernel.org"
     alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware-15.0 ~/Downloads"
     alias repo-update-15.0-64="rsync -avzhHAX --progress --delete-after \
