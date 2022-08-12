@@ -28,9 +28,15 @@ grep -Fqwz s6-svscan /proc/1/cmdline || exit 0
 # Exiting immediately if the user doesn't have a supervision tree configured
 [ -d "$USERTREE_SVDIR" ] || exit 0
 
-# Exiting immediately if this is not the user's first session
-[ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && \
-    exit 0
+# Checking if this is not the user's first session
+if [ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ]; then
+    # Exiting immediately if the user doesn't use s6-rc
+    [ -d "$USER_S6RC_LIVE" ] || exit 0
+    # Starting the appropriate user configured bundle (based on this session's
+    # type) again in case the current and last sessions' type are different
+    exec s6-setuidgid "$PAM_USER" \
+        s6-rc -l "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change "$USER_S6RC_BUNDLE"
+fi
 
 # Starting the user's supervision tree
 s6-rc -bt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
