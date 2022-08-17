@@ -1,0 +1,36 @@
+#!/bin/execlineb -P
+fdmove -c 2 1
+emptyenv -p
+getpid PID
+export USER "mumahendras3"
+s6-envuidgid -i -- "mumahendras3"
+backtick -in HOME { homeof "mumahendras3" }
+s6-envdir -i -- "env"
+multisubstitute
+{
+  importas -D "" -- "XDG_CACHE_HOME" "XDG_CACHE_HOME"
+  importas -D "" -- "XDG_CONFIG_HOME" "XDG_CONFIG_HOME"
+  importas -D "" -- "XDG_DATA_HOME" "XDG_DATA_HOME"
+  importas -D "" -- "XDG_RUNTIME_DIR" "XDG_RUNTIME_DIR"
+  importas -D "" -- "XDG_STATE_HOME" "XDG_STATE_HOME"
+}
+multisubstitute
+{
+  importas -i USER USER
+  importas -i HOME HOME
+  importas -i UID UID
+  importas -i GID GID
+  importas -i GIDLIST GIDLIST
+  importas -u PID PID
+  importas -u PRIMARY_SESSION_CGPATH PRIMARY_SESSION_CGPATH
+}
+backtick -Ein PRIMARY_SESSION_NAME { loginctl -pDisplay --value show-user $USER }
+if { redirfd -w 1 ${PRIMARY_SESSION_CGPATH}/cgroup.procs echo $PID }
+export "XDG_CACHE_HOME" ${"XDG_CACHE_HOME"}
+export "XDG_CONFIG_HOME" ${"XDG_CONFIG_HOME"}
+export "XDG_DATA_HOME" ${"XDG_DATA_HOME"}
+export "XDG_RUNTIME_DIR" ${"XDG_RUNTIME_DIR"}
+export "XDG_STATE_HOME" ${"XDG_STATE_HOME"}
+export PATH "/usr/local/bin:/usr/bin:/bin"
+s6-applyuidgid -U -- if { mkdir -p ${"XDG_RUNTIME_DIR"}/s6/service }
+s6-svscan -d3 -- "/run/user/${UID}/s6/service"
