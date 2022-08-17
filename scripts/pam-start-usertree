@@ -35,8 +35,8 @@ if [ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ]; then
     # Starting the appropriate user configured bundle (based on this session's
     # type) again in case the current and last sessions' type are different
     exec s6-setuidgid "$PAM_USER" \
-        s6-rc -bl "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change \
-            "$USER_S6RC_BUNDLE"
+        s6-rc -bl "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" \
+            change "$USER_S6RC_BUNDLE"
 fi
 
 # Starting the user's supervision tree
