@@ -5,7 +5,8 @@
 ##################################################
 
 fdmove -c 2 1
-if { ln -s ../../messagebus-srv/env/DBUS_SESSION_BUS_ADDRESS env }
+# Adding DBUS_SESSION_BUS_ADDRESS to the environment
+s6-envdir ../messagebus-srv/env
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
