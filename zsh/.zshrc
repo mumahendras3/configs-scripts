@@ -71,7 +71,8 @@ if [ -e /etc/slackware-version ]; then
         sudo slackpkg update"
     alias ug="sudo upgradepkg \
         ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
-        sudo slackpkg -batch=on -default_answer=y upgrade-all"
+        sudo slackpkg -batch=on -default_answer=y upgrade-all && \
+        sudo slackpkg new-config"
     alias in="sudo installpkg \
         ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
         sudo slackpkg install-new"
