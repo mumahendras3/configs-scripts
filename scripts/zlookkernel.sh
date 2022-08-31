@@ -147,7 +147,7 @@ lookkernel() {
       if [ "$ANSWER" != "n" ] && [ "$ANSWER" != "N" ]; then
         for mod in /var/lib/dkms/*/[0-9]*[0-9]; do
           mod=${mod#/var/lib/dkms/}
-          dkms uninstall "$mod" && dkms install -k "$KERNEL" "$mod"
+          dkms remove "$mod" && dkms install -k "$KERNEL" "$mod"
         done
       fi
     fi
