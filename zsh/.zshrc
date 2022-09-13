@@ -70,11 +70,11 @@ if [ -e /etc/slackware-version ]; then
         -d ~/Downloads/multilib/current/slackware64-compat32 && \
         sudo slackpkg update"
     alias ug="sudo upgradepkg \
-        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
+        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
         sudo slackpkg -batch=on -default_answer=y upgrade-all && \
         sudo slackpkg new-config"
     alias in="sudo installpkg \
-        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z && \
+        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
         sudo slackpkg install-new"
     RSYNC_REPO="rsync://mirror-hk.koddos.net"
     #RSYNC_REPO="rsync://slackware.uk"
