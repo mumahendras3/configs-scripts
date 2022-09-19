@@ -53,14 +53,17 @@ if [ -z "$ARCH" ]; then
 fi
 
 # Give the user some time to cancel
+WAIT=${WAIT:-10}
 echo Packages to build: "$(basename -a "$@" | tr '\n' ' ')"
 echo MAKEFLAGS is set to: "$MAKEFLAGS"
-printf "Continuing in: "
-for i in $(seq -s " " 10 -1 1); do
-    printf "%s " "$i"
-    sleep 1
-done
-echo
+if [ "$WAIT" -gt 0 ]; then
+    printf "Continuing in: "
+    for i in $(seq -s " " "$WAIT" -1 1); do
+        printf '%s ' "$i"
+        sleep 1
+    done
+    echo
+fi
 
 # Start main loop
 for dir in "$@"; do
@@ -78,9 +81,11 @@ for dir in "$@"; do
         else
             download_and_verfiy "$DOWNLOAD" "$MD5SUM"
         fi
-	eval "$(grep -E '^(ARCH|BUILD|TAG|OUTPUT)=.+$' "${PRGNAM}.SlackBuild")"
         bash "${PRGNAM}.SlackBuild"
-        upgradepkg --reinstall --install-new \
-            "${OUTPUT}/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}$TAG".t?z
+        if [ "${INSTALL:-n}" = Y ] || [ "${INSTALL:-n}" = y ]; then
+            eval "$(grep -E '^(ARCH|BUILD|TAG|OUTPUT)=' "${PRGNAM}.SlackBuild")"
+            upgradepkg --reinstall --install-new \
+                "${OUTPUT}/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}$TAG".t?z
+        fi
     )
 done
