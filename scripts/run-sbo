@@ -9,16 +9,35 @@
 # Defining some functions
 download_and_verfiy() {
     for dl_url in $1; do
-        wget -q --show-progress --continue "$dl_url"
         FILE_NAME=$(basename "$dl_url")
+        [ -n "$REDOWNLOAD" ] && rm -f "$FILE_NAME"
+        [ ! -s "$FILE_NAME" ] && wget -q --show-progress --continue "$dl_url"
         DL_SUMS="${DL_SUMS}$(md5sum "$FILE_NAME" | cut -d" " -f1)"
     done
     for sum in $2; do
         SUMS="${SUMS}$sum"
     done
     if [ "$DL_SUMS" != "$SUMS" ]; then
-        echo "MD5 sums mismatch found, aborting..."
-        exit 1
+        printf "MD5 sum mismatch found. "
+        unset REPLY
+        while [ -z "$REPLY" ]; do
+            printf "Redownload the source files? [y|N] "
+            read REPLY
+            case "$REPLY" in
+                n|N)
+                    echo "Aborting..."
+                    exit 1
+                    ;;
+                Y|y)
+                    REDOWNLOAD=1
+                    download_and_verfiy "$1" "$2"
+                    ;;
+                *)
+                    echo "Valid replies: Y|y, N|n"
+                    unset REPLY
+                    ;;
+            esac
+        done
     fi
 }
 
