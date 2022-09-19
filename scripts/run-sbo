@@ -6,8 +6,32 @@
 # Check for arguments
 [ $# -le 0 ] && echo "Pass directories as arguments!" && exit 1
 
-# Export MAKEFLAGS
+# Defining some functions
+download_and_verfiy() {
+    for dl_url in $1; do
+        wget -q --show-progress --continue "$dl_url"
+        FILE_NAME=$(basename "$dl_url")
+        DL_SUMS="${DL_SUMS}$(md5sum "$FILE_NAME" | cut -d" " -f1)"
+    done
+    for sum in $2; do
+        SUMS="${SUMS}$sum"
+    done
+    if [ "$DL_SUMS" != "$SUMS" ]; then
+        echo "MD5 sums mismatch found, aborting..."
+        exit 1
+    fi
+}
+
+# Some environment variable exports
 export MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
 
 # Give the user some time to cancel
 echo Packages to build: "$(basename -a "$@" | tr '\n' ' ')"
@@ -24,8 +48,20 @@ for dir in "$@"; do
     (
         cd "$dir"
         . ./*.info
-	eval $(grep -E 'BUILD=\${BUILD:-[0-9]+}' "${PRGNAM}.SlackBuild")
+        # Downloading the source files if needed
+        if [ "$ARCH" = i586 ] && [ "$DOWNLOAD" = UNSUPPORTED ] || \
+            [ "$ARCH" = x86_64 ] && [ "$DOWNLOAD_x86_64" = UNSUPPORTED ]; then
+            echo "${PRGNAM}: $ARCH is unsupported"
+            exit 1
+        fi
+        if [ "$ARCH" = x86_64 ] && [ -n "$DOWNLOAD_x86_64" ]; then
+            download_and_verfiy "$DOWNLOAD_x86_64" "$MD5SUM_x86_64"
+        else
+            download_and_verfiy "$DOWNLOAD" "$MD5SUM"
+        fi
+	eval "$(grep -E '^(ARCH|BUILD|TAG|OUTPUT)=.+$' "${PRGNAM}.SlackBuild")"
         bash "${PRGNAM}.SlackBuild"
-        upgradepkg --reinstall --install-new /tmp/"$PRGNAM"-"$VERSION"-*-"$BUILD"*.t?z
+        upgradepkg --reinstall --install-new \
+            "${OUTPUT}/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}$TAG".t?z
     )
 done
