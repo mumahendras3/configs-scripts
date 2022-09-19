@@ -81,7 +81,9 @@ for dir in "$@"; do
         else
             download_and_verfiy "$DOWNLOAD" "$MD5SUM"
         fi
+        # Run the SlackBuild script
         bash "${PRGNAM}.SlackBuild"
+        # Install the built package if requested
         if [ "${INSTALL:-n}" = Y ] || [ "${INSTALL:-n}" = y ]; then
             eval "$(grep -E '^(ARCH|BUILD|TAG|OUTPUT)=' "${PRGNAM}.SlackBuild")"
             upgradepkg --reinstall --install-new \
