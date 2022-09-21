@@ -1,0 +1,35 @@
+#!/bin/execlineb -WS1
+#
+# Run a program with its stdout and stderr redirected to the user's supervision
+# tree logger
+#
+
+# Defining some important constants that will be used later
+backtick SYSTEM_SCANDIR {
+  pipeline { xargs -0a /proc/1/cmdline } pipeline { grep -o " /.*$" } cut -c 2-
+}
+multisubstitute {
+  importas -D "" PAM_USER PAM_USER
+  importas -iu SYSTEM_SCANDIR SYSTEM_SCANDIR
+}
+define usertree_logger "usertree-${PAM_USER}-log"
+define s6rcfdholder_socket "${SYSTEM_SCANDIR}/s6rc-fdholder/s"
+
+# Aborting execution when not invoked by pam_exec
+ifelse { [ -z $PAM_USER ] }
+{
+  if { echo "We are not invoked by pam_exec, aborting..." }
+  exit 1
+}
+
+# Exiting immediately if PID 1 is not s6-svscan
+ifelse -n { grep -Fqwz s6-svscan /proc/1/cmdline } { exit 0 }
+
+# Retrieving the logger's stdin fd and using it as stdout and stderr fds
+fdmove 1 0
+s6-fdholder-retrieve $s6rcfdholder_socket "pipe:s6rc-w-$usertree_logger"
+fdswap 0 1
+fdmove -c 2 1
+
+# Running the provided program with its arguments
+emptyenv -c $@
