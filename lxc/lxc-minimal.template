@@ -20,7 +20,6 @@ diffutils
 e2fsprogs
 elfutils
 elogind
-elvis
 etc
 eudev
 findutils
@@ -69,6 +68,7 @@ sysvinit-functions
 sysvinit-scripts
 tar
 util-linux
+vim
 wget
 which
 xz
