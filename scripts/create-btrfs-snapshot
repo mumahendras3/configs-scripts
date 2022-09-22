@@ -10,7 +10,7 @@ for uuid in $(findmnt -snrt btrfs -O subvol -o UUID | sort | uniq); do
     mkdir -p /run/btrfs
     mount -t btrfs -o "$opts" "UUID=$uuid" /run/btrfs
     for subvol in $(findmnt -snrS "UUID=$uuid" -O subvol -o OPTIONS | \
-        grep -Eo ',*subvol=.*,*' | tr -d , | cut -d= -f2); do
+        grep -Eo ',?subvol=.*,?' | tr -d , | cut -d= -f2); do
         if [ -d "/run/btrfs/${subvol}-$(date -I)" ]; then
 	    echo "Skipping \"${subvol}\" subvolume: \"${subvol}-$(date -I)\" snapshot already exists!"
         else
