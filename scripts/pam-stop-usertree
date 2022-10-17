@@ -33,5 +33,7 @@ grep -Fqwz s6-svscan /proc/1/cmdline || exit 0
 [ -d "$USER_S6RC_LIVE" ] && s6-setuidgid "$PAM_USER" \
     s6-rc -Dal "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change
 
-# Stopping the user's supervision tree
-exec s6-rc -bdt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
+# Making sure there isn't an ongoing reboot/shutdown process
+utmpdump /var/log/wtmp 2>/dev/null | tail -n 1 | grep -Eq 'reboot|shutdown' || \
+    # Stopping the user's supervision tree
+    exec s6-rc -bdt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
