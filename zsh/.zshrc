@@ -116,11 +116,8 @@ KEYTIMEOUT=1
 # Handle alacritty title bar
 if [ "$TERM" = alacritty ]; then
     # Executed before the prompt is displayed
-    _alacritty_title_precmd() { print -Pn "\e]0;%~ : ${SHELL##*/} ― Alacritty\a" }
+    _alacritty_title_precmd() { print -Pn '\e]0;%n@%m:%~\a' }
     precmd_functions+=_alacritty_title_precmd
-    # Executed after pressing enter but before running the given command
-    _alacritty_title_preexec() { print -Pn "\e]0;%~ : $1 ― Alacritty\a" }
-    preexec_functions+=_alacritty_title_preexec
 fi
 # For root prompt
 #[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
