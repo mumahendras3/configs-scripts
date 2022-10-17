@@ -67,18 +67,18 @@ if [ -e /etc/slackware-version ]; then
     fi
     alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
     alias ud="sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
-        -d ~/Downloads/multilib/current/slackware64-compat32 && \
+        -d ~/Downloads/multilib/current/slackware64-compat32; \
         sudo slackpkg update"
     alias ug="sudo upgradepkg \
         ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
         sudo slackpkg -batch=on -default_answer=y upgrade-all && \
         sudo slackpkg new-config"
-    alias in="sudo installpkg \
+    alias in="sudo upgradepkg --install-new \
         ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
-        sudo slackpkg install-new"
-    RSYNC_REPO="rsync://mirror-hk.koddos.net"
+        sudo slackpkg -onoff=off install-new"
+    #RSYNC_REPO="rsync://mirror-hk.koddos.net"
     #RSYNC_REPO="rsync://slackware.uk"
-    #RSYNC_REPO="rsync://mirrors.kernel.org"
+    RSYNC_REPO="rsync://mirrors.kernel.org"
     alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware-15.0 ~/Downloads"
     alias repo-update-15.0-64="rsync -avzhHAX --progress --delete-after \
@@ -104,9 +104,7 @@ bindkey "\e[3~" delete-char
 # For faster mode-switching when in vi-mode
 KEYTIMEOUT=1
 
-# For root prompt
-#[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
-
+## Plugins
 # zsh-bash-completions-fallback
 [ -r /usr/share/zsh/plugins/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh ] && \
     . /usr/share/zsh/plugins/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh
@@ -114,6 +112,18 @@ KEYTIMEOUT=1
 [ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+## Special cases
+# Handle alacritty title bar
+if [ "$TERM" = alacritty ]; then
+    # Executed before the prompt is displayed
+    _alacritty_title_precmd() { print -Pn "\e]0;%~ : ${SHELL##*/} ― Alacritty\a" }
+    precmd_functions+=_alacritty_title_precmd
+    # Executed after pressing enter but before running the given command
+    _alacritty_title_preexec() { print -Pn "\e]0;%~ : $1 ― Alacritty\a" }
+    preexec_functions+=_alacritty_title_preexec
+fi
+# For root prompt
+#[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
 # Start GUI if login from tty1
 [ $UID -ne 0 ] && [ "$(pgrep -c X)" -lt 1 ] && \
     [ "$TTY" = /dev/tty1 ] && startx || return 0
