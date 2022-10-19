@@ -77,19 +77,19 @@ if [ -e /etc/slackware-version ]; then
         ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
         sudo slackpkg -onoff=off install-new"
     #RSYNC_REPO="rsync://mirror-hk.koddos.net"
-    #RSYNC_REPO="rsync://slackware.uk"
-    RSYNC_REPO="rsync://mirrors.kernel.org"
-    alias repo-update-15.0="rsync -avzhHAX --progress --delete-after \
+    RSYNC_REPO="rsync://slackware.uk"
+    #RSYNC_REPO="rsync://mirrors.kernel.org"
+    alias repo-update-15.0="rsync -avzh --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware-15.0 ~/Downloads"
-    alias repo-update-15.0-64="rsync -avzhHAX --progress --delete-after \
+    alias repo-update-15.0-64="rsync -avzh --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware64-15.0 ~/Downloads"
-    alias repo-update-current="rsync -avzhHAX --progress --delete-after \
+    alias repo-update-current="rsync -avzh --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware-current ~/Downloads"
-    alias repo-update-current-64="rsync -avzhHAX --progress --delete-after \
+    alias repo-update-current-64="rsync -avzh --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware64-current ~/Downloads"
-    alias repo-update-multilib-current="rsync -avzhHAX --progress --delete-after --exclude slackware64-compat32 \
+    alias repo-update-multilib-current="rsync -avzh --progress --delete-after --exclude slackware64-compat32 \
 	rsync://us.slackware.nl/mirrors/people/alien/multilib/current ~/Downloads/multilib"
-    alias repo-update-all="rsync -avzhHAX --progress --delete-after \
+    alias repo-update-all="rsync -avzh --progress --delete-after \
         ${RSYNC_REPO}/slackware/slackware{,64}-{15.0,current} ~/Downloads && \
         repo-update-multilib-current"
     unset RSYNC_REPO
