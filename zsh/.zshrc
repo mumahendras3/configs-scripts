@@ -66,16 +66,16 @@ if [ -e /etc/slackware-version ]; then
             export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
     fi
     alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
-    alias ud="sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
-        -d ~/Downloads/multilib/current/slackware64-compat32; \
-        sudo slackpkg update"
-    alias ug="sudo upgradepkg \
-        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
-        sudo slackpkg -batch=on -default_answer=y upgrade-all && \
+    alias ud="sudo slackpkg update"
+    alias ud32="sudo massconvert32.sh -i ~/Downloads/slackware-current/slackware \
+        -d ~/Downloads/multilib/current/slackware64-compat32"
+    alias ug="sudo slackpkg -batch=on -default_answer=y upgrade-all && \
         sudo slackpkg new-config"
-    alias in="sudo upgradepkg --install-new \
-        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z; \
-        sudo slackpkg -onoff=off install-new"
+    alias ug32="sudo upgradepkg \
+        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z"
+    alias in="sudo slackpkg -onoff=off install-new"
+    alias in32="sudo upgradepkg --install-new \
+        ~/Downloads/multilib/current/{,slackware64-compat32/*/}*.t?z"
     #RSYNC_REPO="rsync://mirror-hk.koddos.net"
     RSYNC_REPO="rsync://slackware.uk"
     #RSYNC_REPO="rsync://mirrors.kernel.org"
