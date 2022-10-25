@@ -58,6 +58,7 @@
 
 PLUGIN_ZLOOKKERNEL=enable
 PLUGIN_ZLOOKKERNEL_PROMPT=off
+NVIDIA_KERNEL_PATH=/var/lib/sbopkg/SBo-git/system/nvidia-kernel
 
 if [ "$(basename $0)" == "zlookkernel.sh" ];then
   PLUGIN_ZLOOKKERNEL=force
@@ -155,9 +156,9 @@ lookkernel() {
       echo -e "\nnvidia-kernel package found. You have to rebuild it.\nDo you want slackpkg to do it? (Y/n)"
       [ ! "$PLUGIN_ZLOOKKERNEL_PROMPT" == "off" ] && answer
       if [ "$ANSWER" != "n" ] && [ "$ANSWER" != "N" ]; then
-        if [ -d /var/lib/sboui/repo/system/nvidia-kernel ]; then
+        if [ -d "$NVIDIA_KERNEL_PATH" ]; then
           (
-            cd /var/lib/sboui/repo/system/nvidia-kernel
+            cd "$NVIDIA_KERNEL_PATH"
             . nvidia-kernel.info
             if [ ! -e "NVIDIA-Linux-x86_64-${VERSION}.run" ]; then
               if [ -e "/home/mumahendras3/Downloads/NVIDIA-Linux-x86_64-${VERSION}.run" ]; then
@@ -167,8 +168,9 @@ lookkernel() {
                   cp --reflink=auto "NVIDIA-Linux-x86_64-${VERSION}.run" /home/mumahendras3/Downloads
               fi
             fi
-            MAKEFLAGS="-j$(nproc)" KERNEL="$KERNEL" bash nvidia-kernel.SlackBuild && \
-              upgradepkg /tmp/nvidia-kernel-${VERSION}_${KERNEL}-*-?_SBo.t?z
+            export KERNEL
+            MAKEFLAGS="-j$(nproc)" bash nvidia-kernel.SlackBuild && \
+                upgradepkg "/tmp/$(PRINT_PACKAGE_NAME=1 bash nvidia-kernel.SlackBuild)"
           )
         fi
       fi
