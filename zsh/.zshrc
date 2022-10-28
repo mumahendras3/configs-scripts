@@ -18,6 +18,11 @@ export EDITOR=/usr/bin/vim
 # Unset LANGUAGE to avoid translations to other languages when running terminal
 # programs
 unset LANGUAGE
+# Make managing s6-supervised services easier
+[ -d "${XDG_RUNTIME_DIR}/s6/service" ] && \
+    S6_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
+[ -d "${XDG_RUNTIME_DIR}/s6/rc" ] && \
+    S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
 
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
@@ -62,7 +67,7 @@ alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
 # Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
     if id -nG | grep -wq wheel; then
-        echo $PATH | grep -wq sbin || \
+        echo "$PATH" | grep -wq sbin || \
             export PATH="${PATH}:/usr/local/sbin:/usr/sbin:/sbin"
     fi
     alias ch="less ~/Downloads/slackware64-current/ChangeLog.txt"
@@ -116,7 +121,7 @@ KEYTIMEOUT=1
 # Handle alacritty title bar
 if [ "$TERM" = alacritty ]; then
     # Executed before the prompt is displayed
-    _alacritty_title_precmd() { print -Pn '\e]0;%n@%m:%~\a' }
+    _alacritty_title_precmd() { print -Pn '\e]0;%n@%m:%~\a'; }
     precmd_functions+=_alacritty_title_precmd
 fi
 # For root prompt
