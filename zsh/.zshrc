@@ -1,49 +1,14 @@
-## ZSH history configuration
-# The file where the history is stored
-HISTFILE="${XDG_STATE_HOME}/zsh/history"
-# Number of events/commands loaded into memory
-HISTSIZE=1000000
-# Number of events/commands stored in the zsh history file
-SAVEHIST=1000000
-# Do not save duplicate commands to history
-setopt HIST_IGNORE_ALL_DUPS
-# Do not find duplicate commands when searching
-setopt HIST_FIND_NO_DUPS
-
-## Miscellaneous
+## Environment variables only useful for interactive shell sessions
 # Default text editor
 export EDITOR=/usr/bin/vim
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
-# Unset LANGUAGE to avoid translations to other languages when running terminal
-# programs
-unset LANGUAGE
 # Make managing s6-supervised services easier
 [ -d "${XDG_RUNTIME_DIR}/s6/service" ] && \
     S6_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
-[ -d "${XDG_RUNTIME_DIR}/s6/rc" ] && \
-    S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
+[ -d "${XDG_RUNTIME_DIR}/s6/rc" ] && S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
 
-# The following lines were added by compinstall
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
-zstyle ':completion:*' menu select=1
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle :compinstall filename '/home/mumahendras3/.config/zsh/.zshrc'
-autoload -Uz compinit && compinit -d ~/.cache/zsh/zcompdump-"$ZSH_VERSION"
-# End of lines added by compinstall
-
-# Load themes
-#[ -f ~/.local/share/zsh/themes/dracula/dracula.zsh-theme ] && \
-#  . ~/.local/share/zsh/themes/dracula/dracula.zsh-theme
-#[ -f ~/.local/share/zsh/themes/dracula/lib/async.zsh ] && \
-#  . ~/.local/share/zsh/themes/dracula/lib/async.zsh
-# Additional theme configurations
-#DRACULA_DISPLAY_CONTEXT=1
-
-# some aliases
+## Useful aliases
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias la='ls -A'
@@ -64,7 +29,7 @@ alias e='sudoedit'
 alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
 [ -n "$S6RC_LIVE" ] && alias s6-rc="s6-rc -l $S6RC_LIVE"
 
-# Some special configurations when in Slackware
+## Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
     if id -nG | grep -wq wheel; then
         echo "$PATH" | grep -wq sbin || \
@@ -100,6 +65,25 @@ if [ -e /etc/slackware-version ]; then
     unset RSYNC_REPO
 fi
 
+## Special cases
+# Handle alacritty title bar
+if [ "$TERM" = alacritty ]; then
+    # Executed before the prompt is displayed
+    _alacritty_title_precmd() { print -Pn '\e]0;%n@%m:%~\a'; }
+    precmd_functions=(_alacritty_title_precmd)
+fi
+
+## ZSH specific configurations
+# The file where the history is stored
+HISTFILE="${XDG_STATE_HOME}/zsh/history"
+# Number of events/commands loaded into memory
+HISTSIZE=1000000
+# Number of events/commands stored in the zsh history file
+SAVEHIST=1000000
+# Do not save duplicate commands to history
+setopt HIST_IGNORE_ALL_DUPS
+# Do not find duplicate commands when searching
+setopt HIST_FIND_NO_DUPS
 # Enable vi-mode
 bindkey -v
 # Allow backspacing when in insert mode
@@ -108,24 +92,19 @@ bindkey '^?' backward-delete-char
 bindkey "\e[3~" delete-char
 # For faster mode-switching when in vi-mode
 KEYTIMEOUT=1
-
-## Plugins
+# The following lines were added by compinstall
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+zstyle ':completion:*' menu select=1
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle :compinstall filename '/home/mumahendras3/.config/zsh/.zshrc'
+autoload -Uz compinit && compinit -d ~/.cache/zsh/zcompdump-"$ZSH_VERSION"
+# End of lines added by compinstall
 # zsh-bash-completions-fallback
 [ -r /usr/share/zsh/plugins/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh ] && \
     . /usr/share/zsh/plugins/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh
 # zsh-syntax-highlighting
 [ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
     . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-## Special cases
-# Handle alacritty title bar
-if [ "$TERM" = alacritty ]; then
-    # Executed before the prompt is displayed
-    _alacritty_title_precmd() { print -Pn '\e]0;%n@%m:%~\a'; }
-    precmd_functions+=_alacritty_title_precmd
-fi
-# For root prompt
-#[ "$(whoami)" = "root" ] && PS1="%F{red}root ${PS1}"
-# Start GUI if login from tty1
-[ $UID -ne 0 ] && [ "$(pgrep -c X)" -lt 1 ] && \
-    [ "$TTY" = /dev/tty1 ] && startx || return 0
