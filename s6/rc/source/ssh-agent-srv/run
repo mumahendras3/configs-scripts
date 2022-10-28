@@ -16,7 +16,9 @@ multisubstitute {
 }
 if {
   redirfd -w 1 env/SSH_AUTH_SOCK
-  echo ${CWD}/s
+  # Remove the ":s6-rc-*" part of $CWD since it's not needed
+  pipeline { echo ${CWD}/s }
+  sed "s/:[^/]*//"
 }
 # We'll use the shell commands output from ssh-agent as the readiness indicator
 fdmove 1 $NOTIFICATION_FD
