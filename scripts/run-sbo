@@ -6,6 +6,9 @@
 # Check for arguments
 [ $# -le 0 ] && echo "Pass directories as arguments!" && exit 1
 
+# Where the resulting packages will be placed
+export OUTPUT=${OUTPUT:-/tmp}
+
 # Defining some functions
 download_and_verfiy() {
     for dl_url in $1; do
@@ -84,10 +87,9 @@ for dir in "$@"; do
         # Run the SlackBuild script
         bash "${PRGNAM}.SlackBuild"
         # Install the built package if requested
-        if [ "${INSTALL:-n}" = Y ] || [ "${INSTALL:-n}" = y ]; then
-            eval "$(grep -E '^(ARCH|BUILD|TAG|OUTPUT)=' "${PRGNAM}.SlackBuild")"
+        if [ "${INSTALL_PKG:-n}" != n ]; then
             upgradepkg --reinstall --install-new \
-                "${OUTPUT}/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}$TAG".t?z
+                "${OUTPUT}/$(PRINT_PACKAGE_NAME=1 bash "${PRGNAM}.SlackBuild")"
         fi
     )
 done
