@@ -27,7 +27,10 @@ alias zp='vim ~/.config/zsh/.zprofile'
 alias zc='vim ~/.config/zsh/.zshrc'
 alias e='sudoedit'
 alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
-[ -n "$S6RC_LIVE" ] && alias s6-rc="s6-rc -l $S6RC_LIVE"
+if [ -n "$S6RC_LIVE" ]; then
+    alias s6-rc="s6-rc -l $S6RC_LIVE"
+    alias s6-rc-update="s6-rc-update -l $S6RC_LIVE"
+fi
 
 ## Some special configurations when in Slackware
 if [ -e /etc/slackware-version ]; then
