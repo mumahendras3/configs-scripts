@@ -5,6 +5,8 @@
 #############################
 
 fdmove -c 2 1
+# PIPEWIRE_NOTIFICATION_FD was introduced in version 0.3.57
+backtick PIPEWIRE_NOTIFICATION_FD { cat notification-fd }
 # Adding DBUS_SESSION_BUS_ADDRESS to the environment
 s6-envdir ../messagebus-srv/env
 s6-envdir env
@@ -13,5 +15,4 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-s6-notifyoncheck -dn0 -c "[ -S ${XDG_RUNTIME_DIR}/pipewire-0 ]"
 emptyenv -c $CMD $CMD_OPTS
