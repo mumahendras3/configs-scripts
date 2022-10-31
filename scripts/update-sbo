@@ -31,12 +31,16 @@ skarnet_get_latest_release() {
 
 # Get the latest release for software on gnome.org
 # Usage: gnome_get_latest_release <gnome.org software name>
-gnome_get_latest_release() {
-    wget -qO- "https://download.gnome.org/sources/${1}/" | \
-        sed -E '/title="[0-9.]+"/!d; s/.*title="([0-9.]+)".*/\1/' | \
-        sort -V | \
-        tail -n1
-}
+gnome_get_latest_release() (
+    MAJOR=$(
+        wget -qO- "https://download.gnome.org/sources/${1}/" | \
+            sed -En 's|.*>([0-9.]+)/<.*|\1|p' | \
+            sort -V | \
+            tail -n1
+    )
+    wget -qO- "https://download.gnome.org/sources/${1}/${MAJOR}/" | \
+        sed -En 's|.*>LATEST-IS-([0-9.]+)<.*|\1|p'
+)
 
 # TODO: Use the command pipeline below to create gitlab_get_latest_release() and
 # perhaps refactor github_get_latest_release() to also use it
@@ -70,6 +74,8 @@ for dir in "$@"; do
             echo "${PRGNAM}: ${VERSION} -> ${LATEST}"
             sed -i "s/${VERSION}/${LATEST}/g" \
                 "${PRGNAM}.info" "${PRGNAM}.SlackBuild"
+            echo "$DL_URL" | grep -Fq "/sources/${PRGNAM}/${VERSION%.*}/" && \
+                sed -i "s/${VERSION%.*}/${LATEST%.*}/" "${PRGNAM}.info"
             . "./${PRGNAM}.info"
             # Update MD5SUM{,_x86_64}
             for dl_url in "$DOWNLOAD" "$DOWNLOAD_x86_64"; do
