@@ -29,6 +29,19 @@ skarnet_get_latest_release() {
             -e "s|.*<a.*>(.+)</a>.*|\1|p"
 }
 
+# Get the latest release for software on gnome.org
+# Usage: gnome_get_latest_release <gnome.org software name>
+gnome_get_latest_release() {
+    wget -qO- "https://download.gnome.org/sources/${1}/" | \
+        sed -E '/title="[0-9.]+"/!d; s/.*title="([0-9.]+)".*/\1/' | \
+        sort -V | \
+        tail -n1
+}
+
+# TODO: Use the command pipeline below to create gitlab_get_latest_release() and
+# perhaps refactor github_get_latest_release() to also use it
+# git ls-remote --refs --tags --sort=version:refname https://gitlab.com/abchk1234/openrc-services.git 'tags/[v0-9]*' | sed -E '/[^-]*-.*/d; s|.*/v?(.*)|\1|' | tail -n1
+
 # Start the main loop
 for dir in "$@"; do
     [ -d "$dir" ] || continue
@@ -41,8 +54,11 @@ for dir in "$@"; do
         # Get the latest release using the appropriate method
         if USER_REPO_NAME="$(github_get_user_repo_name "$DL_URL")"; then
             LATEST="$(github_get_latest_release "$USER_REPO_NAME")"
-        elif echo "$DL_URL" | grep -Eq 'https://skarnet.org/software/.*'; then
+        elif echo "$DL_URL" | grep -Eq 'https://skarnet.org/software/.+'; then
             LATEST="$(skarnet_get_latest_release "$DL_URL")"
+        # TODO: gitlab elif must be placed here (before gnome.org software)
+        elif echo "$DL_URL" | grep -Eq '[a-z]+://[a-z]+\.gnome\.org/.+'; then
+            LATEST="$(gnome_get_latest_release "$PRGNAM")"
         else
             echo "The download link $DL_URL is unsupported"
             exit 1
