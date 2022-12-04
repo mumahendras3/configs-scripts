@@ -1,4 +1,0 @@
-#!/bin/sh
-
-/sbin/btrfs -v balance start -dusage=75 -musage=75 /
-/sbin/fstrim -va

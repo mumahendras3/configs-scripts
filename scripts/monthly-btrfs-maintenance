@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# Monthly btrfs maintenance script
+#
+
+# Use verbose mode when requested
+if [ "$1" = "-v" ]; then
+    btrfs -v balance start -dusage=75 -musage=75 /
+    btrfs -v scrub resume /
+    [ $? -eq 2 ] && exec btrfs -v scrub start /
+else
+    btrfs -q balance start -dusage=75 -musage=75 /
+    btrfs -q scrub resume /
+    [ $? -eq 2 ] && exec btrfs -q scrub start /
+fi
