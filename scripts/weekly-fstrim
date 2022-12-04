@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Weekly SSD trimming script
+#
+
+# Use verbose mode when requested
+[ "$1" = "-v" ] && exec fstrim -va
+exec fstrim -a
