@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Desktop-specific ssh-add invocations to be used in various desktop startup
+# routines
+#
+
+case "$XDG_SESSION_DESKTOP" in
+    KDE)
+        SSH_ASKPASS=/usr/bin/ksshaskpass exec ssh-add -q
+        ;;
+    *)
+        echo "${0}: Unknown desktop: $XDG_SESSION_DESKTOP"
+        ;;
+esac
