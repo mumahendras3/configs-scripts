@@ -1,0 +1,21 @@
+[Desktop Entry]
+Comment[en_US]=Desktop-specific ssh-add invocations to be used in various desktop startup routines
+Comment=Desktop-specific ssh-add invocations to be used in various desktop startup routines
+Exec=/home/mumahendras3/git-repos/configs-scripts/scripts/desktop-startup-ssh-add
+GenericName[en_US]=ssh-add Wrapper Script
+GenericName=ssh-add Wrapper Script
+Icon=dialog-scripts
+MimeType=
+Name[en_US]=desktop-startup-ssh-add
+Name=desktop-startup-ssh-add
+Path=
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=none
+X-KDE-AutostartScript=true
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+X-KDE-autostart-after=kwalletd5
