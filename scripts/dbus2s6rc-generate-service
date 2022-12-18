@@ -1,0 +1,169 @@
+#!/bin/bash -e
+#
+# Generate s6-rc source definition directories from D-Bus .service files and
+# create s6-rc adapted versions of the given .service files
+#
+
+# TODO:
+# - Continue missing required parameters handling
+# - Finish generating s6-rc source definition directories
+# - Finish copying new .service file (with s6-rc modification)
+
+# Usage: help
+# Print help messages
+help() {
+    cat <<EOF
+Usage: $0 -d <dir1> -g <dir2> -l <lg_tmpl> -s <sv_tmpl> <.service_file>...
+
+Generate s6-rc source definition directories from D-Bus .service files and
+create s6-rc adapted versions of the given .service files.
+- <.service_file>...: D-Bus .service files to use
+- <dir1>: where to put s6-rc adapted versions of <.service_file>...
+- <dir2>: where to put generated s6-rc source definition directories
+- <sv_tmpl>: s6-rc source definition directory to use as service template
+- <lg_tmpl>: s6-rc source definition directory to use as service logger template
+EOF
+    exit
+}
+
+# Usage: arg_err
+# Print a short helpful message (used when encountering arguments handling
+# errors)
+arg_err() {
+    echo "Try '$0 -h' for more information." >&2
+    exit 1
+}
+
+# Usage: generate_s6rc_service <dbus_.service_file> <output_dir>
+# Generate an s6-rc source definition directory equivalent of the given D-Bus
+# .service file
+generate_s6rc_service() {
+    local dbus_service_file output_dir line basename existing
+    local s6rc_svname s6rc_svpath svtmpl_replace lgtmpl_replace
+    dbus_service_file="$1"
+    output_dir="$2"
+    # Saving the entries inside each .service file as variables
+    tail -n+2 "$dbus_service_file" | while read line; do
+        eval "$line"
+    done
+    # Check if this particular .service file already has an s6-rc source
+    # definition directory equivalent in $output_dir
+    basename="$(basename "$dbus_service_file")"
+    existing="$(dirname "$output_dir"/*/"$basename")"
+    if [ -s "${existing}/$basename" ]; then
+        printf 'Found an existing s6-rc source definition directory for '
+        printf '%s: %s\n' "$dbus_service_file" "$existing"
+        return 1
+    fi
+    # Using the value of SystemdService entry for the s6-rc service name and
+    # falling back to using the executable name if it's undefined
+    s6rc_svname="${SystemdService:-$(basename "$Exec")}"
+    s6rc_svpath="${output_dir}/$s6rc_svname"
+    # Use the templates to create new s6-rc source definition directories for
+    # the service and its logger
+    mkdir -p "$output_dir"
+    cp -r "$S6RC_SVTMPL" "${s6rc_svpath}-srv"
+    cp -r "$S6RC_LGTMPL" "${s6rc_svpath}-log"
+    # Putting the .service file inside $s6rc_svpath for reference if manual
+    # edits are needed. It will also be used as a way to associate this
+    # .service file with this newly created s6-rc source definition
+    # directory.
+    cp "$dbus_service_file" "${s6rc_svpath}-srv"
+    # Replace some template strings
+    svtmpl_replace="$(basename "$S6RC_SVTMPL" -srv)"
+    lgtmpl_replace="$(basename "$S6RC_LGTMPL" -log)"
+    sed -i "s/${svtmpl_replace}/${s6rc_svname}/g" \
+        $(grep -Ilr "$svtmpl_replace" "${s6rc_svpath}-srv")
+    sed -i "s/${lgtmpl_replace}/${s6rc_svname}/g" \
+        $(grep -Ilr "$lgtmpl_replace" "${s6rc_svpath}-log")
+}
+
+# Usage: generate_dbus_service <dbus_.service_file> <s6rc_outdir> <dbus_outdir>
+# Generate a new D-Bus .service file from the given .service file where its Exec
+# entry is replaced with a call to s6-rc to start the corresponding newly
+# generated s6-rc service
+generate_dbus_service() {
+    local dbus_service_file s6rc_outdir dbus_outdir dbus_svname
+    local s6rc_svpath s6rc_svname
+    dbus_service_file="$1"
+    s6rc_outdir="$2"
+    dbus_outdir="$3"
+    dbus_svname="$(basename "$dbus_service_file")"
+    s6rc_svpath="$(dirname "$s6rc_outdir"/*/"$dbus_svname")"
+    s6rc_svname="$(basename "$s6rc_svpath" -srv)"
+    if [ -d "$s6rc_svpath" ]; then
+        sed -E "s|^(Exec=).+$|\1/bin/s6-rc change ${s6rc_svname}|" \
+            "$dbus_service_file" \
+            >"${dbus_outdir}/$dbus_svname"
+    fi
+}
+
+if [ $# -lt 1 ]; then
+    echo "${0}: missing operand" >&2
+    arg_err
+fi
+
+# Parse arguments
+if ! ARGS=$(getopt -s sh -n "$0" -o 'd:,g:,l:,s:,h' -- "$@"); then
+    arg_err
+fi
+eval "set -- $ARGS"
+while :; do
+    case "$1" in
+        -d)
+            DBUS_SVOUT="$2"
+            shift 2
+            ;;
+        -g)
+            S6RC_SVOUT="$2"
+            shift 2
+            ;;
+        -l)
+            S6RC_LGTMPL="$2"
+            shift 2
+            ;;
+        -s)
+            S6RC_SVTMPL="$2"
+            shift 2
+            ;;
+        -h)
+            help
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -?)
+            echo "$0: invalid option -- '${1#-}'"
+            arg_err
+            ;;
+        --*)
+            echo "$0: unrecognized option '$1'"
+            arg_err
+            ;;
+    esac
+done
+
+# Make sure every required parameters have been set
+if [ -z "$DBUS_SVOUT" ]; then
+    echo "${0}: missing option: -d <dir1>"
+    arg_err
+fi
+if [ -z "$S6RC_SVOUT" ]; then
+    echo "${0}: missing option: -g <dir2>"
+    arg_err
+fi
+if [ -z "$S6RC_LGTMPL" ]; then
+    echo "${0}: missing option: -l <lg_tmpl>"
+    arg_err
+fi
+if [ -z "$S6RC_SVTMPL" ]; then
+    echo "${0}: missing option: -s <sv_tmpl>"
+    arg_err
+fi
+
+# Looping through the given D-Bus .service files
+for dbus_service_file; do
+    generate_s6rc_service "$dbus_service_file" "$S6RC_SVOUT"
+    generate_dbus_service "$dbus_service_file" "$S6RC_SVOUT" "$DBUS_SVOUT"
+done
