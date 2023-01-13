@@ -31,3 +31,9 @@ if $COLORTERM == "truecolor" && exists('+termguicolors')
 endif
 " Set the colorscheme
 colorscheme breezy
+" Make cursor movement touch-typist friendly (left: l, right: ;)
+"noremap l h
+"noremap ; l
+" Adjust repeat inline search forward/backward
+"noremap h ,
+"noremap , ;
