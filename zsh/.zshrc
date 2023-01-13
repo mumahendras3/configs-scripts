@@ -1,6 +1,6 @@
 ## Environment variables only useful for interactive shell sessions
 # Default text editor
-export EDITOR=/usr/bin/vim
+export EDITOR="gvim -v" # Using gvim for clipboard support
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 # Make managing s6-supervised services easier
@@ -14,6 +14,7 @@ alias ll='ls -lh'
 alias la='ls -A'
 alias lla='ls -Alh'
 alias grep='grep --color=auto'
+alias vim='gvim -v' # Using gvim for clipboard support
 alias gs='git status'
 alias go='git show'
 alias ga='git add'
