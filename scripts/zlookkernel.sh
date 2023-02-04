@@ -163,6 +163,8 @@ lookkernel() {
             if [ ! -e "NVIDIA-Linux-x86_64-${VERSION}.run" ]; then
               if [ -e "/home/mumahendras3/Downloads/NVIDIA-Linux-x86_64-${VERSION}.run" ]; then
                 ln -sr "/home/mumahendras3/Downloads/NVIDIA-Linux-x86_64-${VERSION}.run" .
+              elif [ -e "/var/cache/sbopkg/NVIDIA-Linux-x86_64-${VERSION}.run" ]; then
+                ln -sr "/var/cache/sbopkg/NVIDIA-Linux-x86_64-${VERSION}.run" .
               else
                 wget --continue --read-timeout=30 "$DOWNLOAD_x86_64" && \
                   cp --reflink=auto "NVIDIA-Linux-x86_64-${VERSION}.run" /home/mumahendras3/Downloads
