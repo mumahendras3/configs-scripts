@@ -6,6 +6,7 @@
 
 case "$XDG_SESSION_DESKTOP" in
     KDE)
+        sleep 5 # Let KWallet finish initializing
         SSH_ASKPASS=/usr/bin/ksshaskpass exec ssh-add -q
         ;;
     *)
