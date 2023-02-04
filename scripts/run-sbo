@@ -14,7 +14,7 @@ download_and_verfiy() {
     for dl_url in $1; do
         FILE_NAME=$(basename "$dl_url")
         [ -n "$REDOWNLOAD" ] && rm -f "$FILE_NAME"
-        [ ! -s "$FILE_NAME" ] && wget -q --show-progress --continue "$dl_url"
+        [ ! -s "$FILE_NAME" ] && wget -nv --show-progress --continue "$dl_url"
         DL_SUMS="${DL_SUMS}$(md5sum "$FILE_NAME" | cut -d" " -f1)"
     done
     for sum in $2; do
