@@ -5,7 +5,6 @@
 ##############################
 
 fdmove -c 2 1
-backtick NOTIFICATION_FD { cat notification-fd }
 getcwd CWD
 s6-envdir env
 multisubstitute {
