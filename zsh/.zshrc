@@ -28,6 +28,7 @@ alias zp='vim ~/.config/zsh/.zprofile'
 alias zc='vim ~/.config/zsh/.zshrc'
 alias e='sudoedit'
 alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
+alias sz='npx sequelize-cli'
 if [ -n "$S6RC_LIVE" ]; then
     alias s6-rc="s6-rc -l $S6RC_LIVE"
     alias s6-rc-update="s6-rc-update -l $S6RC_LIVE"
@@ -78,6 +79,9 @@ if [ "$TERM" = alacritty ]; then
     _alacritty_title_precmd() { print -Pn '\e]0;%n@%m:%~\a'; }
     precmd_functions=(_alacritty_title_precmd)
 fi
+# Append composer-installed CLI tools path to PATH
+[ -d ~/.config/composer/vendor/bin ] && \
+    export PATH="${PATH}:${HOME}/.config/composer/vendor/bin"
 
 ## ZSH specific configurations
 # The file where the history is stored
