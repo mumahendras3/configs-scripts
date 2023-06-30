@@ -1,0 +1,17 @@
+#!/bin/execlineb -P
+
+#####################################################
+# Start a logging daemon for the wireplumber daemon #
+#####################################################
+
+s6-envdir env
+multisubstitute {
+  importas -u LOGDIR_PERMS LOGDIR_PERMS
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+  importas -usCd" " LOG_SCRIPT LOG_SCRIPT
+}
+importas -u LOGDIR_PATH LOGDIR_PATH
+importas -u XDG_STATE_HOME XDG_STATE_HOME
+if { install -dm $LOGDIR_PERMS $LOGDIR_PATH }
+exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT

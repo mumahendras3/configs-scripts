@@ -1,0 +1,15 @@
+#!/bin/execlineb -P
+
+################################
+# Start the wireplumber daemon #
+################################
+
+fdmove -c 2 1
+# Adding DBUS_SESSION_BUS_ADDRESS to the environment
+s6-envdir ../messagebus-srv/env
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+emptyenv -c $CMD $CMD_OPTS
