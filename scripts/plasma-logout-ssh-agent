@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Stop the running ssh-agent
+#
+
+kill "$SSH_AGENT_PID"

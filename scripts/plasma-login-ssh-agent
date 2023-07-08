@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Run ssh-agent and export the produced env vars
+#
+
+eval "$(ssh-agent -a "${XDG_RUNTIME_DIR}/ssh-agent.sock")"
