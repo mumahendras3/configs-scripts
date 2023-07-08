@@ -45,3 +45,13 @@ colorscheme breezy
 " Adjust repeat inline search forward/backward
 "noremap h ,
 "noremap , ;
+
+" Centralize backup/temporary files produced by vim
+let &directory = expand('~/.vim/swap//')
+set backup
+let &backupdir = expand('~/.vim/backup//')
+set undofile
+let &undodir = expand('~/.vim/undo//')
+if !isdirectory(&undodir) | call mkdir(&undodir, "p") | endif
+if !isdirectory(&backupdir) | call mkdir(&backupdir, "p") | endif
+if !isdirectory(&directory) | call mkdir(&directory, "p") | endif
