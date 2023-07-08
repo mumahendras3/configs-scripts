@@ -1,3 +1,11 @@
+" Initalize vim-plug if it's installed
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if !empty(glob(data_dir . '/autoload/plug.vim'))
+    call plug#begin()
+    Plug 'fneu/breezy'
+    call plug#end()
+endif
+
 " Disable vi compatibility (although this should not be needed when ~/.vimrc
 " exists)
 set nocompatible
