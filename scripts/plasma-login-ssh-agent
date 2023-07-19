@@ -1,6 +1,12 @@
 #!/bin/sh
 #
-# Run ssh-agent and export the produced env vars
+# Run ssh-agent and export the SSH_AUTH_SOCK env var
 #
 
-eval "$(ssh-agent -a "${XDG_RUNTIME_DIR}/ssh-agent.sock")"
+# We'll use a fixed socket path
+SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.sock"
+
+# Using daemon supervisor to stop ssh-agent upon last logout
+daemon -rBP ~/.run -n ssh-agent -- ssh-agent -Da "$SSH_AUTH_SOCK" && \
+    # Export the env var if the above command succeeded
+    export SSH_AUTH_SOCK
