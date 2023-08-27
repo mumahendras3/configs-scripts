@@ -1,0 +1,21 @@
+--- a/etc/pam.d/login   2020-06-19 04:01:47.000000000 +0700
++++ b/etc/pam.d/login   2022-08-17 16:58:49.716526301 +0700
+@@ -17,4 +17,18 @@
+ session         include         postlogin
+ session         required        pam_loginuid.so
+ -session        optional        pam_ck_connector.so nox11
++# Skip the pam-stop-usertree script for non-regular users
++session         [success=ok default=1] pam_succeed_if.so quiet uid >= 1000 \
++                                                         uid <= 60000
++# Running the pam-stop-usertree script before $XDG_RUNTIME_DIR is deleted by
++# pam_elogind
++session         optional        pam_exec.so type=close_session \
++                                            /usr/local/sbin/pam-stop-usertree
+ -session        optional        pam_elogind.so
++# Skip the pam-start-usertree script for non-regular users
++session         [success=ok default=1] pam_succeed_if.so quiet uid >= 1000 \
++                                                         uid <= 60000
++# Running the pam-start-usertree script after $XDG_RUNTIME_DIR is set and
++# created by pam_elogind
++session         optional        pam_exec.so type=open_session \
++                                            /usr/local/sbin/pam-start-usertree
