@@ -1,0 +1,42 @@
+#!/bin/execlineb -WS1
+
+############################################
+# Start a supervision subtree for the user #
+############################################
+
+fdmove -c 2 1
+emptyenv -p
+getpid PID
+export USER $1
+s6-envuidgid -i $1
+backtick -in HOME { homeof $1 }
+s6-envdir -i env
+multisubstitute {
+  importas -uD "" XDG_CACHE_HOME XDG_CACHE_HOME
+  importas -uD "" XDG_CONFIG_HOME XDG_CONFIG_HOME
+  importas -uD "" XDG_DATA_HOME XDG_DATA_HOME
+  importas -uD "" XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+  importas -uD "" XDG_STATE_HOME XDG_STATE_HOME
+  importas -iu PID PID
+  importas -iu PRIMARY_SESSION_CGPATH PRIMARY_SESSION_CGPATH
+  importas -iu CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+multisubstitute {
+  importas -i USER USER
+  importas -i HOME HOME
+  importas -i UID UID
+  importas -i GID GID
+  importas -i GIDLIST GIDLIST
+}
+backtick -iE PRIMARY_SESSION_ID { loginctl -pDisplay --value show-user $USER }
+if { redirfd -w 1 ${PRIMARY_SESSION_CGPATH}/cgroup.procs echo $PID }
+s6-applyuidgid -U
+export XDG_CACHE_HOME $XDG_CACHE_HOME
+export XDG_CONFIG_HOME $XDG_CONFIG_HOME
+export XDG_DATA_HOME $XDG_DATA_HOME
+export XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
+export XDG_STATE_HOME $XDG_STATE_HOME
+export PATH "/usr/local/bin:/usr/bin:/bin"
+if { mkdir -p ${XDG_RUNTIME_DIR}/s6/service }
+emptyenv -c $CMD $CMD_OPTS -- ${XDG_RUNTIME_DIR}/s6/service
