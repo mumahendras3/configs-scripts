@@ -8,10 +8,8 @@ export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
 # Defining some important constants that will be used later
 SYSTEM_SCANDIR="$(xargs -0a /proc/1/cmdline | grep -o ' /.*$' | cut -c 2-)"
-USERTREE_SVNAME="usertree-$PAM_USER"
-USERTREE_SVDIR="${SYSTEM_SCANDIR}/${USERTREE_SVNAME}-srv"
+USERTREE_SVDIR="${SYSTEM_SCANDIR}/usertree-srv"
 S6RC_TIMEOUT="5000"
-USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
 
 # Aborting execution when not invoked by pam_exec
 if [ -z "$PAM_SERVICE" ]; then
@@ -22,18 +20,13 @@ fi
 # Exiting immediately if PID 1 is not s6-svscan
 grep -Fqwz s6-svscan /proc/1/cmdline || exit 0
 
-# Exiting immediately if the user doesn't have a supervision tree configured
-[ -d "$USERTREE_SVDIR" ] || exit 0
+# Exiting immediately if the usertree instance supervisor is not running
+s6-svok "$USERTREE_SVDIR" || exit 0
+s6-svstat -o ready "$USERTREE_SVDIR" | grep -q '^true$' || exit 0
 
 # Exiting immediately if this is not the user's last session
-[ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && \
-    exit 0
+[ $(loginctl -pSessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && exit 0
 
-# Using s6-rc to bring down all the user's services (if applicable)
-[ -d "$USER_S6RC_LIVE" ] && s6-setuidgid "$PAM_USER" \
-    s6-rc -Dal "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change
-
-# Making sure there isn't an ongoing reboot/shutdown process
-utmpdump /var/log/wtmp 2>/dev/null | tail -n 1 | grep -Eq 'reboot|shutdown' || \
-    # Stopping the user's supervision tree
-    exec s6-rc -bdt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
+# Stopping the user's supervision tree
+s6-instance-control -wD -T "$S6RC_TIMEOUT" -D "$USERTREE_SVDIR" "$PAM_USER"
+s6-instance-control -wD -T "$S6RC_TIMEOUT" -D "$USERTREE_SVDIR" "$PAM_USER"/log
