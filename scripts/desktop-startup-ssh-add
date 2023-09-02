@@ -4,6 +4,9 @@
 # routines
 #
 
+# Exiting immediately if ssh-agent is not running
+[ -S "$SSH_AUTH_SOCK" ] || exit 0
+
 case "$XDG_CURRENT_DESKTOP" in
     KDE)
         sleep 5 # Let KWallet finish initializing
