@@ -7,8 +7,10 @@
 fdmove -c 2 1
 s6-envdir env
 multisubstitute {
-  importas -u CMD CMD
+  importas -i HOME HOME
+  importas -iu CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
 redirfd -w 4 env/DBUS_SESSION_BUS_ADDRESS
+cd $HOME
 emptyenv -c $CMD $CMD_OPTS
