@@ -1,0 +1,11 @@
+--- ./src/common/MessageHandler.h.orig	2023-09-02 21:34:15.448622677 +0700
++++ ./src/common/MessageHandler.h	2023-09-02 21:40:08.828791291 +0700
+@@ -89,7 +89,7 @@
+         }
+ 
+         // create timestamp
+-        QString timestamp = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm:ss.zzz"));
++        QString timestamp = QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss.zzz"));
+ 
+         // set log priority
+         QString logPriority = QStringLiteral("(II)");
