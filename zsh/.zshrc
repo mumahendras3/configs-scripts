@@ -3,10 +3,6 @@
 export EDITOR="gvim -v" # Using gvim for clipboard support
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
-# Make managing s6-supervised services easier
-[ -d "${XDG_RUNTIME_DIR}/s6/service" ] && \
-    S6_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
-[ -d "${XDG_RUNTIME_DIR}/s6/rc" ] && S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
 
 ## Useful aliases
 alias ls='ls --color=auto'
@@ -29,9 +25,15 @@ alias zc='vim ~/.config/zsh/.zshrc'
 alias e='sudoedit'
 alias m="monero-wallet-cli --config-file=${HOME}/.config/monero/wallet-cli.conf"
 alias sz='npx sequelize-cli'
+# Make managing s6-supervised services easier
 if [ -n "$S6RC_LIVE" ]; then
-    alias s6-rc="s6-rc -l $S6RC_LIVE"
+    alias s6-rc-db="s6-rc-db -l $S6RC_LIVE"
     alias s6-rc-update="s6-rc-update -l $S6RC_LIVE"
+    if [ -n "$S6RC_TIMEOUT" ]; then
+        alias s6-rc="s6-rc -l $S6RC_LIVE -t $S6RC_TIMEOUT"
+    else
+        alias s6-rc="s6-rc -l $S6RC_LIVE"
+    fi
 fi
 
 ## Some special configurations when in Slackware
