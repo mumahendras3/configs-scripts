@@ -11,4 +11,4 @@ multisubstitute {
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
 redirfd -w 4 env/DBUS_SESSION_BUS_ADDRESS
-exec -c $CMD $CMD_OPTS
+emptyenv -c $CMD $CMD_OPTS

@@ -9,7 +9,9 @@ emptyenv -p
 getpid PID
 export USER $1
 s6-envuidgid -i $1
-backtick -in HOME { homeof $1 }
+backtick -i HOME { homeof $1 }
+backtick -i SHELL { pipeline { getent passwd $1 } cut -d: -f7 }
+backtick -i PRIMARY_SESSION_ID { loginctl -pDisplay --value show-user $1 }
 s6-envdir -i env
 multisubstitute {
   importas -uD "" XDG_CACHE_HOME XDG_CACHE_HOME
@@ -23,13 +25,10 @@ multisubstitute {
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
 multisubstitute {
-  importas -i USER USER
   importas -i HOME HOME
   importas -i UID UID
-  importas -i GID GID
-  importas -i GIDLIST GIDLIST
+  importas -iu PRIMARY_SESSION_ID PRIMARY_SESSION_ID
 }
-backtick -iE PRIMARY_SESSION_ID { loginctl -pDisplay --value show-user $USER }
 if { redirfd -w 1 ${PRIMARY_SESSION_CGPATH}/cgroup.procs echo $PID }
 s6-applyuidgid -U
 export XDG_CACHE_HOME $XDG_CACHE_HOME
