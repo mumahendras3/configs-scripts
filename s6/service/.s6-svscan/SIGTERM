@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+#
+# Properly bring down the supervision tree whether we are using s6-rc or not
+#
+
+# Add a timeout when bringing down s6-rc services in case there are problems
+define S6RC_TIMEOUT "5000"
+
+# If we use s6-rc, use it to properly bring down all the services it manages.
+foreground {
+  if { [ -h ../rc ] }
+  s6-rc -l ../rc -t $S6RC_TIMEOUT -bDa change
+}
+
+# Finally, tell s6-svscan to bring down the supervision tree and exit.
+s6-svscanctl -t .

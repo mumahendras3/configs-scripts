@@ -13,9 +13,16 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 
 # Additional environment variables related to s6-based user services
 if grep -Fqz s6-svscan /proc/1/cmdline; then
-    if [ -d "${XDG_RUNTIME_DIR}/s6/service" ]; then
+    if [ -p "${XDG_RUNTIME_DIR}/s6/service/.s6-svscan/control" ]; then
         # For convenience
         export S6_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
+
+        # Copy user-defined scan directory (if it exists) to this empty scan
+        # directory
+        if [ -d "${XDG_CONFIG_HOME}/s6/service" ]; then
+            export S6_SCANDIR_SOURCE="${XDG_CONFIG_HOME}/s6/service"
+            cp -r "$S6_SCANDIR_SOURCE" "$(dirname "$S6_SCANDIR")"
+        fi
 
         # Check if we use s6-rc
         if [ -h "${XDG_CONFIG_HOME}/s6/rc/compiled" ]; then
