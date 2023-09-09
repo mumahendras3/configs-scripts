@@ -1,1 +1,1 @@
---session --nofork --nopidfile --nosyslog --print-pid=3 --print-address=4
+--session --nofork --nopidfile --nosyslog --address=$SERVER_ADDRESS --print-pid=3 --print-address=4

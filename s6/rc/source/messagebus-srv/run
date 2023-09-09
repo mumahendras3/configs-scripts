@@ -11,6 +11,10 @@ multisubstitute {
   importas -iu CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
+backtick -E SERVER_ADDRESS {
+  pipeline { realpath ./s }
+  sed -Ee "s/^/unix:path=/" -e "s/:s6-rc-init:[^/]+//"
+}
 redirfd -w 4 env/DBUS_SESSION_BUS_ADDRESS
 cd $HOME
 emptyenv -c $CMD $CMD_OPTS
