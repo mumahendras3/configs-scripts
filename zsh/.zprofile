@@ -33,12 +33,14 @@ if grep -Fqz s6-svscan /proc/1/cmdline; then
             S6RC_SESSION_BUNDLE="${XDG_SESSION_TYPE}-session"
             export S6RC_COMPILED S6RC_LIVE S6RC_TIMEOUT S6RC_SESSION_BUNDLE
 
-            # Initialize s6-rc
-            s6-rc-init \
-                -c "$S6RC_COMPILED" \
-                -l "$S6RC_LIVE" \
-                -t "$S6RC_TIMEOUT" \
-                "$S6_SCANDIR"
+            # Initialize s6-rc if it hasn't been initialized
+            if [ ! -h "$S6RC_LIVE" ]; then
+                s6-rc-init \
+                    -c "$S6RC_COMPILED" \
+                    -l "$S6RC_LIVE" \
+                    -t "$S6RC_TIMEOUT" \
+                    "$S6_SCANDIR"
+            fi
 
             # Start the relevant s6-rc services for this session
             s6-rc \
