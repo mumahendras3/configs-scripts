@@ -24,6 +24,8 @@ set expandtab
 set splitright
 " Default to 80 columns of characters max per line
 set textwidth=80
+" Show entered keystrokes when in normal mode
+set showcmd
 
 "" Theme settings
 " Use original KDE breeze background color

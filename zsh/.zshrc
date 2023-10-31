@@ -1,6 +1,8 @@
 ## Environment variables only useful for interactive shell sessions
 # Default text editor
 export EDITOR="gvim -v" # Using gvim for clipboard support
+# Default pager
+export PAGER="less"
 # Docker config directory
 [ -x /usr/bin/docker ] && export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 
