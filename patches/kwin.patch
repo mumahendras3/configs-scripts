@@ -1,0 +1,9 @@
+# When running under Plasma Full Wayland session, applications launched from
+# keyboard shortcuts will not have QT_QPA_PLATFORM=wayland in their environment,
+# making Qt applications like Konsole run in Xwayland mode instead of native
+# Wayland mode. This patch will make kwin_wayland not dropping the
+# QT_QPA_PLATFORM environment variable unconditionally, rather, resetting it to
+# its original value.
+cat $CWD/patch/kwin/do-not-drop-qt-qpa-platform-if-it-originally-had-a-value.diff \
+    | patch -p1 --verbose \
+    || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

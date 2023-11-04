@@ -1,0 +1,24 @@
+--- ./src/main_wayland.cpp.orig	2023-11-05 01:05:32.054640363 +0700
++++ ./src/main_wayland.cpp	2023-11-05 02:17:21.916909323 +0700
+@@ -292,6 +292,7 @@
+     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+ 
+     // enforce our internal qpa plugin, unfortunately command line switch has precedence
++    QByteArray qtQpaPlatformOriginalValue = qgetenv("QT_QPA_PLATFORM"); // save the original value first
+     setenv("QT_QPA_PLATFORM", "wayland-org.kde.kwin.qpa", true);
+ 
+     qunsetenv("QT_DEVICE_PIXEL_RATIO");
+@@ -300,7 +301,12 @@
+     KWin::ApplicationWayland a(argc, argv);
+     a.setupTranslator();
+     // reset QT_QPA_PLATFORM so we don't propagate it to our children (e.g. apps launched from the overview effect)
+-    qunsetenv("QT_QPA_PLATFORM");
++    // except when it had an original value from before.
++    if (qtQpaPlatformOriginalValue.isEmpty()) {
++        qunsetenv("QT_QPA_PLATFORM");
++    } else {
++        qputenv("QT_QPA_PLATFORM", qtQpaPlatformOriginalValue);
++    }
+ 
+     KSignalHandler::self()->watchSignal(SIGTERM);
+     KSignalHandler::self()->watchSignal(SIGINT);
