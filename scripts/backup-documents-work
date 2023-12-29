@@ -1,0 +1,22 @@
+#!/bin/sh -e
+#
+# Backup all files/directories under ~/Documents/Work
+#
+
+# Some constants (adjust as needed)
+#BACKUP_TARGET_DIR="/run/media/${USER}/Expansion/Documents/Work"
+BACKUP_TARGET_DIR="/mnt/e/Documents/Work"
+
+# Make sure the target directory exists:
+[ -d "$BACKUP_TARGET_DIR" ] || \
+    { echo "$BACKUP_TARGET_DIR doesn't exist!"; exit 1; }
+
+# Start the backup process:
+sudo rsync \
+    -hvrt \
+    --modify-window=1 \
+    --stats \
+    --progress \
+    --delete-after \
+    --delete-excluded \
+    ~/Documents/Work/* "$BACKUP_TARGET_DIR"
