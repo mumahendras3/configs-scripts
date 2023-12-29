@@ -24,6 +24,8 @@ set expandtab
 set splitright
 " Default to 80 columns of characters max per line
 set textwidth=80
+" Use proper indentation when formatting with 'gq' command
+set autoindent
 " Show entered keystrokes when in normal mode
 set showcmd
 
