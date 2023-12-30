@@ -1,0 +1,53 @@
+#!/bin/sh -e
+#
+# Backup the entire home directory
+#
+
+# Some constants (adjust as needed)
+#BACKUP_TARGET_DIR="/run/media/${USER}/Expansion/Backups/roglaptop"
+BACKUP_TARGET_DIR="/mnt/e/Backups/roglaptop"
+BACKUP_FILE_NAME="$(date +%Y-%m-%d)-home-${USER}.tar.zst.gpg"
+BACKUP_CHECKSUM_NAME="${BACKUP_FILE_NAME}.sha256"
+
+# Make sure the target directory exists:
+[ -d "$BACKUP_TARGET_DIR" ] || \
+    { echo "$BACKUP_TARGET_DIR doesn't exist!"; exit 1; }
+
+# Make sure zstd is installed:
+command -v zstd >/dev/null || { echo "zstd is not installed!"; exit 1; }
+
+# Make sure gpg is installed:
+if command -v gpg2 >/dev/null; then
+    GPG_BIN=gpg2
+elif command -v gpg >/dev/null; then
+    GPG_BIN=gpg
+else
+    echo "gpg2 and gpg is not installed!"
+    exit 1
+fi
+
+# Start the backup process:
+ZSTD_NBTHREADS="$(nproc)" && export ZSTD_NBTHREADS
+[ -r /etc/wsl.conf ] && GPG_TTY="$(tty)" && export GPG_TTY # Workaround for WSL2
+cd "$BACKUP_TARGET_DIR"
+sudo echo "Starting the backup process..."
+sudo \
+    -E \
+    tar \
+        --verbose \
+        --create \
+        --zstd \
+        --directory="$HOME" \
+        --exclude=Documents/Study \
+        --exclude=Documents/Work \
+        --exclude=.cache \
+        --file=- \
+        -- . \
+        | "$GPG_BIN" \
+            --symmetric \
+            --compress-algo none \
+            --output "$BACKUP_FILE_NAME" \
+            -
+
+# Calculate the backup file's checksum
+sha256sum --binary "$BACKUP_FILE_NAME" >"$BACKUP_CHECKSUM_NAME"
