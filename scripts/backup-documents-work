@@ -15,6 +15,8 @@ BACKUP_TARGET_DIR="/mnt/e/Documents/Work"
 sudo rsync \
     -hvrt \
     --modify-window=1 \
+    --filter=":- .gitignore" \
+    --filter="- *:Zone.Identifier" \
     --stats \
     --progress \
     --delete-after \
