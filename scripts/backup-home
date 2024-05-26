@@ -41,6 +41,8 @@ sudo \
         --exclude=Documents/Study \
         --exclude=Documents/Work \
         --exclude=.cache \
+        --exclude-caches-all \
+        --exclude-vcs-ignores \
         --file=- \
         -- . \
         | "$GPG_BIN" \
