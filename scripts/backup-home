@@ -41,14 +41,17 @@ sudo \
         --exclude=Documents/Study \
         --exclude=Documents/Work \
         --exclude=.cache \
+        --exclude=.npm \
         --exclude-caches-all \
         --exclude-vcs-ignores \
         --file=- \
         -- . \
         | "$GPG_BIN" \
             --symmetric \
-            --compress-algo none \
-            --output "$BACKUP_FILE_NAME" \
+            --compress-algo=none \
+            --compress-level=0 \
+            --bzip2-compress-level=0 \
+            --output="$BACKUP_FILE_NAME" \
             -
 
 # Calculate the backup file's checksum
