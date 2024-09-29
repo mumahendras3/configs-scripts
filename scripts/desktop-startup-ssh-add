@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Desktop-specific ssh-add invocations to be used in various desktop startup
 # routines
@@ -10,7 +10,7 @@
 case "$XDG_CURRENT_DESKTOP" in
     KDE)
         sleep 5 # Let KWallet finish initializing
-        SSH_ASKPASS=/usr/bin/ksshaskpass exec ssh-add -q
+        SSH_ASKPASS=/usr/bin/ksshaskpass exec ssh-add -q ~/.ssh/{id_rsa,gcp-cni,cluster-lab-gcp}
         ;;
     *)
         echo "${0}: Unknown desktop: $XDG_SESSION_DESKTOP"
