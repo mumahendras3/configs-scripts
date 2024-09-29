@@ -8,8 +8,12 @@ define S6RC_TIMEOUT "5000"
 
 # If we use s6-rc, use it to properly bring down all the services it manages.
 foreground {
-  if { [ -h ../rc ] }
-  s6-rc -l ../rc -t $S6RC_TIMEOUT -bDa change
+  define S6RC_EXISTENCE_TEST_SVCDIR "s6rc-fdholder"
+  if { [ -h $S6RC_EXISTENCE_TEST_SVCDIR ] }
+  backtick -E S6RC_LIVEDIR {
+    pipeline { readlink $S6RC_EXISTENCE_TEST_SVCDIR } sed "s|/servicedirs/.*$||"
+  }
+  s6-rc -l $S6RC_LIVEDIR -t $S6RC_TIMEOUT -bDa change
 }
 
 # Finally, tell s6-svscan to bring down the supervision tree and exit.

@@ -14,6 +14,10 @@ backtick -i SHELL { pipeline { getent passwd $1 } cut -d: -f7 }
 backtick -i PRIMARY_SESSION_ID { loginctl -pDisplay --value show-user $1 }
 s6-envdir -i env
 multisubstitute {
+  importas -iu S6_SCANDIR S6_SCANDIR
+  importas -iu S6_SCANDIR_CUSTOM S6_SCANDIR_CUSTOM
+}
+multisubstitute {
   importas -uD "" XDG_CACHE_HOME XDG_CACHE_HOME
   importas -uD "" XDG_CONFIG_HOME XDG_CONFIG_HOME
   importas -uD "" XDG_DATA_HOME XDG_DATA_HOME
@@ -37,5 +41,8 @@ export XDG_DATA_HOME $XDG_DATA_HOME
 export XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
 export XDG_STATE_HOME $XDG_STATE_HOME
 export PATH "/usr/local/bin:/usr/bin:/bin"
-if { mkdir -p ${XDG_RUNTIME_DIR}/s6/service }
-emptyenv -c $CMD $CMD_OPTS -- ${XDG_RUNTIME_DIR}/s6/service
+foreground {
+  ifelse { [ ! -d $S6_SCANDIR_CUSTOM ] } { mkdir -p $S6_SCANDIR }
+  cp -a $S6_SCANDIR_CUSTOM $S6_SCANDIR
+}
+emptyenv -c $CMD $CMD_OPTS -- $S6_SCANDIR
