@@ -1,0 +1,25 @@
+# Avoid saving duplicate commands in .bash_history
+HISTCONTROL=ignoreboth
+
+# Set some important env vars conditionally
+if command -v vim &>/dev/null; then
+    export EDITOR=vim
+fi
+if command -v less &>/dev/null; then
+    export PAGER=less
+fi
+if command -v docker &>/dev/null; then
+    export DOCKER_CONFIG="${HOME}/.config/docker"
+fi
+
+# Aliases
+RSYNC_REPO="rsync://mirrors.kernel.org/slackware"
+#RSYNC_REPO="rsync://slackware.uk/slackware"
+alias repo-update-15.0="rsync -avzh --progress --delete-after --partial ${RSYNC_REPO}/slackware-15.0 ~/Downloads"
+alias repo-update-15.0-64="rsync -avzh --progress --delete-after --partial ${RSYNC_REPO}/slackware64-15.0 ~/Downloads"
+alias repo-update-current="rsync -avzh --progress --delete-after --partial ${RSYNC_REPO}/slackware-current ~/Downloads"
+alias repo-update-current-64="rsync -avzh --progress --delete-after --partial ${RSYNC_REPO}/slackware64-current ~/Downloads"
+alias repo-update-multilib-current="rsync -avzh --progress --delete-after --partial --exclude=slackware64-compat32 rsync://us.slackware.nl/mirrors/people/alien/multilib/current ~/Downloads/multilib"
+alias repo-update-alien-slackbuilds="rsync -avzh --progress --delete-after --partial --exclude=pkg --exclude=pkg64 rsync://slackware.uk/people/alien/slackbuilds ~/Downloads/alien"
+alias repo-update-all="rsync -avzh --progress --delete-after --partial ${RSYNC_REPO}/slackware{,64}-{15.0,current} ~/Downloads && repo-update-multilib-current && repo-update-alien-slackbuilds"
+unset RSYNC_REPO
